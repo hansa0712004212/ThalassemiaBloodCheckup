@@ -7,9 +7,7 @@ package uom.research.thalassemia.logic;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.List;
 import org.opencv.core.Mat;
-import uom.research.thalassemia.object.Circle;
 
 /**
  *
@@ -99,6 +97,34 @@ public interface BloodCellsManipulation {
      *
      * @return BufferedImage
      */
-    BufferedImage getlaplacianImage();
+    BufferedImage getLaplacianImage();
+
+    /**
+     * get ellipses mat.
+     *
+     * @return mat
+     */
+    Mat getEllipses();
+
+    /**
+     * get pallors mat.
+     *
+     * @return mat
+     */
+    Mat getPallors();
+
+    /**
+     * get Circulars Image.
+     *
+     * @return BufferedImage
+     */
+    BufferedImage getCircularsImage();
+
+    /**
+     * get Ellipses image.
+     *
+     * @return BufferedImage
+     */
+    BufferedImage getEllipsesImage();
 
 }

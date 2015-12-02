@@ -220,7 +220,9 @@ public final class Home2 extends javax.swing.JFrame {
                 StretchImage.setImageStretch(lblDisplayImageCanny,
                         new ImageIcon(bcm.getCannyImage()));
                 StretchImage.setImageStretch(lblDisplayImageProcessed,
-                        new ImageIcon(bcm.getRedImage()));
+                        new ImageIcon(bcm.getCircularsImage()));
+                StretchImage.setImageStretch(lblDisplayImageContours,
+                        new ImageIcon(bcm.getEllipsesImage()));
                 lblCountCells.setText(String.valueOf(bcm.getCircleCount()));
                 lblMaximumRadius.setText(
                         String.valueOf(bcm.getMaximumRadius()));
@@ -372,6 +374,10 @@ public final class Home2 extends javax.swing.JFrame {
         btnSaveTest = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jPanel17 = new javax.swing.JPanel();
+        lblDisplayImageContours = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -434,6 +440,7 @@ public final class Home2 extends javax.swing.JFrame {
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
 
         jLabel8.setFont(new java.awt.Font("Helvetica Neue", 1, 11)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setText("Gray Scaled Preview");
         jPanel2.add(jLabel8);
 
@@ -442,7 +449,6 @@ public final class Home2 extends javax.swing.JFrame {
 
         jPanel11.setLayout(new java.awt.GridLayout(1, 1));
 
-        lblDisplayImageGray.setBackground(java.awt.SystemColor.controlLtHighlight);
         lblDisplayImageGray.setText(" ");
         lblDisplayImageGray.setOpaque(true);
         jPanel11.add(lblDisplayImageGray);
@@ -454,6 +460,7 @@ public final class Home2 extends javax.swing.JFrame {
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.PAGE_AXIS));
 
         jLabel10.setFont(new java.awt.Font("Helvetica Neue", 1, 11)); // NOI18N
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel10.setText("Threshold Preview");
         jPanel3.add(jLabel10);
 
@@ -462,7 +469,6 @@ public final class Home2 extends javax.swing.JFrame {
 
         jPanel12.setLayout(new java.awt.GridLayout(1, 1));
 
-        lblDisplayImageSmooth.setBackground(java.awt.SystemColor.controlLtHighlight);
         lblDisplayImageSmooth.setText(" ");
         lblDisplayImageSmooth.setOpaque(true);
         jPanel12.add(lblDisplayImageSmooth);
@@ -474,6 +480,7 @@ public final class Home2 extends javax.swing.JFrame {
         jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.PAGE_AXIS));
 
         jLabel12.setFont(new java.awt.Font("Helvetica Neue", 1, 11)); // NOI18N
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel12.setText("Edge Detection Preview");
         jPanel4.add(jLabel12);
 
@@ -482,7 +489,6 @@ public final class Home2 extends javax.swing.JFrame {
 
         jPanel13.setLayout(new java.awt.GridLayout(1, 1));
 
-        lblDisplayImageCanny.setBackground(java.awt.SystemColor.controlLtHighlight);
         lblDisplayImageCanny.setText(" ");
         lblDisplayImageCanny.setOpaque(true);
         jPanel13.add(lblDisplayImageCanny);
@@ -583,24 +589,27 @@ public final class Home2 extends javax.swing.JFrame {
 
         mainPanel.add(jPanel6);
 
-        jPanel7.setBackground(java.awt.SystemColor.activeCaptionBorder);
+        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.PAGE_AXIS));
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 445, Short.MAX_VALUE)
-        );
+        jLabel18.setFont(new java.awt.Font("Helvetica Neue", 1, 11)); // NOI18N
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel18.setText("Contours");
+        jPanel7.add(jLabel18);
+
+        jLabel19.setText("                         ");
+        jPanel7.add(jLabel19);
+
+        jPanel17.setLayout(new java.awt.BorderLayout());
+        jPanel17.add(lblDisplayImageContours, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel17);
 
         mainPanel.add(jPanel7);
 
         jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.PAGE_AXIS));
 
         jLabel14.setFont(new java.awt.Font("Helvetica Neue", 1, 11)); // NOI18N
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel14.setText("Identified Blood Cells Preview");
         jPanel8.add(jLabel14);
 
@@ -609,7 +618,6 @@ public final class Home2 extends javax.swing.JFrame {
 
         jPanel14.setLayout(new java.awt.GridLayout(1, 1));
 
-        lblDisplayImageProcessed.setBackground(java.awt.SystemColor.controlLtHighlight);
         lblDisplayImageProcessed.setText(" ");
         lblDisplayImageProcessed.setOpaque(true);
         jPanel14.add(lblDisplayImageProcessed);
@@ -841,7 +849,7 @@ public final class Home2 extends javax.swing.JFrame {
 
     private void btnCellDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCellDataActionPerformed
         if (bcm != null) {
-            new CircleData(bcm.getCircles()).setVisible(true);
+            new CircleData(Home2.this, true, bcm.getCircles(), null, bcm.getPallors()).setVisible(true);
         }
     }//GEN-LAST:event_btnCellDataActionPerformed
 
@@ -882,6 +890,8 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -898,6 +908,7 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -915,6 +926,7 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JLabel lblDateAndTime;
     private javax.swing.JLabel lblDisplayImage;
     private javax.swing.JLabel lblDisplayImageCanny;
+    private javax.swing.JLabel lblDisplayImageContours;
     private javax.swing.JLabel lblDisplayImageGray;
     private javax.swing.JLabel lblDisplayImageProcessed;
     private javax.swing.JLabel lblDisplayImageSmooth;

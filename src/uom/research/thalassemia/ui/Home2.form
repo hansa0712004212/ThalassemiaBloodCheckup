@@ -252,6 +252,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Helvetica Neue" size="11" style="1"/>
                 </Property>
+                <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Gray Scaled Preview"/>
               </Properties>
             </Component>
@@ -269,9 +270,6 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblDisplayImageGray">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" id="Control Lt Highlight" palette="2" red="ff" type="palette"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value=" "/>
                     <Property name="opaque" type="boolean" value="true"/>
                   </Properties>
@@ -291,6 +289,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Helvetica Neue" size="11" style="1"/>
                 </Property>
+                <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Threshold Preview"/>
               </Properties>
             </Component>
@@ -308,9 +307,6 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblDisplayImageSmooth">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" id="Control Lt Highlight" palette="2" red="ff" type="palette"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value=" "/>
                     <Property name="opaque" type="boolean" value="true"/>
                   </Properties>
@@ -330,6 +326,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Helvetica Neue" size="11" style="1"/>
                 </Property>
+                <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Edge Detection Preview"/>
               </Properties>
             </Component>
@@ -347,9 +344,6 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblDisplayImageCanny">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" id="Control Lt Highlight" palette="2" red="ff" type="palette"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value=" "/>
                     <Property name="opaque" type="boolean" value="true"/>
                   </Properties>
@@ -495,24 +489,39 @@
           </Layout>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel7">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c0" green="c0" id="Active Caption Border" palette="2" red="c0" type="palette"/>
-            </Property>
-          </Properties>
 
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="331" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="445" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+            <Property name="axis" type="int" value="3"/>
           </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="jLabel18">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Helvetica Neue" size="11" style="1"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="Contours"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel19">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="                         "/>
+              </Properties>
+            </Component>
+            <Container class="javax.swing.JPanel" name="jPanel17">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="lblDisplayImageContours">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Center"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel8">
 
@@ -525,6 +534,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Helvetica Neue" size="11" style="1"/>
                 </Property>
+                <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Identified Blood Cells Preview"/>
               </Properties>
             </Component>
@@ -542,9 +552,6 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="lblDisplayImageProcessed">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" id="Control Lt Highlight" palette="2" red="ff" type="palette"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value=" "/>
                     <Property name="opaque" type="boolean" value="true"/>
                   </Properties>

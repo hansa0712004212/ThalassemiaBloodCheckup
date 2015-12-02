@@ -17,8 +17,12 @@ import javax.imageio.ImageIO;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.Core;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Scalar;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.RotatedRect;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -39,13 +43,13 @@ public final class BloodCellsManipulationImpl
      * IplImages.
      */
     private Mat original, gray, smooth, canny, threshold,
-            red, laplacian, circles;
+            red, laplacian, circles, circlesPallor, circularsMat, ellipsesMat;
 
     /**
      * BufferedImage images.
      */
     private BufferedImage image, grayImage, redImage, cannyImage,
-            thresholdImage, laplacianImage;
+            thresholdImage, laplacianImage, circularsImage, ellipsesImage;
 
     /**
      * keeps image file.
@@ -136,7 +140,6 @@ public final class BloodCellsManipulationImpl
      */
     @Override
     public BufferedImage getGrayImage() {
-        System.out.println("7");
         return grayImage;
     }
 
@@ -147,8 +150,6 @@ public final class BloodCellsManipulationImpl
      */
     @Override
     public BufferedImage getRedImage() {
-
-        System.out.println("8");
         return redImage;
     }
 
@@ -159,8 +160,6 @@ public final class BloodCellsManipulationImpl
      */
     @Override
     public BufferedImage getCannyImage() {
-
-        System.out.println("9");
         return cannyImage;
     }
 
@@ -171,22 +170,37 @@ public final class BloodCellsManipulationImpl
      */
     @Override
     public BufferedImage getThresholdImage() {
-
-        System.out.println("10");
         return thresholdImage;
     }
 
     /**
-     * get lalacian image.
+     * get Laplacian image.
      *
      * @return BufferedImage
      */
     @Override
-    public BufferedImage getlaplacianImage() {
-
-        System.out.println("11");
+    public BufferedImage getLaplacianImage() {
         return laplacianImage;
+    }
 
+    /**
+     * get Circulars Image.
+     *
+     * @return BufferedImage
+     */
+    @Override
+    public BufferedImage getCircularsImage() {
+        return circularsImage;
+    }
+
+    /**
+     * get Circulars Image.
+     *
+     * @return BufferedImage
+     */
+    @Override
+    public BufferedImage getEllipsesImage() {
+        return ellipsesImage;
     }
 
     /**
@@ -217,7 +231,8 @@ public final class BloodCellsManipulationImpl
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
             // Load Selected File onto Original Mat
-            original = Imgcodecs.imread(imageFile.getAbsolutePath(), Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+            original = Imgcodecs.imread(imageFile.getAbsolutePath(),
+                    Imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
 
             // Create Mats with Original Mat's Size
             gray = original.clone();
@@ -226,13 +241,13 @@ public final class BloodCellsManipulationImpl
             threshold = original.clone();
             red = original.clone();
             laplacian = original.clone();
+            circularsMat = original.clone();
+            ellipsesMat = original.clone();
 
             // Sets Gray Scale to gray Map
             Imgproc.cvtColor(original, gray, Imgproc.COLOR_BGR2GRAY);
 
             grayImage = convertMapToImage(gray);
-
-            System.out.println("3");
 
             // Sest Red Colour Range Min and Max
             Scalar minc = new Scalar(95, 150, 75, 0);
@@ -243,13 +258,9 @@ public final class BloodCellsManipulationImpl
 
             redImage = convertMapToImage(red);
 
-            System.out.println("4");
-
             int type = BufferedImage.TYPE_INT_RGB;
             //gray = Imgcodecs.imdecode(original, type);
             image = new BufferedImage(original.cols(), original.rows(), type);
-
-            System.out.println("5");
 
             //Imgproc.GaussianBlur(mGray, mGray, new Size(15,15),50);
             //redImage = new BufferedImage(original.width(), original.height(), BufferedImage.TYPE_INT_RGB);
@@ -260,18 +271,18 @@ public final class BloodCellsManipulationImpl
             //laplacianImage = convertMapToImage(laplacian);
             thresholdImage = convertMapToImage(threshold);
 
-            Imgproc.Canny(threshold, canny, 20, 40, 3, false);
+            Imgproc.Canny(threshold, canny, 50, 100, 3, false);
             cannyImage = convertMapToImage(canny);
 
             //Imgproc.cvtColor(canny, canny, Imgproc.COLOR_BGR2GRAY);
             circles = new Mat();
             Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
                     8, //Inverse ratio
-                    100, //Minimum distance between the centers of the detected circles
-                    100, //Higher threshold for canny edge detector
-                    200, //Threshold at the center detection stage
-                    50, //min radius
-                    90 //max radius
+                    100, //Minimum distance between the centers of the detected circles. default 100
+                    100, //Higher threshold for canny edge detector. default100
+                    200, //Threshold at the center detection stage. default 200
+                    50, //min radius. default 50
+                    90 //max radius. default 90
             );
 
             if (circles.cols() > 0) {
@@ -280,18 +291,66 @@ public final class BloodCellsManipulationImpl
                     if (vCircle == null) {
                         break;
                     }
-                    Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
+                    Point pt = new Point(Math.round(vCircle[0]),
+                            Math.round(vCircle[1]));
                     int radius = (int) Math.round(vCircle[2]);
                     radiusList.add(radius);
                     // draw the found circle
-                    Imgproc.circle(original, pt, radius, new Scalar(0, 255, 0), 2);
+                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 255, 0), 2);
                 }
             }
+
+            // set Pallor circles
+            circlesPallor = new Mat();
+            Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                    8, //Inverse ratio
+                    100, //Minimum distance between the centers of the detected circles
+                    50, //Higher threshold for canny edge detector
+                    100, //Threshold at the center detection stage
+                    0, //min radius
+                    40 //max radius
+            );
+            if (circlesPallor.cols() > 0) {
+                for (int x = 0; x < circlesPallor.cols(); x++) {
+                    double vCircle[] = circlesPallor.get(0, x);
+                    if (vCircle == null) {
+                        break;
+                    }
+                    Point pt = new Point(Math.round(vCircle[0]), Math.round(vCircle[1]));
+                    int radius = (int) Math.round(vCircle[2]);
+                    //radiusList.add(radius);
+                    // draw the found circle
+                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 0, 255), 2);
+                }
+            }
+
+            // set Ellipses
+            List<MatOfPoint> contours = new ArrayList<>();
+            Imgproc.findContours(canny, contours, new Mat(), Imgproc.RETR_LIST,
+                    Imgproc.CHAIN_APPROX_SIMPLE);
+            MatOfPoint allcontours = new MatOfPoint();
+            for (MatOfPoint mat : contours) {
+                mat.copyTo(allcontours);
+                int ind = 0;
+                Rect boundingRect;
+                RotatedRect boundingEllipse = null;
+                if (allcontours.toArray().length > 4) {
+                    ind++;
+                    MatOfPoint newMat1 = new MatOfPoint(allcontours.toArray());
+                    MatOfPoint2f newMat2 = new MatOfPoint2f(
+                            allcontours.toArray());
+                    boundingRect = Imgproc.boundingRect(newMat1);
+                    boundingEllipse = Imgproc.fitEllipse(newMat2);
+                }
+
+                if (boundingEllipse != null) {
+                    Imgproc.ellipse(ellipsesMat, boundingEllipse, new Scalar(255, 0, 0), 2);
+                }
+            }
+
             circleCount = circles.cols();
-
-            System.out.println("6");
-            redImage = convertMapToImage(original);
-
+            circularsImage = convertMapToImage(circularsMat);
+            ellipsesImage = convertMapToImage(ellipsesMat);
         }
     }
 
@@ -305,4 +364,23 @@ public final class BloodCellsManipulationImpl
         return circles;
     }
 
+    /**
+     * get ellipses mat.
+     *
+     * @return
+     */
+    @Override
+    public Mat getEllipses() {
+        return null;
+    }
+
+    /**
+     * get pallors mat.
+     *
+     * @return
+     */
+    @Override
+    public Mat getPallors() {
+        return circlesPallor;
+    }
 }

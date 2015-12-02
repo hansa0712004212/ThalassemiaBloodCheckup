@@ -5,7 +5,6 @@
  */
 package uom.research.thalassemia.ui;
 
-import com.orientechnologies.orient.core.record.impl.ODocument;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -16,7 +15,6 @@ import java.util.List;
 import javax.swing.JTextField;
 import org.apache.commons.io.FileUtils;
 import uom.research.thalassemia.dao.PatientDAOImpl;
-import uom.research.thalassemia.db.DatabaseAccess;
 import uom.research.thalassemia.object.ContactPerson;
 import uom.research.thalassemia.object.Patient;
 import uom.research.thalassemia.object.User;

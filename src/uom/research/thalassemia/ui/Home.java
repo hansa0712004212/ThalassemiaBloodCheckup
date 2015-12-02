@@ -416,7 +416,7 @@ public final class Home extends JFrame {
 
     private void btnCellDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCellDataActionPerformed
         if (bcm != null) {
-            new CircleData(bcm.getCircles()).setVisible(true);
+            //new CircleData(bcm.getCircles()).setVisible(true);
         }
     }//GEN-LAST:event_btnCellDataActionPerformed
 
