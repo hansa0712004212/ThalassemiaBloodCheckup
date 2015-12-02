@@ -27,5 +27,19 @@ public final class TestSuiteDAOImpl implements TestSuiteDAO {
                 + "patient=" + testSuite.getPatient().getRid() + ", "
                 + "performedBy=" + testSuite.getPerformedBy().getRid());
         return rid;
+    } 
+	
+	public String abc1(final TestSuite testSuite) throws Exception {
+        String rid = DatabaseAccess.insertData("INSERT INTO TestSuite SET "
+                + "patient=" + testSuite.getPatient().getRid() + ", "
+                + "performedBy=" + testSuite.getPerformedBy().getRid());
+        return rid;
+    }
+	
+	public String abc2(final TestSuite testSuite) throws Exception {
+        String rid = DatabaseAccess.insertData("INSERT INTO TestSuite SET "
+                + "patient=" + testSuite.getPatient().getRid() + ", "
+                + "performedBy=" + testSuite.getPerformedBy().getRid());
+        return rid;
     }
 }

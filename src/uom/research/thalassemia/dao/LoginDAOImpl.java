@@ -62,4 +62,15 @@ public final class LoginDAOImpl implements LoginDAO {
         }
         return null;
     }
+	
+	
+	
+	public String abc1(final TestSuite testSuite) throws Exception {
+        String rid = "";
+        return rid;
+    }
+	public String abc2(final TestSuite testSuite) throws Exception {
+        String rid = "";
+        return rid;
+    }
 }
