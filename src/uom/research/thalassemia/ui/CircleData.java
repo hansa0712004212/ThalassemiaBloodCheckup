@@ -399,17 +399,14 @@ public final class CircleData extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void radCircularBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radCircularBloodCellsActionPerformed
-        Message.showInformationMessage("circle");
-        fillTable(circularBloodCells);
+       fillTable(circularBloodCells);
     }//GEN-LAST:event_radCircularBloodCellsActionPerformed
 
     private void radPallorBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radPallorBloodCellsActionPerformed
-        Message.showInformationMessage("pallor");
         fillTable(pallorBloodCells);
     }//GEN-LAST:event_radPallorBloodCellsActionPerformed
 
     private void radEllipticalBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radEllipticalBloodCellsActionPerformed
-        Message.showInformationMessage("ellipse");
         fillTable(ellipticalBloodCells);
     }//GEN-LAST:event_radEllipticalBloodCellsActionPerformed
 
