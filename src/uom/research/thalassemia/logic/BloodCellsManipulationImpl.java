@@ -60,6 +60,11 @@ public final class BloodCellsManipulationImpl
      * keeps circle count.
      */
     private int circleCount;
+    
+    /**
+     * keep contours details
+     */
+    List<MatOfPoint> contours = null;
 
     /**
      * Constructor.
@@ -202,6 +207,8 @@ public final class BloodCellsManipulationImpl
     public BufferedImage getEllipsesImage() {
         return ellipsesImage;
     }
+    
+    
 
     /**
      * converts map to image.
@@ -278,11 +285,11 @@ public final class BloodCellsManipulationImpl
             circles = new Mat();
             Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
                     8, //Inverse ratio
-                    100, //Minimum distance between the centers of the detected circles. default 100
+                    220, //Minimum distance between the centers of the detected circles. default 100
                     100, //Higher threshold for canny edge detector. default100
                     200, //Threshold at the center detection stage. default 200
-                    50, //min radius. default 50
-                    90 //max radius. default 90
+                    90, //min radius. default 50
+                    130 //max radius. default 90
             );
 
             if (circles.cols() > 0) {
@@ -296,7 +303,7 @@ public final class BloodCellsManipulationImpl
                     int radius = (int) Math.round(vCircle[2]);
                     radiusList.add(radius);
                     // draw the found circle
-                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 255, 0), 2);
+                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 255, 0), 3);
                 }
             }
 
@@ -304,11 +311,11 @@ public final class BloodCellsManipulationImpl
             circlesPallor = new Mat();
             Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
                     8, //Inverse ratio
-                    100, //Minimum distance between the centers of the detected circles
-                    50, //Higher threshold for canny edge detector
-                    100, //Threshold at the center detection stage
+                    220, //Minimum distance between the centers of the detected circles
+                    100, //Higher threshold for canny edge detector
+                    150, //Threshold at the center detection stage
                     0, //min radius
-                    40 //max radius
+                    70 //max radius
             );
             if (circlesPallor.cols() > 0) {
                 for (int x = 0; x < circlesPallor.cols(); x++) {
@@ -320,19 +327,19 @@ public final class BloodCellsManipulationImpl
                     int radius = (int) Math.round(vCircle[2]);
                     //radiusList.add(radius);
                     // draw the found circle
-                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 0, 255), 2);
+                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 0, 255), 0);
                 }
             }
 
             // set Ellipses
-            List<MatOfPoint> contours = new ArrayList<>();
+            contours = new ArrayList<>();
             Imgproc.findContours(canny, contours, new Mat(), Imgproc.RETR_LIST,
                     Imgproc.CHAIN_APPROX_SIMPLE);
             MatOfPoint allcontours = new MatOfPoint();
             for (MatOfPoint mat : contours) {
                 mat.copyTo(allcontours);
                 int ind = 0;
-                Rect boundingRect;
+                Rect boundingRect = null;
                 RotatedRect boundingEllipse = null;
                 if (allcontours.toArray().length > 4) {
                     ind++;
@@ -371,7 +378,7 @@ public final class BloodCellsManipulationImpl
      */
     @Override
     public Mat getEllipses() {
-        return null;
+        return ellipsesMat;
     }
 
     /**
@@ -382,5 +389,10 @@ public final class BloodCellsManipulationImpl
     @Override
     public Mat getPallors() {
         return circlesPallor;
+    }
+
+    @Override
+    public List<MatOfPoint> getContours() {
+        return contours;
     }
 }

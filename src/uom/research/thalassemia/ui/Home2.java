@@ -19,17 +19,22 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import uom.research.thalassemia.dao.TestDAO;
 import uom.research.thalassemia.dao.TestDAOImpl;
 import uom.research.thalassemia.dao.TestSuiteDAO;
 import uom.research.thalassemia.dao.TestSuiteDAOImpl;
+import uom.research.thalassemia.logic.BloodCellAbnormalLogicImpl;
+import uom.research.thalassemia.logic.BloodCellDataProcessor;
 import uom.research.thalassemia.logic.BloodCellsManipulation;
 import uom.research.thalassemia.logic.BloodCellsManipulationImpl;
 import uom.research.thalassemia.logic.ImageSegment;
@@ -38,6 +43,7 @@ import uom.research.thalassemia.object.Patient;
 import uom.research.thalassemia.object.Test;
 import uom.research.thalassemia.object.TestSuite;
 import uom.research.thalassemia.object.User;
+import uom.research.thalassemia.util.FillData;
 import uom.research.thalassemia.util.ImageFileChooser;
 import uom.research.thalassemia.util.Message;
 import uom.research.thalassemia.util.StretchImage;
@@ -373,6 +379,19 @@ public final class Home2 extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         btnSaveTest = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        lblRBC = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        lblMCV = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        lblRDW = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCellTypes = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -575,17 +594,57 @@ public final class Home2 extends javax.swing.JFrame {
         mainPanel.add(jPanel5);
 
         jPanel6.setBackground(java.awt.SystemColor.activeCaptionBorder);
+        jPanel6.setLayout(new java.awt.GridLayout(2, 1, 5, 0));
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 445, Short.MAX_VALUE)
-        );
+        jPanel18.setLayout(new java.awt.GridLayout(5, 2, 5, 5));
+        jPanel18.add(jLabel26);
+        jPanel18.add(jLabel20);
+
+        jLabel21.setText("  RBC Actual Count");
+        jPanel18.add(jLabel21);
+        jPanel18.add(lblRBC);
+
+        jLabel22.setText("  MCV Actual Count");
+        jPanel18.add(jLabel22);
+        jPanel18.add(lblMCV);
+
+        jLabel25.setText("  RDW Actual Count");
+        jPanel18.add(jLabel25);
+        jPanel18.add(lblRDW);
+        jPanel18.add(jLabel28);
+        jPanel18.add(jLabel29);
+
+        jPanel6.add(jPanel18);
+
+        tblCellTypes.setAutoCreateRowSorter(true);
+        tblCellTypes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cell Type", "Cell Count"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblCellTypes.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(tblCellTypes);
+        tblCellTypes.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        jPanel6.add(jScrollPane1);
 
         mainPanel.add(jPanel6);
 
@@ -849,7 +908,22 @@ public final class Home2 extends javax.swing.JFrame {
 
     private void btnCellDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCellDataActionPerformed
         if (bcm != null) {
-            new CircleData(Home2.this, true, bcm.getCircles(), null, bcm.getPallors()).setVisible(true);
+            new CircleData(Home2.this, true, bcm.getCircles(), bcm.getContours(), bcm.getPallors()).setVisible(true);
+        }
+        
+        BloodCellDataProcessor bloodCellDataProcessor = new BloodCellDataProcessor(bcm.getCircles(), bcm.getEllipses(), bcm.getPallors());
+        
+        
+        BloodCellAbnormalLogicImpl abc = new BloodCellAbnormalLogicImpl(3, bloodCellDataProcessor.getTotalBloodCellArea(), 5, 6, 7, true);
+        Map<String, Integer> data = abc.getAbnormalCellTypes();
+        FillData.doEmptyTable(tblCellTypes);
+        DefaultTableModel dtm = (DefaultTableModel) tblCellTypes.getModel();
+
+        for (Map.Entry<String, Integer> entrySet : data.entrySet()) {
+            String key = entrySet.getKey();
+            Integer value = entrySet.getValue();
+            Object[] ob = {key, value};
+            dtm.addRow(ob);
         }
     }//GEN-LAST:event_btnCellDataActionPerformed
 
@@ -893,6 +967,13 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -909,6 +990,7 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -917,6 +999,7 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -931,9 +1014,12 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JLabel lblDisplayImageProcessed;
     private javax.swing.JLabel lblDisplayImageSmooth;
     private javax.swing.JLabel lblImagePath;
+    private javax.swing.JLabel lblMCV;
     private javax.swing.JLabel lblMaximumRadius;
     private javax.swing.JLabel lblMinimumRadius;
     private javax.swing.JLabel lblPatient;
+    private javax.swing.JLabel lblRBC;
+    private javax.swing.JLabel lblRDW;
     private javax.swing.JLabel lblResolution;
     private javax.swing.JLabel lblTimeElapsed;
     private javax.swing.JLabel lblUser;
@@ -950,5 +1036,6 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuProcess;
     private javax.swing.JMenuItem mnuReset;
     private javax.swing.JMenuItem mnuSegment;
+    private javax.swing.JTable tblCellTypes;
     // End of variables declaration//GEN-END:variables
 }

@@ -23,7 +23,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-12,0,0,3,32"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-12,0,0,3,-124"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout">
@@ -141,7 +141,7 @@
           <Properties>
             <Property name="autoCreateRowSorter" type="boolean" value="true"/>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="9" rowCount="0">
+              <Table columnCount="10" rowCount="0">
                 <Column editable="false" title="#" type="java.lang.Integer"/>
                 <Column editable="false" title="x Point" type="java.lang.Double"/>
                 <Column editable="false" title="y Point" type="java.lang.Double"/>
@@ -149,6 +149,7 @@
                 <Column editable="false" title="Perimeter" type="java.lang.Double"/>
                 <Column editable="false" title="Area" type="java.lang.Double"/>
                 <Column editable="false" title="Diameter" type="java.lang.Double"/>
+                <Column editable="false" title="SGF" type="java.lang.Double"/>
                 <Column editable="false" title="Deviation Value" type="java.lang.Double"/>
                 <Column editable="false" title="AP (beta)" type="java.lang.Double"/>
               </Table>
@@ -156,6 +157,11 @@
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="1">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -236,15 +242,52 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="lblSumBloodCells">
               <Properties>
-                <Property name="text" type="java.lang.String" value="  Total No Of Blood Cells Detected : "/>
+                <Property name="text" type="java.lang.String" value=" &#x3a3; Blood Cells : "/>
               </Properties>
             </Component>
             <Component class="javax.swing.JToolBar$Separator" name="jSeparator1">
             </Component>
             <Component class="javax.swing.JLabel" name="lblSumPallar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="  Total No of Detected Pallar Circles : "/>
+                <Property name="text" type="java.lang.String" value=" &#x3a3; Pallar Circles : "/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator2">
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblBloodCellArea">
+              <Properties>
+                <Property name="text" type="java.lang.String" value=" &#x3a3; Blood Cell Area : "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator3">
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblPallarCircleArea">
+              <Properties>
+                <Property name="text" type="java.lang.String" value=" &#x3a3; Pallar Circle Area : "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator4">
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblEllipseArea">
+              <Properties>
+                <Property name="text" type="java.lang.String" value=" &#x3a3; Ellipse Circle Area : "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator7">
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblMaxDiameter">
+              <Properties>
+                <Property name="text" type="java.lang.String" value=" Max Diameter : "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator6">
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblMinDiameter">
+              <Properties>
+                <Property name="text" type="java.lang.String" value=" Min Diameter : "/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator5">
             </Component>
           </SubComponents>
         </Container>
