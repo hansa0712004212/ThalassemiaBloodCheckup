@@ -39,11 +39,11 @@ public final class StretchImage {
     public static void setImageStretch(final JLabel imageLabel,
             final ImageIcon ic) {
         /*Image im = ic.getImage();
-        im = im.getScaledInstance(imageLabel.getWidth(),
-                imageLabel.getHeight(), Image.SCALE_SMOOTH);
-        ic.setImage(im);
-        imageLabel.setIcon(ic);*/
-        
+         im = im.getScaledInstance(imageLabel.getWidth(),
+         imageLabel.getHeight(), Image.SCALE_SMOOTH);
+         ic.setImage(im);
+         imageLabel.setIcon(ic);*/
+
         Image im = ic.getImage();
         im = im.getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(),
                 Image.SCALE_SMOOTH);

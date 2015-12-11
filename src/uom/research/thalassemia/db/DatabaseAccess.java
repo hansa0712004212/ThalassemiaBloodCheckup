@@ -72,7 +72,7 @@ public final class DatabaseAccess {
             command.execute();
             db.getMetadata().getSchema().reload();
         } catch (Exception ex) {
-            System.out.println("already exists "+ex.getMessage());
+            System.out.println("already exists " + ex.getMessage());
         }
     }
 }

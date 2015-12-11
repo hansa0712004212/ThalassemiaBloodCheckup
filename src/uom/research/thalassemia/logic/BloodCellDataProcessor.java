@@ -21,9 +21,9 @@ import uom.research.thalassemia.util.FillData;
 
 /**
  *
- * @author hansa
+ * @author anupama
  */
-public class BloodCellDataProcessor {
+public final class BloodCellDataProcessor {
 
     /**
      * Frame height.
@@ -71,7 +71,7 @@ public class BloodCellDataProcessor {
     private double totalBloodCellArea = 0.0;
 
     /**
-     * keeps total pallar area.
+     * keeps total pallor area.
      */
     private double totalPallarArea = 0.0;
 
@@ -87,7 +87,8 @@ public class BloodCellDataProcessor {
      * @param ellipseSet ellipticalBloodCells
      * @param pallorSet pallorBloodCells
      */
-    public BloodCellDataProcessor(final Mat circleSet, final Mat ellipseSet, final Mat pallorSet) {
+    public BloodCellDataProcessor(final Mat circleSet, final Mat ellipseSet,
+            final Mat pallorSet) {
         this.circularBloodCells = circleSet;
         this.ellipticalBloodCells = ellipseSet;
         this.pallorBloodCells = pallorSet;
@@ -153,13 +154,21 @@ public class BloodCellDataProcessor {
         }
     }
 
-    public void fillTable(final JTable jTable1, final List<MatOfPoint> pcontours) {
+    /**
+     * fill Table.
+     *
+     * @param jTable1 jTable1
+     * @param pcontours contours
+     */
+    public void fillTable(final JTable jTable1,
+            final List<MatOfPoint> pcontours) {
         FillData.doEmptyTable(jTable1);
 
         if (pcontours != null) {
             getMinMaxDiameter(pcontours);
             double sgf = 0;
             if (minDiameter != 0) {
+
                 //calculate shape geometric factor
                 sgf = maxDiameter / minDiameter;
             }
@@ -173,7 +182,7 @@ public class BloodCellDataProcessor {
             MatOfPoint allcontours = new MatOfPoint();
             for (MatOfPoint mat : pcontours) {
                 mat.copyTo(allcontours);
-                RotatedRect boundingEllipse = null;
+                RotatedRect boundingEllipse;
                 if (allcontours.toArray().length > 4) {
                     MatOfPoint2f newMat2 = new MatOfPoint2f(
                             allcontours.toArray());
@@ -186,11 +195,9 @@ public class BloodCellDataProcessor {
                     area = calculateArea(width, height);
                     perimeter = calculatePerimeter(width, height);
                     totalEllipseArea += area;
-
                     Object[] ob = {index, x, y, r, area, perimeter, 0,
                         0, 0};
                     dtm.addRow(ob);
-
                 }
 
             }
@@ -236,7 +243,7 @@ public class BloodCellDataProcessor {
      * @return perimeter as double
      */
     private double calculatePerimeter(final double width, final double height) {
-        return 0;//Math.
+        return 0; //Math.
     }
 
     /**
@@ -262,7 +269,7 @@ public class BloodCellDataProcessor {
     }
 
     /**
-     * Calculate Area Proporation of Circle
+     * Calculate Area Proportion of Circle.
      *
      * @param area double area value
      * @param cpArea double centralPallorArea value
@@ -270,8 +277,7 @@ public class BloodCellDataProcessor {
      */
     private double calculateAreaProporation(final double area,
             final double cpArea) {
-        double ap;
-        return ap = cpArea / area;
+        return cpArea / area;
     }
 
     /**
@@ -281,21 +287,23 @@ public class BloodCellDataProcessor {
      */
     private void getMinMaxDiameter(final List<MatOfPoint> pcontours) {
         MatOfPoint allcontours = new MatOfPoint();
-        double diameter;
         List<Double> diameters = new ArrayList<>();
         for (MatOfPoint mat : pcontours) {
             mat.copyTo(allcontours);
-            RotatedRect boundingEllipse = null;
+            RotatedRect boundingEllipse;
             if (allcontours.toArray().length > 4) {
                 MatOfPoint2f newMat2 = new MatOfPoint2f(
                         allcontours.toArray());
                 boundingEllipse = Imgproc.fitEllipse(newMat2);
+                //ellipse centre x cordination
                 double x = boundingEllipse.center.x;
+                //ellipse centre y cordination
                 double y = boundingEllipse.center.y;
+                //ellipse width
                 double width = boundingEllipse.size.width;
+                //ellipse height
                 double height = boundingEllipse.size.height;
                 diameters.add(width);
-
             }
         }
         if (diameters.size() > 1) {
@@ -348,6 +356,7 @@ public class BloodCellDataProcessor {
 
     /**
      * keeps total blood cell area.
+     *
      * @return the totalBloodCellArea
      */
     public double getTotalBloodCellArea() {
@@ -355,7 +364,8 @@ public class BloodCellDataProcessor {
     }
 
     /**
-     * keeps total pallar area.
+     * keeps total pallor area.
+     *
      * @return the totalPallarArea
      */
     public double getTotalPallarArea() {
@@ -364,10 +374,10 @@ public class BloodCellDataProcessor {
 
     /**
      * ellipse total Ellipse cell area.
+     *
      * @return the totalEllipseArea
      */
     public double getTotalEllipseArea() {
         return totalEllipseArea;
     }
-
 }

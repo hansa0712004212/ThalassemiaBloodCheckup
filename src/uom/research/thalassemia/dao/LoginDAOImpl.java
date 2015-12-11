@@ -56,8 +56,7 @@ public final class LoginDAOImpl implements LoginDAO {
                     document.field(columnNames[5]).toString(),
                     Integer.valueOf(document.field(columnNames[6]).toString()),
                     LocalDate.parse(DATE_FORMAT.format(new Date(longDate))),
-                    null,
-                    null);
+                    null, null);
             return user;
         }
         return null;

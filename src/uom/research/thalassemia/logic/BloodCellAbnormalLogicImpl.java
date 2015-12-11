@@ -10,24 +10,52 @@ import java.util.Map;
 
 /**
  *
- * @author hansa
+ * @author anupama
  */
 public final class BloodCellAbnormalLogicImpl {
 
-    public Map<String, Integer> classes = new HashMap<>();
-    private double sgf, dv, diameter, cpArea, ap;
-    private boolean tf;
+    /**
+     * keeps list of blood related classes.
+     */
+    private final Map<String, Integer> classes;
 
-    public BloodCellAbnormalLogicImpl(double psgf, double pdv, double pdiameter,
-            double pcpArea, double pap, boolean ptf) {
+    /**
+     * set of double values.
+     */
+    private final double sgf, dv, diameter, cpArea, ap;
+
+    /**
+     *
+     */
+    private final boolean tf;
+
+    /**
+     * Creates new form BloodCellAbnormalLogicImpl.
+     *
+     * @param psgf shape geometric factor
+     * @param pdv deviation value
+     * @param pdiameter diameter
+     * @param pcpArea central pallor area
+     * @param pap area proportion
+     * @param ptf target flag
+     */
+    public BloodCellAbnormalLogicImpl(final double psgf, final double pdv,
+            final double pdiameter, final double pcpArea, final double pap,
+            final boolean ptf) {
         sgf = psgf;
         dv = pdv;
         diameter = pdiameter;
         cpArea = pcpArea;
         ap = pap;
         tf = ptf;
+        classes = new HashMap<>();
     }
 
+    /**
+     * get cell type count.
+     *
+     * @param key key
+     */
     private void fillClasses(final String key) {
         if (classes.containsKey(key)) {
             int x = classes.get(key);
@@ -37,16 +65,20 @@ public final class BloodCellAbnormalLogicImpl {
         }
     }
 
+    /**
+     * identify abnormal cell types.
+     *
+     * @return cell type
+     */
     public Map<String, Integer> getAbnormalCellTypes() {
         if (sgf > 1.2) {
             //sgf true
             if (dv > 0.2) {
-                //sgf true and dv true
-                System.out.println("class 12");
+                //dv true
                 fillClasses("Class 12");
             } else {
-                //sgf true and dv false
-                System.out.println("class 5");
+                //dv false
+                fillClasses("class 5");
             }
         } else {
             //sgf false
@@ -56,24 +88,20 @@ public final class BloodCellAbnormalLogicImpl {
                     //cpArea true
                     if (tf == true) {
                         //tf true
-
-                        //diameter true and cpArea true and tf true
-                        System.out.println("class 6");
+                        fillClasses("class 6");
                     } else {
                         //tf false
-
-                        //diameter true and cpArea true and tf false
                         if (ap > 0.2) {
                             //ap true
-                            System.out.println("class 9");
+                            fillClasses("class 9");
                         } else {
                             //ap false
-                            System.out.println("class 1");
+                            fillClasses("class 1");
                         }
                     }
                 } else {
                     //cp area false
-                    System.out.println("class 2");
+                    fillClasses("class 2");
                 }
             } else {
                 //diameter false
@@ -83,29 +111,28 @@ public final class BloodCellAbnormalLogicImpl {
                         //cpArea true
                         if (ap > 0.2) {
                             //ap true
-                            System.out.println("class 8");
+                            fillClasses("class 8");
                         } else {
                             //ap false
-                            System.out.println("class 9");
+                            fillClasses("class 9");
                         }
                     } else {
                         //cpArea false
-                        System.out.println("class 3");
-
+                        fillClasses("class 3");
                     }
                 } else {
                     //dv false
                     if (cpArea > 0) {
                         //cpArea true
                         if (ap > 0.2) {
-                            System.out.println("class 7");
+                            fillClasses("class 7");
                         } else {
                             //cpArea false
-                            System.out.println("class 10");
+                            fillClasses("class 10");
                         }
                     } else {
                         //cpArea false
-                        System.out.println("class 4");
+                        fillClasses("class 4");
                     }
                 }
             }

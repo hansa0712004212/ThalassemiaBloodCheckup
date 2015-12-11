@@ -60,11 +60,11 @@ public final class BloodCellsManipulationImpl
      * keeps circle count.
      */
     private int circleCount;
-    
+
     /**
-     * keep contours details
+     * keep contours details.
      */
-    List<MatOfPoint> contours = null;
+    private List<MatOfPoint> contours = null;
 
     /**
      * Constructor.
@@ -207,8 +207,6 @@ public final class BloodCellsManipulationImpl
     public BufferedImage getEllipsesImage() {
         return ellipsesImage;
     }
-    
-    
 
     /**
      * converts map to image.
@@ -338,15 +336,12 @@ public final class BloodCellsManipulationImpl
             MatOfPoint allcontours = new MatOfPoint();
             for (MatOfPoint mat : contours) {
                 mat.copyTo(allcontours);
-                int ind = 0;
-                Rect boundingRect = null;
                 RotatedRect boundingEllipse = null;
                 if (allcontours.toArray().length > 4) {
-                    ind++;
                     MatOfPoint newMat1 = new MatOfPoint(allcontours.toArray());
                     MatOfPoint2f newMat2 = new MatOfPoint2f(
                             allcontours.toArray());
-                    boundingRect = Imgproc.boundingRect(newMat1);
+                    Rect boundingRect = Imgproc.boundingRect(newMat1);
                     boundingEllipse = Imgproc.fitEllipse(newMat2);
                 }
 

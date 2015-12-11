@@ -6,21 +6,10 @@
 package uom.research.thalassemia.ui;
 
 import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.swing.table.DefaultTableModel;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.RotatedRect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import uom.research.thalassemia.logic.BloodCellDataProcessor;
-import uom.research.thalassemia.util.FillData;
 
 /**
  *
@@ -84,7 +73,7 @@ public final class CircleData extends javax.swing.JDialog {
     private double totalBloodCellArea = 0.0;
 
     /**
-     * keeps total pallar area.
+     * keeps total pallor area.
      */
     private double totalPallarArea = 0.0;
 

@@ -1,7 +1,8 @@
-
 /**
  * Beginning, Main class of the project. Application starts from here.
  */
+import de.javasoft.plaf.synthetica.SyntheticaBlueSteelLookAndFeel;
+import java.text.ParseException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.opencv.core.Core;
@@ -21,7 +22,7 @@ public final class Main {
      */
     public static void main(final String[] args) {
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(new SyntheticaBlueSteelLookAndFeel());
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
             Thread thread = new Thread(() -> {
                 try {
@@ -32,11 +33,10 @@ public final class Main {
             });
             thread.start();
             new Login(null, true).setVisible(true);
-        } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+        } catch (UnsupportedLookAndFeelException | ParseException ex) {
             System.out.println(ex.getMessage());
         }
-    }
+   }
 
     /**
      * private constructor.

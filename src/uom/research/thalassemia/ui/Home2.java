@@ -831,7 +831,7 @@ public final class Home2 extends javax.swing.JFrame {
         if (Desktop.isDesktopSupported()) {
             try {
                 Desktop.getDesktop().open(new File(
-                        Home.class.getResource("/index.html").getFile()));
+                        Home2.class.getResource("/index.html").getFile()));
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
@@ -910,11 +910,11 @@ public final class Home2 extends javax.swing.JFrame {
         if (bcm != null) {
             new CircleData(Home2.this, true, bcm.getCircles(), bcm.getContours(), bcm.getPallors()).setVisible(true);
         }
-        
+
         BloodCellDataProcessor bloodCellDataProcessor = new BloodCellDataProcessor(bcm.getCircles(), bcm.getEllipses(), bcm.getPallors());
-        
-        
-        BloodCellAbnormalLogicImpl abc = new BloodCellAbnormalLogicImpl(3, bloodCellDataProcessor.getTotalBloodCellArea(), 5, 6, 7, true);
+
+        BloodCellAbnormalLogicImpl abc = new BloodCellAbnormalLogicImpl(bloodCellDataProcessor.getTotalEllipseArea(), bloodCellDataProcessor.getTotalBloodCellArea(),
+                bloodCellDataProcessor.getTotalPallarArea(), 6, 7, true);
         Map<String, Integer> data = abc.getAbnormalCellTypes();
         FillData.doEmptyTable(tblCellTypes);
         DefaultTableModel dtm = (DefaultTableModel) tblCellTypes.getModel();
