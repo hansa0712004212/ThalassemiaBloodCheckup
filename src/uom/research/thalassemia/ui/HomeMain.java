@@ -8,6 +8,8 @@ package uom.research.thalassemia.ui;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.Timer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -17,6 +19,7 @@ import uom.research.thalassemia.util.FillData;
 import uom.research.thalassemia.util.Message;
 import uom.research.thalassemia.util.ObjectDockLoader;
 import uom.research.thalassemia.util.PieChartCreator;
+import uom.research.thalassemia.util.StretchImage;
 
 /**
  *
@@ -52,15 +55,17 @@ public class HomeMain extends javax.swing.JFrame {
      */
     public HomeMain(final User pUser) {
         initComponents();
-        setSize(900, 700);
         user = pUser;
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
-        System.out.println(this.getWidth());
         lblBanner.setSize(this.getWidth(), 50);
         ObjectDockLoader objectDockLoader = new ObjectDockLoader(DocBarPane,
                 HomeMain.this);
         objectDockLoader.toString();
         FillData.setIconForJFrame(HomeMain.this);
+        StretchImage.setImageStretch(lblBanner,
+                new ImageIcon(getClass().getResource(
+                        "/uom/research/thalassemia/images/banner-blood.jpg")));
         setClock();
     }
 
@@ -200,11 +205,140 @@ public class HomeMain extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         btnSubmit = new javax.swing.JButton();
         pnlUser = new javax.swing.JPanel();
+        jPanel24 = new javax.swing.JPanel();
+        jPanel25 = new javax.swing.JPanel();
+        jLabel30 = new javax.swing.JLabel();
+        cmbUserSearch = new javax.swing.JComboBox();
+        jPanel26 = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblUserSearch = new javax.swing.JTable();
+        jPanel27 = new javax.swing.JPanel();
+        jLabel32 = new javax.swing.JLabel();
+        jPanel28 = new javax.swing.JPanel();
+        jPanel29 = new javax.swing.JPanel();
+        lblUserPhoto = new javax.swing.JLabel();
+        jPanel30 = new javax.swing.JPanel();
+        jLabel33 = new javax.swing.JLabel();
+        ptxtUserAddress = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        ptxtUserMobile = new javax.swing.JTextField();
+        jLabel35 = new javax.swing.JLabel();
+        ptxtUserContactName = new javax.swing.JTextField();
+        jLabel36 = new javax.swing.JLabel();
+        ptxtUserContactMobile = new javax.swing.JTextField();
+        jPanel31 = new javax.swing.JPanel();
+        jPanel32 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        btnUserContinue = new javax.swing.JButton();
+        jPanel33 = new javax.swing.JPanel();
+        jPanel34 = new javax.swing.JPanel();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
+        jLabel43 = new javax.swing.JLabel();
+        jLabel44 = new javax.swing.JLabel();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        jLabel47 = new javax.swing.JLabel();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        jLabel50 = new javax.swing.JLabel();
+        jLabel51 = new javax.swing.JLabel();
+        jLabel52 = new javax.swing.JLabel();
+        jLabel53 = new javax.swing.JLabel();
+        btnUserCancel = new javax.swing.JButton();
+        jPanel35 = new javax.swing.JPanel();
+        txtUserNIC = new javax.swing.JTextField();
+        cmbUserTitle = new javax.swing.JComboBox();
+        txtUserFirstName = new javax.swing.JTextField();
+        txtUserMiddleName = new javax.swing.JTextField();
+        txtUserLastName = new javax.swing.JTextField();
+        dtUserBirthDate = new com.toedter.calendar.JDateChooser();
+        jPanel36 = new javax.swing.JPanel();
+        radUserMale = new javax.swing.JRadioButton();
+        radUserFemale = new javax.swing.JRadioButton();
+        txtUserAddress1 = new javax.swing.JTextField();
+        txtUserAddress2 = new javax.swing.JTextField();
+        txtUserCity = new javax.swing.JTextField();
+        txtUserMobile = new javax.swing.JTextField();
+        txtUserEmail = new javax.swing.JTextField();
+        jPanel37 = new javax.swing.JPanel();
+        txtUserPhoto = new javax.swing.JTextField();
+        btnUserPhoto = new javax.swing.JButton();
+        txtUserContactName = new javax.swing.JTextField();
+        txtUserContactMobile = new javax.swing.JTextField();
+        txtUserContactEmail = new javax.swing.JTextField();
+        jLabel54 = new javax.swing.JLabel();
+        btnUserSubmit = new javax.swing.JButton();
+        pnlPatient = new javax.swing.JPanel();
+        jPanel43 = new javax.swing.JPanel();
+        jPanel44 = new javax.swing.JPanel();
+        jLabel73 = new javax.swing.JLabel();
+        cmbPatientSearch = new javax.swing.JComboBox();
+        jPanel45 = new javax.swing.JPanel();
+        jLabel74 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblPatientSearch = new javax.swing.JTable();
+        jPanel46 = new javax.swing.JPanel();
+        jLabel75 = new javax.swing.JLabel();
+        jPanel47 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jPanel38 = new javax.swing.JPanel();
+        jPanel39 = new javax.swing.JPanel();
+        jLabel55 = new javax.swing.JLabel();
+        jLabel56 = new javax.swing.JLabel();
+        jLabel57 = new javax.swing.JLabel();
+        jLabel58 = new javax.swing.JLabel();
+        jLabel59 = new javax.swing.JLabel();
+        jLabel60 = new javax.swing.JLabel();
+        jLabel61 = new javax.swing.JLabel();
+        jLabel62 = new javax.swing.JLabel();
+        jLabel63 = new javax.swing.JLabel();
+        jLabel64 = new javax.swing.JLabel();
+        jLabel65 = new javax.swing.JLabel();
+        jLabel66 = new javax.swing.JLabel();
+        jLabel67 = new javax.swing.JLabel();
+        jLabel68 = new javax.swing.JLabel();
+        jLabel69 = new javax.swing.JLabel();
+        jLabel70 = new javax.swing.JLabel();
+        jLabel71 = new javax.swing.JLabel();
+        btnPatientCancel = new javax.swing.JButton();
+        jPanel40 = new javax.swing.JPanel();
+        txtPatientNIC = new javax.swing.JTextField();
+        cmbPatientTitle = new javax.swing.JComboBox();
+        txtPatientFirstName = new javax.swing.JTextField();
+        txtPatientMiddleName = new javax.swing.JTextField();
+        txtPatientLastName = new javax.swing.JTextField();
+        dtPatientBirthDate = new com.toedter.calendar.JDateChooser();
+        jPanel41 = new javax.swing.JPanel();
+        radPatientMale = new javax.swing.JRadioButton();
+        radPatientFemale = new javax.swing.JRadioButton();
+        txtPatientAddress1 = new javax.swing.JTextField();
+        txtPatientAddress2 = new javax.swing.JTextField();
+        txtPatientCity = new javax.swing.JTextField();
+        txtPatientMobile = new javax.swing.JTextField();
+        txtPatientEmail = new javax.swing.JTextField();
+        jPanel42 = new javax.swing.JPanel();
+        txtPatientPhoto = new javax.swing.JTextField();
+        btnPatientPhoto = new javax.swing.JButton();
+        txtPatientContactName = new javax.swing.JTextField();
+        txtPatientContactMobile = new javax.swing.JTextField();
+        txtPatientContactEmail = new javax.swing.JTextField();
+        jLabel72 = new javax.swing.JLabel();
+        btnPatientSubmit = new javax.swing.JButton();
         pnlSummary = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         pnlPieChart = new javax.swing.JPanel();
         pnlBarChart = new javax.swing.JPanel();
-        pnlTemp = new javax.swing.JPanel();
         pnlTemp2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         SoftBorderPane = new javax.swing.JPanel();
@@ -218,11 +352,11 @@ public class HomeMain extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel3.setLayout(new java.awt.BorderLayout());
 
         lblBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/banner-blood.jpg"))); // NOI18N
         lblBanner.setPreferredSize(new java.awt.Dimension(1000, 100));
-        jPanel3.add(lblBanner);
+        jPanel3.add(lblBanner, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
@@ -517,8 +651,468 @@ public class HomeMain extends javax.swing.JFrame {
         jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Doctors </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlDoctor); // NOI18N
 
         pnlUser.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
-        pnlUser.setLayout(new java.awt.BorderLayout());
+        pnlUser.setLayout(new java.awt.GridLayout(1, 2));
+
+        jPanel24.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "<html><body bgcolor='#58FAF4'><center><b>Search for User</b></center></body></html>", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+        jPanel24.setLayout(new javax.swing.BoxLayout(jPanel24, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel25.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel30.setText("Search Text");
+        jPanel25.add(jLabel30);
+
+        jPanel24.add(jPanel25);
+
+        cmbUserSearch.setEditable(true);
+        jPanel24.add(cmbUserSearch);
+
+        jPanel26.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel31.setText("Users");
+        jPanel26.add(jLabel31);
+
+        jPanel24.add(jPanel26);
+
+        tblUserSearch.setAutoCreateRowSorter(true);
+        tblUserSearch.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Rid", "Name", "Gender", "City"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tblUserSearch);
+
+        jPanel24.add(jScrollPane3);
+
+        jPanel27.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel32.setText("Selected User More Info");
+        jPanel27.add(jLabel32);
+
+        jPanel24.add(jPanel27);
+
+        jPanel28.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
+
+        jPanel29.setLayout(new java.awt.BorderLayout());
+        jPanel29.add(lblUserPhoto, java.awt.BorderLayout.CENTER);
+
+        jPanel28.add(jPanel29);
+
+        jPanel30.setLayout(new java.awt.GridLayout(4, 2));
+
+        jLabel33.setText("Address");
+        jPanel30.add(jLabel33);
+
+        ptxtUserAddress.setEditable(false);
+        jPanel30.add(ptxtUserAddress);
+
+        jLabel34.setText("Phone");
+        jPanel30.add(jLabel34);
+
+        ptxtUserMobile.setEditable(false);
+        jPanel30.add(ptxtUserMobile);
+
+        jLabel35.setText("Contact Person");
+        jPanel30.add(jLabel35);
+
+        ptxtUserContactName.setEditable(false);
+        jPanel30.add(ptxtUserContactName);
+
+        jLabel36.setText("Contacter Phone");
+        jPanel30.add(jLabel36);
+
+        ptxtUserContactMobile.setEditable(false);
+        jPanel30.add(ptxtUserContactMobile);
+
+        jPanel28.add(jPanel30);
+
+        jPanel24.add(jPanel28);
+        jPanel24.add(jPanel31);
+
+        jPanel32.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
+
+        jButton2.setText("Quit");
+        jPanel32.add(jButton2);
+
+        btnUserContinue.setText("Continue");
+        jPanel32.add(btnUserContinue);
+
+        jPanel24.add(jPanel32);
+
+        pnlUser.add(jPanel24);
+
+        jPanel33.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "<html><body bgcolor='#58FAF4'><center><b> Creates a User </b></center></body></html>", javax.swing.border.TitledBorder.LEADING, javax.swing.border.TitledBorder.TOP));
+        jPanel33.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
+
+        jPanel34.setLayout(new java.awt.GridLayout(18, 1));
+
+        jLabel37.setText("NIC");
+        jPanel34.add(jLabel37);
+
+        jLabel38.setText("Title");
+        jPanel34.add(jLabel38);
+
+        jLabel39.setText("First Name");
+        jPanel34.add(jLabel39);
+
+        jLabel40.setText("Middle Name");
+        jPanel34.add(jLabel40);
+
+        jLabel41.setText("Last Name");
+        jPanel34.add(jLabel41);
+
+        jLabel42.setText("Birth Date");
+        jPanel34.add(jLabel42);
+
+        jLabel43.setText("Gender");
+        jPanel34.add(jLabel43);
+
+        jLabel44.setText("Address 1");
+        jPanel34.add(jLabel44);
+
+        jLabel45.setText("Address 2");
+        jPanel34.add(jLabel45);
+
+        jLabel46.setText("City");
+        jPanel34.add(jLabel46);
+
+        jLabel47.setText("Phone");
+        jPanel34.add(jLabel47);
+
+        jLabel48.setText("Email");
+        jPanel34.add(jLabel48);
+
+        jLabel49.setText("Photo");
+        jPanel34.add(jLabel49);
+
+        jLabel50.setText("Contact Person Name");
+        jPanel34.add(jLabel50);
+
+        jLabel51.setText("Contact Person Mobile");
+        jPanel34.add(jLabel51);
+
+        jLabel52.setText("Contact Person Email");
+        jPanel34.add(jLabel52);
+        jPanel34.add(jLabel53);
+
+        btnUserCancel.setText("Clear");
+        jPanel34.add(btnUserCancel);
+
+        jPanel33.add(jPanel34);
+
+        jPanel35.setLayout(new java.awt.GridLayout(18, 1));
+
+        txtUserNIC.setText("901563350V");
+        jPanel35.add(txtUserNIC);
+
+        cmbUserTitle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mr. ", "Mrs. ", "Miss. " }));
+        jPanel35.add(cmbUserTitle);
+
+        txtUserFirstName.setText("Saman");
+        jPanel35.add(txtUserFirstName);
+
+        txtUserMiddleName.setText("Nimal");
+        jPanel35.add(txtUserMiddleName);
+
+        txtUserLastName.setText("Sunil");
+        jPanel35.add(txtUserLastName);
+
+        dtUserBirthDate.setDateFormatString("yyyy-MM-dd");
+        jPanel35.add(dtUserBirthDate);
+
+        jPanel36.setLayout(new java.awt.GridLayout(1, 2));
+
+        radUserMale.setSelected(true);
+        radUserMale.setText("  Male");
+        jPanel36.add(radUserMale);
+
+        radUserFemale.setText("  Female");
+        jPanel36.add(radUserFemale);
+
+        jPanel35.add(jPanel36);
+
+        txtUserAddress1.setText("Somewhere");
+        jPanel35.add(txtUserAddress1);
+
+        txtUserAddress2.setText("Anywhere");
+        jPanel35.add(txtUserAddress2);
+
+        txtUserCity.setText("Galle");
+        jPanel35.add(txtUserCity);
+
+        txtUserMobile.setText("0710111000");
+        jPanel35.add(txtUserMobile);
+
+        txtUserEmail.setText("thmamaraseara@virtusa.com");
+        jPanel35.add(txtUserEmail);
+
+        jPanel37.setLayout(new java.awt.GridLayout(1, 2, 3, 0));
+
+        txtUserPhoto.setEditable(false);
+        jPanel37.add(txtUserPhoto);
+
+        btnUserPhoto.setText("..");
+        btnUserPhoto.setMaximumSize(new java.awt.Dimension(20, 15));
+        btnUserPhoto.setMinimumSize(new java.awt.Dimension(20, 15));
+        btnUserPhoto.setPreferredSize(new java.awt.Dimension(20, 15));
+        jPanel37.add(btnUserPhoto);
+
+        jPanel35.add(jPanel37);
+
+        txtUserContactName.setText("Hansa");
+        jPanel35.add(txtUserContactName);
+
+        txtUserContactMobile.setText("0712004212");
+        jPanel35.add(txtUserContactMobile);
+
+        txtUserContactEmail.setText("hansa0712004212@gmail.com");
+        jPanel35.add(txtUserContactEmail);
+        jPanel35.add(jLabel54);
+
+        btnUserSubmit.setText("Submit");
+        jPanel35.add(btnUserSubmit);
+
+        jPanel33.add(jPanel35);
+
+        pnlUser.add(jPanel33);
+
         jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Users </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlUser); // NOI18N
+
+        pnlPatient.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
+        pnlPatient.setLayout(new java.awt.GridLayout(1, 2));
+
+        jPanel43.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "<html><body bgcolor='#58FAF4'><center><b>Search for Patient</b></center></body></html>", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+        jPanel43.setLayout(new javax.swing.BoxLayout(jPanel43, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel44.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel73.setText("Search Text");
+        jPanel44.add(jLabel73);
+
+        jPanel43.add(jPanel44);
+
+        cmbPatientSearch.setEditable(true);
+        jPanel43.add(cmbPatientSearch);
+
+        jPanel45.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel74.setText("Patients");
+        jPanel45.add(jLabel74);
+
+        jPanel43.add(jPanel45);
+
+        tblPatientSearch.setAutoCreateRowSorter(true);
+        tblPatientSearch.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Rid", "Name", "Gender", "City"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(tblPatientSearch);
+
+        jPanel43.add(jScrollPane4);
+
+        jPanel46.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jLabel75.setText("Selected Patient More Info");
+        jPanel46.add(jLabel75);
+
+        jPanel43.add(jPanel46);
+
+        jPanel47.setLayout(new java.awt.GridLayout(3, 2, 0, 2));
+
+        jButton4.setText("Update Patient ...");
+        jPanel47.add(jButton4);
+
+        jButton5.setText("Delete Patient");
+        jPanel47.add(jButton5);
+
+        jButton6.setText("Upload Blood Images ...");
+        jPanel47.add(jButton6);
+
+        jButton7.setText("Perform Blood Cell Analysis ...");
+        jPanel47.add(jButton7);
+
+        jButton8.setText("jButton8");
+        jPanel47.add(jButton8);
+
+        jButton9.setText("jButton9");
+        jPanel47.add(jButton9);
+
+        jPanel43.add(jPanel47);
+
+        pnlPatient.add(jPanel43);
+
+        jPanel38.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "<html><body bgcolor='#58FAF4'><center><b> Creates a Patient </b></center></body></html>", javax.swing.border.TitledBorder.LEADING, javax.swing.border.TitledBorder.TOP));
+        jPanel38.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
+
+        jPanel39.setLayout(new java.awt.GridLayout(18, 1));
+
+        jLabel55.setText("NIC");
+        jPanel39.add(jLabel55);
+
+        jLabel56.setText("Title");
+        jPanel39.add(jLabel56);
+
+        jLabel57.setText("First Name");
+        jPanel39.add(jLabel57);
+
+        jLabel58.setText("Middle Name");
+        jPanel39.add(jLabel58);
+
+        jLabel59.setText("Last Name");
+        jPanel39.add(jLabel59);
+
+        jLabel60.setText("Birth Date");
+        jPanel39.add(jLabel60);
+
+        jLabel61.setText("Gender");
+        jPanel39.add(jLabel61);
+
+        jLabel62.setText("Address 1");
+        jPanel39.add(jLabel62);
+
+        jLabel63.setText("Address 2");
+        jPanel39.add(jLabel63);
+
+        jLabel64.setText("City");
+        jPanel39.add(jLabel64);
+
+        jLabel65.setText("Phone");
+        jPanel39.add(jLabel65);
+
+        jLabel66.setText("Email");
+        jPanel39.add(jLabel66);
+
+        jLabel67.setText("Photo");
+        jPanel39.add(jLabel67);
+
+        jLabel68.setText("Contact Person Name");
+        jPanel39.add(jLabel68);
+
+        jLabel69.setText("Contact Person Mobile");
+        jPanel39.add(jLabel69);
+
+        jLabel70.setText("Contact Person Email");
+        jPanel39.add(jLabel70);
+        jPanel39.add(jLabel71);
+
+        btnPatientCancel.setText("Clear");
+        jPanel39.add(btnPatientCancel);
+
+        jPanel38.add(jPanel39);
+
+        jPanel40.setLayout(new java.awt.GridLayout(18, 1));
+
+        txtPatientNIC.setText("901563350V");
+        jPanel40.add(txtPatientNIC);
+
+        cmbPatientTitle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mr. ", "Mrs. ", "Miss. " }));
+        jPanel40.add(cmbPatientTitle);
+
+        txtPatientFirstName.setText("Saman");
+        jPanel40.add(txtPatientFirstName);
+
+        txtPatientMiddleName.setText("Nimal");
+        jPanel40.add(txtPatientMiddleName);
+
+        txtPatientLastName.setText("Sunil");
+        jPanel40.add(txtPatientLastName);
+
+        dtPatientBirthDate.setDateFormatString("yyyy-MM-dd");
+        jPanel40.add(dtPatientBirthDate);
+
+        jPanel41.setLayout(new java.awt.GridLayout(1, 2));
+
+        radPatientMale.setSelected(true);
+        radPatientMale.setText("  Male");
+        jPanel41.add(radPatientMale);
+
+        radPatientFemale.setText("  Female");
+        jPanel41.add(radPatientFemale);
+
+        jPanel40.add(jPanel41);
+
+        txtPatientAddress1.setText("Somewhere");
+        jPanel40.add(txtPatientAddress1);
+
+        txtPatientAddress2.setText("Anywhere");
+        jPanel40.add(txtPatientAddress2);
+
+        txtPatientCity.setText("Galle");
+        jPanel40.add(txtPatientCity);
+
+        txtPatientMobile.setText("0710111000");
+        jPanel40.add(txtPatientMobile);
+
+        txtPatientEmail.setText("thmamaraseara@virtusa.com");
+        jPanel40.add(txtPatientEmail);
+
+        jPanel42.setLayout(new java.awt.GridLayout(1, 2, 3, 0));
+
+        txtPatientPhoto.setEditable(false);
+        jPanel42.add(txtPatientPhoto);
+
+        btnPatientPhoto.setText("..");
+        btnPatientPhoto.setMaximumSize(new java.awt.Dimension(20, 15));
+        btnPatientPhoto.setMinimumSize(new java.awt.Dimension(20, 15));
+        btnPatientPhoto.setPreferredSize(new java.awt.Dimension(20, 15));
+        jPanel42.add(btnPatientPhoto);
+
+        jPanel40.add(jPanel42);
+
+        txtPatientContactName.setText("Hansa");
+        jPanel40.add(txtPatientContactName);
+
+        txtPatientContactMobile.setText("0712004212");
+        jPanel40.add(txtPatientContactMobile);
+
+        txtPatientContactEmail.setText("hansa0712004212@gmail.com");
+        jPanel40.add(txtPatientContactEmail);
+        jPanel40.add(jLabel72);
+
+        btnPatientSubmit.setText("Submit");
+        jPanel40.add(btnPatientSubmit);
+
+        jPanel38.add(jPanel40);
+
+        pnlPatient.add(jPanel38);
+
+        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Patients </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlPatient); // NOI18N
 
         pnlSummary.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
         pnlSummary.setLayout(new javax.swing.BoxLayout(pnlSummary, javax.swing.BoxLayout.LINE_AXIS));
@@ -532,10 +1126,6 @@ public class HomeMain extends javax.swing.JFrame {
         pnlSummary.add(jPanel22);
 
         jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Summary </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlSummary); // NOI18N
-
-        pnlTemp.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
-        pnlTemp.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Label Here </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlTemp); // NOI18N
 
         pnlTemp2.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
         pnlTemp2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -629,12 +1219,32 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JPanel SoftBorderPane;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnContinue;
+    private javax.swing.JButton btnPatientCancel;
+    private javax.swing.JButton btnPatientPhoto;
+    private javax.swing.JButton btnPatientSubmit;
     private javax.swing.JButton btnPhoto;
     private javax.swing.JButton btnSubmit;
+    private javax.swing.JButton btnUserCancel;
+    private javax.swing.JButton btnUserContinue;
+    private javax.swing.JButton btnUserPhoto;
+    private javax.swing.JButton btnUserSubmit;
+    private javax.swing.JComboBox cmbPatientSearch;
+    private javax.swing.JComboBox cmbPatientTitle;
     private javax.swing.JComboBox cmbSearch;
     private javax.swing.JComboBox cmbTitle;
+    private javax.swing.JComboBox cmbUserSearch;
+    private javax.swing.JComboBox cmbUserTitle;
     private com.toedter.calendar.JDateChooser dtBirthDate;
+    private com.toedter.calendar.JDateChooser dtPatientBirthDate;
+    private com.toedter.calendar.JDateChooser dtUserBirthDate;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -658,10 +1268,56 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
+    private javax.swing.JLabel jLabel58;
+    private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel60;
+    private javax.swing.JLabel jLabel61;
+    private javax.swing.JLabel jLabel62;
+    private javax.swing.JLabel jLabel63;
+    private javax.swing.JLabel jLabel64;
+    private javax.swing.JLabel jLabel65;
+    private javax.swing.JLabel jLabel66;
+    private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel68;
+    private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel70;
+    private javax.swing.JLabel jLabel71;
+    private javax.swing.JLabel jLabel72;
+    private javax.swing.JLabel jLabel73;
+    private javax.swing.JLabel jLabel74;
+    private javax.swing.JLabel jLabel75;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
@@ -683,8 +1339,32 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
+    private javax.swing.JPanel jPanel25;
+    private javax.swing.JPanel jPanel26;
+    private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel28;
+    private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel30;
+    private javax.swing.JPanel jPanel31;
+    private javax.swing.JPanel jPanel32;
+    private javax.swing.JPanel jPanel33;
+    private javax.swing.JPanel jPanel34;
+    private javax.swing.JPanel jPanel35;
+    private javax.swing.JPanel jPanel36;
+    private javax.swing.JPanel jPanel37;
+    private javax.swing.JPanel jPanel38;
+    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel40;
+    private javax.swing.JPanel jPanel41;
+    private javax.swing.JPanel jPanel42;
+    private javax.swing.JPanel jPanel43;
+    private javax.swing.JPanel jPanel44;
+    private javax.swing.JPanel jPanel45;
+    private javax.swing.JPanel jPanel46;
+    private javax.swing.JPanel jPanel47;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -692,15 +1372,18 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblBanner;
     private javax.swing.JLabel lblDateAndTime;
     private javax.swing.JLabel lblPhoto;
+    private javax.swing.JLabel lblUserPhoto;
     private javax.swing.JPanel pnlBarChart;
     private javax.swing.JPanel pnlDoctor;
+    private javax.swing.JPanel pnlPatient;
     private javax.swing.JPanel pnlPieChart;
     private javax.swing.JPanel pnlSummary;
-    private javax.swing.JPanel pnlTemp;
     private javax.swing.JPanel pnlTemp2;
     private javax.swing.JPanel pnlUser;
     private javax.swing.JPanel pnlWelcome;
@@ -708,9 +1391,19 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JTextField ptxtContactMobile;
     private javax.swing.JTextField ptxtContactName;
     private javax.swing.JTextField ptxtMobile;
+    private javax.swing.JTextField ptxtUserAddress;
+    private javax.swing.JTextField ptxtUserContactMobile;
+    private javax.swing.JTextField ptxtUserContactName;
+    private javax.swing.JTextField ptxtUserMobile;
     private javax.swing.JRadioButton radFemale;
     private javax.swing.JRadioButton radMale;
+    private javax.swing.JRadioButton radPatientFemale;
+    private javax.swing.JRadioButton radPatientMale;
+    private javax.swing.JRadioButton radUserFemale;
+    private javax.swing.JRadioButton radUserMale;
+    private javax.swing.JTable tblPatientSearch;
     private javax.swing.JTable tblSearch;
+    private javax.swing.JTable tblUserSearch;
     private javax.swing.JTextField txtAddress1;
     private javax.swing.JTextField txtAddress2;
     private javax.swing.JTextField txtCity;
@@ -723,6 +1416,32 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JTextField txtMiddleName;
     private javax.swing.JTextField txtMobile;
     private javax.swing.JTextField txtNIC;
+    private javax.swing.JTextField txtPatientAddress1;
+    private javax.swing.JTextField txtPatientAddress2;
+    private javax.swing.JTextField txtPatientCity;
+    private javax.swing.JTextField txtPatientContactEmail;
+    private javax.swing.JTextField txtPatientContactMobile;
+    private javax.swing.JTextField txtPatientContactName;
+    private javax.swing.JTextField txtPatientEmail;
+    private javax.swing.JTextField txtPatientFirstName;
+    private javax.swing.JTextField txtPatientLastName;
+    private javax.swing.JTextField txtPatientMiddleName;
+    private javax.swing.JTextField txtPatientMobile;
+    private javax.swing.JTextField txtPatientNIC;
+    private javax.swing.JTextField txtPatientPhoto;
     private javax.swing.JTextField txtPhoto;
+    private javax.swing.JTextField txtUserAddress1;
+    private javax.swing.JTextField txtUserAddress2;
+    private javax.swing.JTextField txtUserCity;
+    private javax.swing.JTextField txtUserContactEmail;
+    private javax.swing.JTextField txtUserContactMobile;
+    private javax.swing.JTextField txtUserContactName;
+    private javax.swing.JTextField txtUserEmail;
+    private javax.swing.JTextField txtUserFirstName;
+    private javax.swing.JTextField txtUserLastName;
+    private javax.swing.JTextField txtUserMiddleName;
+    private javax.swing.JTextField txtUserMobile;
+    private javax.swing.JTextField txtUserNIC;
+    private javax.swing.JTextField txtUserPhoto;
     // End of variables declaration//GEN-END:variables
 }

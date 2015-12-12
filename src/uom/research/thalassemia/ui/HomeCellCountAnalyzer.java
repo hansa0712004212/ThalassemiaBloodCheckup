@@ -16,10 +16,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -32,6 +35,7 @@ import uom.research.thalassemia.dao.TestDAO;
 import uom.research.thalassemia.dao.TestDAOImpl;
 import uom.research.thalassemia.dao.TestSuiteDAO;
 import uom.research.thalassemia.dao.TestSuiteDAOImpl;
+import uom.research.thalassemia.db.DatabaseAccess;
 import uom.research.thalassemia.logic.BloodCellAbnormalLogicImpl;
 import uom.research.thalassemia.logic.BloodCellDataProcessor;
 import uom.research.thalassemia.logic.BloodCellsManipulation;
@@ -41,6 +45,7 @@ import uom.research.thalassemia.object.Circle;
 import uom.research.thalassemia.object.Patient;
 import uom.research.thalassemia.object.Test;
 import uom.research.thalassemia.object.TestSuite;
+import uom.research.thalassemia.object.TestType;
 import uom.research.thalassemia.object.User;
 import uom.research.thalassemia.util.FillData;
 import uom.research.thalassemia.util.ImageFileChooser;
@@ -176,6 +181,8 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                         btnSegmentImage.setEnabled(true);
                         mnuProcess.setEnabled(true);
                         mnuSegment.setEnabled(true);
+                        btnSaveTest.setEnabled(false);
+                        btnCellData.setEnabled(false);
                     }
                 } catch (Exception e) {
                     System.out.println("btnOpenImage " + e.getMessage()
@@ -183,10 +190,8 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                 }
                 progress.dispose();
             }).start();
-        } else {
-            if (prevFile != null) {
-                imageFile = prevFile;
-            }
+        } else if (prevFile != null) {
+            imageFile = prevFile;
         }
     }
 
@@ -295,15 +300,21 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
         }
         try {
             Test test = new Test();
-            test.setImagePath("somewhere");
+            test.setImagePath(imageFile);
             test.setIsInfected(false);
             test.setTestDate(LocalDate.now());
-            test.setTestType(null);
+            test.setTestType(new TestType("#15:0",
+                    "Blood Cell Image Analysis"));
             convertCirclesMapToCirclesList();
             test.setCircles(circlesList);
 
             TestDAO testDAO = new TestDAOImpl();
-            testDAO.saveTest(testSuite, test);
+            String testRid = testDAO.saveTest(testSuite, test);
+
+            DatabaseAccess.updateData("UPDATE " + testSuite.getRid()
+                    + " ADD test = " + testRid);
+            Message.showSuccessMessage("Test Data Saved Successfully.");
+            btnSaveTest.setEnabled(false);
         } catch (Exception ex) {
             Message.showErrorMessage("Error on Saveing Test Data "
                     + ex.getMessage());
@@ -315,6 +326,8 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
      */
     private void convertCirclesMapToCirclesList() {
         Mat circles = bcm.getCircles();
+        circlesList = new ArrayList<>();
+        System.out.println("count is " + bcm.getCircleCount());
         double[] circle;
         double x, y, r, area, perimeter;
         for (int a = 0; a < circles.cols(); a++) {
@@ -324,6 +337,7 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
             r = Math.round(circle[2]);
             area = fi * r * r;
             perimeter = 2 * fi * r;
+            System.out.println(" a is " + a);
             circlesList.add(new Circle((int) x, (int) y, (int) r,
                     perimeter, area));
         }
@@ -388,7 +402,6 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
         lblMCV = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         lblRDW = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCellTypes = new javax.swing.JTable();
@@ -582,6 +595,7 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
         jPanel10.add(jButton1);
 
         btnSaveTest.setText("Save Test");
+        btnSaveTest.setEnabled(false);
         btnSaveTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveTestActionPerformed(evt);
@@ -611,7 +625,6 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
         jLabel25.setText("  RDW Actual Count");
         jPanel18.add(jLabel25);
         jPanel18.add(lblRDW);
-        jPanel18.add(jLabel28);
         jPanel18.add(jLabel29);
 
         jPanel6.add(jPanel18);
@@ -917,6 +930,7 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProcessActionPerformed
 
     private void btnCellDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCellDataActionPerformed
+        btnSaveTest.setEnabled(true);
         if (bcm != null) {
             new CircleData(HomeCellCountAnalyzer.this, true, bcm.getCircles(), bcm.getContours(), bcm.getPallors()).setVisible(true);
         }
@@ -989,7 +1003,6 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

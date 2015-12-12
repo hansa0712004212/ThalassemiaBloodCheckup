@@ -5,8 +5,12 @@
  */
 package uom.research.thalassemia.dao;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import org.apache.commons.io.FileUtils;
 import uom.research.thalassemia.db.DatabaseAccess;
 import uom.research.thalassemia.object.Circle;
 import uom.research.thalassemia.object.Test;
@@ -36,20 +40,35 @@ public final class TestDAOImpl implements TestDAO {
     private static final String CIRCLE_DOCUMENT_POSTFIX = "}";
 
     /**
+     * images files save location.
+     */
+    private static final File IMAGES_DB_FOLDER = new File(
+            System.getProperty("user.home") + File.separator
+            + "bloodCellImagesDB");
+
+    /**
+     * test suite.
+     */
+    private TestSuite testSuite;
+
+    /**
      * save Test data.
      *
+     * @param pTestSuite test rid
      * @param test test rid
      * @return rid string
      * @throws java.lang.Exception Exception
      */
     @Override
-    public String saveTest(final TestSuite testSuite, final Test test)
+    public String saveTest(final TestSuite pTestSuite, final Test test)
             throws Exception {
-
+        testSuite = pTestSuite;
         String rid = DatabaseAccess.insertData("INSERT INTO Test SET "
-                + "testType=" + test.getTestType() + ", "
-                + "imagePath=" + test.getImagePath() + ", "
-                + "testDate=" + test.getTestDate() + ", "
+                + "testType=(select * from TestType where testType = "
+                + "\"Blood Cell Image Analysis\"), "
+                + "imagePath='" + copyToBloodDBImages(test.getImagePath())
+                + "', "
+                + "testDate='" + test.getTestDate() + "', "
                 + "isInfected=" + test.isIsInfected());
 
         List<Circle> circles = test.getCircles();
@@ -59,10 +78,40 @@ public final class TestDAOImpl implements TestDAO {
                     + " \"yAxis\":\"" + circle.getyPoint() + "\","
                     + " \"radius\":\"" + circle.getRadius() + "\","
                     + " \"perimeter\":\"" + circle.getPerimeter() + "\","
-                    + " \"area\":\"" + circle.getArea() + "\","
+                    + " \"area\":\"" + circle.getArea() + "\""
                     + CIRCLE_DOCUMENT_POSTFIX;
+
+            try {
+                DatabaseAccess.updateData("UPDATE " + rid + " ADD circles = "
+                        + circleDocument);
+            } catch (Exception ex) {
+                System.out.println("error at saving circle " + ex.getMessage());
+            }
         });
 
-        return null;
+        return rid;
     }
+
+    /**
+     * copy blood cell data to blood cell images db folder.
+     *
+     * @param file image file
+     * @return completion status
+     * @exception IOException exception
+     */
+    private String copyToBloodDBImages(final File file) throws IOException {
+        File destFile = null;
+        if (file.exists() && IMAGES_DB_FOLDER.exists()) {
+            destFile = new File(IMAGES_DB_FOLDER + File.separator
+                    + new Date().getTime()
+                    + file.getAbsolutePath().substring(
+                            file.getAbsolutePath().lastIndexOf(".")));
+            FileUtils.copyFile(file, destFile);
+        } else {
+            IMAGES_DB_FOLDER.mkdir();
+            System.out.println("folder created 2");
+        }
+        return destFile.getName();
+    }
+
 }

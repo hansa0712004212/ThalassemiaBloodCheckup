@@ -46,7 +46,7 @@ public final class StretchImage {
 
         Image im = ic.getImage();
         im = im.getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(),
-                Image.SCALE_SMOOTH);
+                Image.SCALE_DEFAULT);
         ic.setImage(im);
         imageLabel.setIcon(ic);
     }

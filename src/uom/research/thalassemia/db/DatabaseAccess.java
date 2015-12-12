@@ -60,6 +60,20 @@ public final class DatabaseAccess {
     }
 
     /**
+     * update Data.
+     *
+     * @param query sql query
+     * @return String
+     * @throws Exception exception
+     */
+    public static boolean updateData(final String query)
+            throws Exception {
+        ODatabaseDocumentTx db = DatabaseConnect.getInstance();
+        db.command(new OCommandSQL(query)).execute();
+        return true;
+    }
+
+    /**
      * execute command.
      *
      * @param query sql query

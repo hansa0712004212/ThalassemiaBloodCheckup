@@ -24,8 +24,8 @@ public final class TestSuiteDAOImpl implements TestSuiteDAO {
     @Override
     public String saveTestSuite(final TestSuite testSuite) throws Exception {
         String rid = DatabaseAccess.insertData("INSERT INTO TestSuite SET "
-                + "patient=" + testSuite.getPatient().getRid() + ", "
-                + "performedBy=" + testSuite.getPerformedBy().getRid());
+                + "patient = " + testSuite.getPatient().getRid() + ", "
+                + "performedBy= " + testSuite.getPerformedBy().getRid());
         return rid;
     }
 }

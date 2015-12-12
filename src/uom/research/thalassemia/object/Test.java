@@ -5,6 +5,7 @@
  */
 package uom.research.thalassemia.object;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public final class Test {
     /**
      * Test Image Path.
      */
-    private String imagePath;
+    private File imagePath;
 
     /**
      * Test Date.
@@ -67,7 +68,7 @@ public final class Test {
      * @param pisInfected isInfected
      */
     public Test(final String prid, final TestType ptestType,
-            final String pimagePath, final LocalDate ptestDate,
+            final File pimagePath, final LocalDate ptestDate,
             final List<Circle> pcircles, final boolean pisInfected) {
         setRid(prid);
         setTestType(ptestType);
@@ -118,7 +119,7 @@ public final class Test {
      *
      * @return the imagePath
      */
-    public String getImagePath() {
+    public File getImagePath() {
         return imagePath;
     }
 
@@ -127,7 +128,7 @@ public final class Test {
      *
      * @param pimagePath the imagePath to set
      */
-    public void setImagePath(final String pimagePath) {
+    public void setImagePath(final File pimagePath) {
         this.imagePath = pimagePath;
     }
 

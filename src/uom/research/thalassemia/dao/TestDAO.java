@@ -24,5 +24,4 @@ public interface TestDAO {
      */
     String saveTest(final TestSuite testSuite, final Test test)
             throws Exception;
-
 }
