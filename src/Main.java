@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.opencv.core.Core;
 import uom.research.thalassemia.db.DatabaseConnect;
+import uom.research.thalassemia.ui.HomeMain;
 import uom.research.thalassemia.ui.Login;
 
 /**
@@ -33,6 +34,7 @@ public final class Main {
             });
             thread.start();
             new Login(null, true).setVisible(true);
+            //new HomeMain().setVisible(true);
         } catch (UnsupportedLookAndFeelException | ParseException ex) {
             System.out.println(ex.getMessage());
         }

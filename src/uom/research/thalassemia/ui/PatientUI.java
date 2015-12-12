@@ -247,7 +247,7 @@ public final class PatientUI extends javax.swing.JDialog {
                         + "Data Saved. <br/>Continue With New Patient ? ");
                 if (action == Message.YES_OPTION) {
                     dispose();
-                    new Home2(user, patient).setVisible(true);
+                    new HomeCellCountAnalyzer(user, patient).setVisible(true);
                 } else {
                     clearFields();
                 }
@@ -690,7 +690,7 @@ public final class PatientUI extends javax.swing.JDialog {
                     new ContactPerson(
                             "Mr. ", list.get(index).get(7), null,
                             Integer.valueOf(list.get(index).get(8))));
-            new Home2(user, patient).setVisible(true);
+            new HomeCellCountAnalyzer(user, patient).setVisible(true);
             PatientUI.this.dispose();
         } else {
             Message.showQuestionMessage("Have You Selected a Patient ?");

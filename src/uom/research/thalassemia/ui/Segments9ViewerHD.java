@@ -174,10 +174,10 @@ public class Segments9ViewerHD extends javax.swing.JDialog {
      * set icons on tabs.
      */
     private void loadIcons() {
-        this.setIconImage(ResizeImage.resizeImage("/resources/icon.jpg").getImage());
+        /*this.setIconImage(ResizeImage.resizeImage("/uom/research/thalassemia/images/git.png").getImage());
         for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
-            jTabbedPane1.setIconAt(i, ResizeImage.resizeImage("/resources/segment.png"));
-        }
+            jTabbedPane1.setIconAt(i, ResizeImage.resizeImage("/uom/research/thalassemia/images/segment.png"));
+        }*/
 
     }
 

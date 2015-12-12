@@ -28,7 +28,6 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import uom.research.thalassemia.dao.TestDAO;
 import uom.research.thalassemia.dao.TestDAOImpl;
 import uom.research.thalassemia.dao.TestSuiteDAO;
@@ -52,7 +51,7 @@ import uom.research.thalassemia.util.StretchImage;
  *
  * @author hansa
  */
-public final class Home2 extends javax.swing.JFrame {
+public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
 
     /**
      * Selected Image File .
@@ -126,13 +125,13 @@ public final class Home2 extends javax.swing.JFrame {
      * @param puser user
      * @param ppatient patient
      */
-    public Home2(final User puser, final Patient ppatient) {
+    public HomeCellCountAnalyzer(final User puser, final Patient ppatient) {
         initComponents();
+        setResizable(true);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("Thalassemia Affected Blood Sample Analyzer v1.0");
         setLocationRelativeTo(null);
-        setResizable(false);
         btnProcess.setEnabled(false);
         btnSegmentImage.setEnabled(false);
         mnuProcess.setEnabled(false);
@@ -141,8 +140,9 @@ public final class Home2 extends javax.swing.JFrame {
         jButton1.setEnabled(false);
         user = puser;
         patient = ppatient;
-        jFrame = Home2.this;
+        jFrame = HomeCellCountAnalyzer.this;
         setToolBarData();
+        FillData.setIconForJFrame(HomeCellCountAnalyzer.this);
     }
 
     /**
@@ -419,6 +419,7 @@ public final class Home2 extends javax.swing.JFrame {
         mnuFile = new javax.swing.JMenu();
         mnuOpen = new javax.swing.JMenuItem();
         mnuReset = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mnuExit = new javax.swing.JMenuItem();
         mnuEdit = new javax.swing.JMenu();
         mnuSegment = new javax.swing.JMenuItem();
@@ -429,7 +430,6 @@ public final class Home2 extends javax.swing.JFrame {
         mnuAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 720));
 
         mainPanel.setLayout(new java.awt.GridLayout(2, 4, 5, 5));
 
@@ -752,6 +752,16 @@ public final class Home2 extends javax.swing.JFrame {
         });
         mnuFile.add(mnuReset);
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/login.png"))); // NOI18N
+        jMenuItem1.setText("  Log Out  ");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        mnuFile.add(jMenuItem1);
+
         mnuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         mnuExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/exit.png"))); // NOI18N
         mnuExit.setText("  Exit     ");
@@ -831,7 +841,7 @@ public final class Home2 extends javax.swing.JFrame {
         if (Desktop.isDesktopSupported()) {
             try {
                 Desktop.getDesktop().open(new File(
-                        Home2.class.getResource("/index.html").getFile()));
+                        HomeCellCountAnalyzer.class.getResource("/index.html").getFile()));
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
@@ -852,7 +862,7 @@ public final class Home2 extends javax.swing.JFrame {
 
     private void mnuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAboutActionPerformed
         // opens About window.
-        new About(Home2.this, true).setVisible(true);
+        new About(HomeCellCountAnalyzer.this, true).setVisible(true);
     }//GEN-LAST:event_mnuAboutActionPerformed
 
     private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExitActionPerformed
@@ -908,7 +918,7 @@ public final class Home2 extends javax.swing.JFrame {
 
     private void btnCellDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCellDataActionPerformed
         if (bcm != null) {
-            new CircleData(Home2.this, true, bcm.getCircles(), bcm.getContours(), bcm.getPallors()).setVisible(true);
+            new CircleData(HomeCellCountAnalyzer.this, true, bcm.getCircles(), bcm.getContours(), bcm.getPallors()).setVisible(true);
         }
 
         BloodCellDataProcessor bloodCellDataProcessor = new BloodCellDataProcessor(bcm.getCircles(), bcm.getEllipses(), bcm.getPallors());
@@ -947,6 +957,13 @@ public final class Home2 extends javax.swing.JFrame {
         saveTest();
     }//GEN-LAST:event_btnSaveTestActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if (Message.showQuestionYesNo(" Do You Really Need To Log Out ? ") == Message.YES_OPTION) {
+            this.dispose();
+            new Login(null, true).setVisible(true);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCellData;
     private javax.swing.JButton btnOpenImage;
@@ -981,6 +998,7 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;

@@ -45,7 +45,8 @@ public final class Login extends javax.swing.JDialog {
      */
     private void loadTypes() {
         try {
-            FillData.fillCombo(cmbTest, "SELECT FROM TestType", "testType");
+            FillData.fillCombo(cmbTest, "SELECT FROM TestType ORDER BY "
+                    + " @rid DESC", "testType");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -70,6 +71,7 @@ public final class Login extends javax.swing.JDialog {
         btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Login");
         getContentPane().setLayout(new java.awt.GridLayout(4, 2, 10, 15));
 
         jLabel1.setText("     User Name");
@@ -84,7 +86,7 @@ public final class Login extends javax.swing.JDialog {
         txtPassword.setText("4212");
         getContentPane().add(txtPassword);
 
-        jLabel3.setText("     Test Type");
+        jLabel3.setText("     Action Type");
         getContentPane().add(jLabel3);
         getContentPane().add(cmbTest);
 
@@ -118,7 +120,16 @@ public final class Login extends javax.swing.JDialog {
                     new String(txtPassword.getPassword()));
             if (user != null) {
                 this.dispose();
-                new PatientUI(null, true, user).setVisible(true);
+                switch (cmbTest.getSelectedItem().toString()) {
+                    case "Home":
+                        new HomeMain(user).setVisible(true);
+                        break;
+                    case "Blood Cell Image Analysis":
+                        new PatientUI(null, true, user).setVisible(true);
+                        break;
+                    default:
+                        Message.showErrorMessage("No Action Defined To Take");
+                }
             } else {
                 Message.showInformationMessage("Invalid User.");
             }

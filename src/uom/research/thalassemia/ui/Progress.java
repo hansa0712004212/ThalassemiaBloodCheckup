@@ -15,7 +15,7 @@ public final class Progress extends javax.swing.JDialog {
     /**
      * Window height.
      */
-    private static final int FRAME_HEIGHT = 30;
+    private static final int FRAME_HEIGHT = 62;
 
     /**
      * Creates new form Progress.
@@ -45,14 +45,14 @@ public final class Progress extends javax.swing.JDialog {
         setTitle("Please Wait ...");
         setAlwaysOnTop(true);
         setModal(true);
+        setUndecorated(true);
         setResizable(false);
-        setType(java.awt.Window.Type.UTILITY);
-        getContentPane().setLayout(new javax.swing.OverlayLayout(getContentPane()));
+        setType(java.awt.Window.Type.POPUP);
 
         jProgressBar1.setIndeterminate(true);
         jProgressBar1.setString("Please Wait ...");
         jProgressBar1.setStringPainted(true);
-        getContentPane().add(jProgressBar1);
+        getContentPane().add(jProgressBar1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

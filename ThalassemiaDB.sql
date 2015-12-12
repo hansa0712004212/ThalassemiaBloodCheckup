@@ -37,6 +37,7 @@ CREATE PROPERTY TestType.testType STRING
 
 INSERT INTO TestType SET testType='Blood Cell Image Analysis'
 INSERT INTO TestType SET testType='Image Colour Comparison'
+INSERT INTO TestType SET testType='Home'
 
 CREATE CLASS Circle
 CREATE PROPERTY Circle.xAxis INTEGER
