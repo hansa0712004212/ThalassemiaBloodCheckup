@@ -47,7 +47,7 @@ public final class PieChartCreator {
      * @param pTitle title
      * @return A panel.
      */
-    public JPanel createDemoPanel(final PieDataset pPieDataset,
+    public JPanel createPanel(final PieDataset pPieDataset,
             final String pTitle) {
         title = pTitle;
         pieDataset = pPieDataset;

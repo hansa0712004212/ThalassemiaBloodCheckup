@@ -15,6 +15,7 @@ import uom.research.thalassemia.db.DatabaseAccess;
 import uom.research.thalassemia.object.Circle;
 import uom.research.thalassemia.object.Test;
 import uom.research.thalassemia.object.TestSuite;
+import uom.research.thalassemia.util.Validator;
 
 /**
  *
@@ -68,7 +69,8 @@ public final class TestDAOImpl implements TestDAO {
                 + "\"Blood Cell Image Analysis\"), "
                 + "imagePath='" + copyToBloodDBImages(test.getImagePath())
                 + "', "
-                + "testDate='" + test.getTestDate() + "', "
+                + "testDate='" + Validator.localDateToFormattedDate(
+                        test.getTestDate()) + "', "
                 + "isInfected=" + test.isIsInfected());
 
         List<Circle> circles = test.getCircles();

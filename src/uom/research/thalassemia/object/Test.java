@@ -6,7 +6,7 @@
 package uom.research.thalassemia.object;
 
 import java.io.File;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -33,7 +33,7 @@ public final class Test {
     /**
      * Test Date.
      */
-    private LocalDate testDate;
+    private LocalDateTime testDate;
 
     /**
      * Test Circles List.
@@ -68,7 +68,7 @@ public final class Test {
      * @param pisInfected isInfected
      */
     public Test(final String prid, final TestType ptestType,
-            final File pimagePath, final LocalDate ptestDate,
+            final File pimagePath, final LocalDateTime ptestDate,
             final List<Circle> pcircles, final boolean pisInfected) {
         setRid(prid);
         setTestType(ptestType);
@@ -137,7 +137,7 @@ public final class Test {
      *
      * @return the testDate
      */
-    public LocalDate getTestDate() {
+    public LocalDateTime getTestDate() {
         return testDate;
     }
 
@@ -146,7 +146,7 @@ public final class Test {
      *
      * @param ptestDate the testDate to set
      */
-    public void setTestDate(final LocalDate ptestDate) {
+    public void setTestDate(final LocalDateTime ptestDate) {
         this.testDate = ptestDate;
     }
 

@@ -7,6 +7,7 @@ package uom.research.thalassemia.dao;
 
 import uom.research.thalassemia.db.DatabaseAccess;
 import uom.research.thalassemia.object.TestSuite;
+import uom.research.thalassemia.util.Validator;
 
 /**
  *
@@ -25,6 +26,8 @@ public final class TestSuiteDAOImpl implements TestSuiteDAO {
     public String saveTestSuite(final TestSuite testSuite) throws Exception {
         String rid = DatabaseAccess.insertData("INSERT INTO TestSuite SET "
                 + "patient = " + testSuite.getPatient().getRid() + ", "
+                + "testSuiteDate = '" + Validator.localDateToFormattedDate(
+                        testSuite.getTestSuiteDate()) + "', "
                 + "performedBy= " + testSuite.getPerformedBy().getRid());
         return rid;
     }

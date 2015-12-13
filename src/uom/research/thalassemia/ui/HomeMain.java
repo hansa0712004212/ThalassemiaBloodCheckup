@@ -16,6 +16,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import uom.research.thalassemia.object.User;
 import uom.research.thalassemia.util.BarChartCreator;
 import uom.research.thalassemia.util.FillData;
+import uom.research.thalassemia.util.LineChartCreator;
 import uom.research.thalassemia.util.Message;
 import uom.research.thalassemia.util.ObjectDockLoader;
 import uom.research.thalassemia.util.PieChartCreator;
@@ -89,8 +90,8 @@ public class HomeMain extends javax.swing.JFrame {
         dataset.setValue("Others", new Double(55.3));
         dataset.setValue("Nokia", new Double(16.8));
         dataset.setValue("Apple", new Double(17.1));
-
-        pnlPieChart.add(new PieChartCreator().createDemoPanel(dataset,
+        pnlPieChart.removeAll();
+        pnlPieChart.add(new PieChartCreator().createPanel(dataset,
                 "Pie Chart Title Goes Here"));
     }
 
@@ -105,7 +106,26 @@ public class HomeMain extends javax.swing.JFrame {
         dataset.addValue(24448, "Batik", "Warm-up");
         dataset.addValue(4297, "JFreeSVG", "Test");
         dataset.addValue(21022, "Batik", "Test");
-        pnlBarChart.add(new BarChartCreator().createDemoPanel(dataset,
+        pnlBarChart.removeAll();
+        pnlBarChart.add(new BarChartCreator().createPanel(dataset,
+                "Title"));
+    }
+
+    /**
+     * loads Line Chart.
+     *
+     * @return The dataset.
+     */
+    private void loadLineChart() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        dataset.addValue(15, "schools", "1970");
+        dataset.addValue(30, "schools", "1980");
+        dataset.addValue(60, "schools", "1990");
+        dataset.addValue(120, "schools", "2000");
+        dataset.addValue(240, "schools", "2010");
+        dataset.addValue(300, "schools", "2014");
+        pnlLineChart.removeAll();
+        pnlLineChart.add(new LineChartCreator().createPanel(dataset,
                 "Title"));
     }
 
@@ -340,6 +360,8 @@ public class HomeMain extends javax.swing.JFrame {
         pnlPieChart = new javax.swing.JPanel();
         pnlBarChart = new javax.swing.JPanel();
         pnlTemp2 = new javax.swing.JPanel();
+        pnlLineChart = new javax.swing.JPanel();
+        jPanel49 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         SoftBorderPane = new javax.swing.JPanel();
         DocBarPane = new javax.swing.JPanel();
@@ -348,6 +370,7 @@ public class HomeMain extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Thalassemia Identification System");
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -1119,8 +1142,10 @@ public class HomeMain extends javax.swing.JFrame {
 
         jPanel22.setLayout(new java.awt.GridLayout(1, 2));
 
-        pnlPieChart.setLayout(new javax.swing.BoxLayout(pnlPieChart, javax.swing.BoxLayout.LINE_AXIS));
+        pnlPieChart.setLayout(new java.awt.BorderLayout());
         jPanel22.add(pnlPieChart);
+
+        pnlBarChart.setLayout(new java.awt.BorderLayout());
         jPanel22.add(pnlBarChart);
 
         pnlSummary.add(jPanel22);
@@ -1128,7 +1153,12 @@ public class HomeMain extends javax.swing.JFrame {
         jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Summary </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlSummary); // NOI18N
 
         pnlTemp2.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
-        pnlTemp2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        pnlTemp2.setLayout(new java.awt.GridLayout(1, 2));
+
+        pnlLineChart.setLayout(new java.awt.BorderLayout());
+        pnlTemp2.add(pnlLineChart);
+        pnlTemp2.add(jPanel49);
+
         jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Label Here </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlTemp2); // NOI18N
 
         jPanel2.add(jTabbedPane1);
@@ -1171,8 +1201,14 @@ public class HomeMain extends javax.swing.JFrame {
 
                 break;
             case 3:
+
+                break;
+            case 4:
                 loadPieChart();
                 loadBarChart();
+                break;
+            case 5:
+                loadLineChart();
                 break;
             default:
                 Message.showErrorMessage("Invalid");
@@ -1365,6 +1401,7 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel45;
     private javax.swing.JPanel jPanel46;
     private javax.swing.JPanel jPanel47;
+    private javax.swing.JPanel jPanel49;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -1381,6 +1418,7 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JLabel lblUserPhoto;
     private javax.swing.JPanel pnlBarChart;
     private javax.swing.JPanel pnlDoctor;
+    private javax.swing.JPanel pnlLineChart;
     private javax.swing.JPanel pnlPatient;
     private javax.swing.JPanel pnlPieChart;
     private javax.swing.JPanel pnlSummary;

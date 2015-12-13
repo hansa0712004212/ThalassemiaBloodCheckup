@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -244,6 +245,7 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                         String.valueOf(new Date(end - start).getTime()));
                 progress.dispose();
                 btnCellData.setEnabled(true);
+                //btnSaveTest.setEnabled(true);
                 Thread.currentThread().interrupt();
             } catch (Exception ex) {
                 progress.dispose();
@@ -289,7 +291,8 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
 
         if (testSuite == null) {
             try {
-                testSuite = new TestSuite(null, patient, null, user);
+                testSuite = new TestSuite(null, patient, null, user,
+                        LocalDateTime.now());
                 TestSuiteDAO testSuiteDAO = new TestSuiteDAOImpl();
                 testSuite.setRid(testSuiteDAO.saveTestSuite(testSuite));
             } catch (Exception ex) {
@@ -302,7 +305,7 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
             Test test = new Test();
             test.setImagePath(imageFile);
             test.setIsInfected(false);
-            test.setTestDate(LocalDate.now());
+            test.setTestDate(LocalDateTime.now());
             test.setTestType(new TestType("#15:0",
                     "Blood Cell Image Analysis"));
             convertCirclesMapToCirclesList();

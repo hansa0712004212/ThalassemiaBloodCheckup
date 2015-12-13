@@ -33,7 +33,7 @@ public final class BarChartCreator {
      * @param pTitle title
      * @return A panel.
      */
-    public JPanel createDemoPanel(final CategoryDataset pCategoryDataset,
+    public JPanel createPanel(final CategoryDataset pCategoryDataset,
             final String pTitle) {
         title = pTitle;
         categoryDataset = pCategoryDataset;

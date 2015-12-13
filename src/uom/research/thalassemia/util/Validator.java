@@ -5,6 +5,8 @@
  */
 package uom.research.thalassemia.util;
 
+import java.time.LocalDateTime;
+
 /**
  * Validations.
  *
@@ -48,6 +50,19 @@ public final class Validator {
             }
         }
         return true;
+    }
+
+    /**
+     * Local Date To yyyy-MM-dd HH:mm:ss format.
+     *
+     * @param ldt local date time
+     * @return string
+     */
+    public static String localDateToFormattedDate(final LocalDateTime ldt) {
+        String dateString = ldt.getYear() + "-" + ldt.getMonthValue() + "-"
+                + ldt.getDayOfMonth() + " "
+                + ldt.getHour() + ":" + ldt.getMinute() + ":" + ldt.getSecond();
+        return dateString;
     }
 
     /**
