@@ -67,6 +67,9 @@ public class HomeMain extends javax.swing.JFrame {
         StretchImage.setImageStretch(lblBanner,
                 new ImageIcon(getClass().getResource(
                         "/uom/research/thalassemia/images/banner-blood.jpg")));
+                StretchImage.setImageStretch(lblThal2,
+                new ImageIcon(getClass().getResource(
+                        "/uom/research/thalassemia/images/thal2.jpg")));
         setClock();
     }
 
@@ -145,9 +148,15 @@ public class HomeMain extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         pnlWelcome = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jPanel23 = new javax.swing.JPanel();
+        jLabel76 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        SoftBorderPane = new javax.swing.JPanel();
+        DocBarPane = new javax.swing.JPanel();
+        lblThal2 = new javax.swing.JLabel();
+        jLabel77 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -362,9 +371,6 @@ public class HomeMain extends javax.swing.JFrame {
         pnlTemp2 = new javax.swing.JPanel();
         pnlLineChart = new javax.swing.JPanel();
         jPanel49 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        SoftBorderPane = new javax.swing.JPanel();
-        DocBarPane = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -396,21 +402,42 @@ public class HomeMain extends javax.swing.JFrame {
         pnlWelcome.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
         pnlWelcome.setLayout(new java.awt.BorderLayout());
 
-        jPanel5.setLayout(new java.awt.BorderLayout());
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel27.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/about.jpg"))); // NOI18N
-        jPanel5.add(jLabel27, java.awt.BorderLayout.CENTER);
+        jLabel28.setText("By Eyeanemia");
+        jPanel5.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 973, -1));
+        jPanel5.add(jPanel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 973, -1));
 
-        jLabel28.setText("jLabel28");
-        jPanel5.add(jLabel28, java.awt.BorderLayout.PAGE_START);
-        jPanel5.add(jPanel23, java.awt.BorderLayout.PAGE_END);
+        jLabel76.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel76.setForeground(new java.awt.Color(204, 18, 18));
+        jLabel76.setText("What is Thalassemia ?");
+        jPanel5.add(jLabel76, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 220, -1));
+
+        jLabel27.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
+        jLabel27.setText("<html> <p align=\"justify\"> Thalassemia is a blood disorder passed down through families (inherited) in which the body makes an abnormal form of hemoglobin, the protein in red blood cells that carries oxygen.The disorder results in excessive destruction of red blood cells, which leads to anemia.Anemia is a disorder in which your body doesn’t have enough normal, healthy red blood cells (RBC). </p> </html>");
+        jPanel5.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 770, 80));
+
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
+
+        SoftBorderPane.setPreferredSize(new java.awt.Dimension(900, 70));
+        SoftBorderPane.setLayout(new javax.swing.BoxLayout(SoftBorderPane, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel4.add(SoftBorderPane);
+        jPanel4.add(DocBarPane);
+
+        jPanel5.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-170, 490, 1114, -1));
+
+        lblThal2.setIcon(new javax.swing.ImageIcon("/home/hansa/NetBeansProjects/ThalassemiaBloodCheckup/src/uom/research/thalassemia/images/thal2Anu.gif")); // NOI18N
+        jPanel5.add(lblThal2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 280, 180));
+
+        jLabel77.setIcon(new javax.swing.ImageIcon("/home/hansa/NetBeansProjects/ThalassemiaBloodCheckup/src/uom/research/thalassemia/images/thal1Anu.gif")); // NOI18N
+        jPanel5.add(jLabel77, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, -1, -1));
 
         pnlWelcome.add(jPanel5, java.awt.BorderLayout.CENTER);
 
         jPanel6.setLayout(new java.awt.GridLayout(1, 2));
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 24)); // NOI18N
-        jLabel1.setText("Welcome");
+        jLabel1.setText("Thalassemia Identifier");
         jPanel6.add(jLabel1);
 
         pnlWelcome.add(jPanel6, java.awt.BorderLayout.PAGE_START);
@@ -1166,16 +1193,6 @@ public class HomeMain extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
-        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
-
-        SoftBorderPane.setPreferredSize(new java.awt.Dimension(900, 70));
-        SoftBorderPane.setLayout(new javax.swing.BoxLayout(SoftBorderPane, javax.swing.BoxLayout.LINE_AXIS));
-        SoftBorderPane.add(DocBarPane);
-
-        jPanel4.add(SoftBorderPane);
-
-        jPanel1.add(jPanel4, java.awt.BorderLayout.PAGE_END);
-
         getContentPane().add(jPanel1);
 
         jMenu1.setText("File");
@@ -1354,6 +1371,8 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel73;
     private javax.swing.JLabel jLabel74;
     private javax.swing.JLabel jLabel75;
+    private javax.swing.JLabel jLabel76;
+    private javax.swing.JLabel jLabel77;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
@@ -1415,6 +1434,7 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JLabel lblBanner;
     private javax.swing.JLabel lblDateAndTime;
     private javax.swing.JLabel lblPhoto;
+    private javax.swing.JLabel lblThal2;
     private javax.swing.JLabel lblUserPhoto;
     private javax.swing.JPanel pnlBarChart;
     private javax.swing.JPanel pnlDoctor;

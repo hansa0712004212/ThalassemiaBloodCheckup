@@ -250,7 +250,7 @@ public final class BloodCellsManipulationImpl
             ellipsesMat = original.clone();
 
             // Sets Gray Scale to gray Map
-            Imgproc.cvtColor(original, gray, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.cvtColor(original, gray, Imgproc.COLOR_BGR2HSV);
 
             grayImage = convertMapToImage(gray);
 

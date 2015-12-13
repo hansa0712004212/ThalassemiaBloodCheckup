@@ -49,7 +49,7 @@ public final class DatabaseConnect {
         instance = new ODatabaseDocumentTx("remote:localhost/" + DB_NAME)
                 .open(USER_NAME, USER_PASSWORD);
 
-        // checkDBExists();
+   //checkDBExists();
         return instance;
     }
 
