@@ -5,7 +5,6 @@
  */
 package uom.research.thalassemia.db;
 
-import com.orientechnologies.orient.core.command.OCommandRequest;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
 import com.orientechnologies.orient.core.record.ORecord;
 import com.orientechnologies.orient.core.record.impl.ODocument;
@@ -71,22 +70,5 @@ public final class DatabaseAccess {
         ODatabaseDocumentTx db = DatabaseConnect.getInstance();
         db.command(new OCommandSQL(query)).execute();
         return true;
-    }
-
-    /**
-     * execute command.
-     *
-     * @param query sql query
-     * @throws java.lang.Exception exception
-     */
-    public static void executeCommand(final String query) throws Exception {
-        try {
-            ODatabaseDocumentTx db = DatabaseConnect.getInstance();
-            OCommandRequest command = db.command(new OCommandSQL(query));
-            command.execute();
-            db.getMetadata().getSchema().reload();
-        } catch (Exception ex) {
-            System.out.println("already exists " + ex.getMessage());
-        }
     }
 }

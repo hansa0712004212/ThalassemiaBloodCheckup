@@ -15,15 +15,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -245,7 +242,33 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                         String.valueOf(new Date(end - start).getTime()));
                 progress.dispose();
                 btnCellData.setEnabled(true);
-                //btnSaveTest.setEnabled(true);
+                btnSaveTest.setEnabled(true);
+                ///////////////////////////////////////
+                BloodCellDataProcessor bloodCellDataProcessor
+                        = new BloodCellDataProcessor(bcm.getCircles(),
+                                bcm.getEllipses(), bcm.getPallors());
+
+                //Mat circles = bcm.getCircles();
+                //for
+                
+                BloodCellAbnormalLogicImpl abc
+                        = new BloodCellAbnormalLogicImpl(
+                                bloodCellDataProcessor.getTotalEllipseArea(),
+                                bloodCellDataProcessor.getTotalBloodCellArea(),
+                                bloodCellDataProcessor.getTotalPallarArea(), 6,
+                                7, true);
+                Map<String, Integer> data = abc.getAbnormalCellTypes();
+                FillData.doEmptyTable(tblCellTypes);
+                DefaultTableModel dtm
+                        = (DefaultTableModel) tblCellTypes.getModel();
+
+                for (Map.Entry<String, Integer> entrySet : data.entrySet()) {
+                    String key = entrySet.getKey();
+                    Integer value = entrySet.getValue();
+                    Object[] ob = {key, value};
+                    dtm.addRow(ob);
+                }
+                ///////////////////////////////////////
                 Thread.currentThread().interrupt();
             } catch (Exception ex) {
                 progress.dispose();
@@ -330,7 +353,6 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
     private void convertCirclesMapToCirclesList() {
         Mat circles = bcm.getCircles();
         circlesList = new ArrayList<>();
-        System.out.println("count is " + bcm.getCircleCount());
         double[] circle;
         double x, y, r, area, perimeter;
         for (int a = 0; a < circles.cols(); a++) {
@@ -340,7 +362,6 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
             r = Math.round(circle[2]);
             area = fi * r * r;
             perimeter = 2 * fi * r;
-            System.out.println(" a is " + a);
             circlesList.add(new Circle((int) x, (int) y, (int) r,
                     perimeter, area));
         }
@@ -936,21 +957,6 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
         btnSaveTest.setEnabled(true);
         if (bcm != null) {
             new CircleData(HomeCellCountAnalyzer.this, true, bcm.getCircles(), bcm.getContours(), bcm.getPallors()).setVisible(true);
-        }
-
-        BloodCellDataProcessor bloodCellDataProcessor = new BloodCellDataProcessor(bcm.getCircles(), bcm.getEllipses(), bcm.getPallors());
-
-        BloodCellAbnormalLogicImpl abc = new BloodCellAbnormalLogicImpl(bloodCellDataProcessor.getTotalEllipseArea(), bloodCellDataProcessor.getTotalBloodCellArea(),
-                bloodCellDataProcessor.getTotalPallarArea(), 6, 7, true);
-        Map<String, Integer> data = abc.getAbnormalCellTypes();
-        FillData.doEmptyTable(tblCellTypes);
-        DefaultTableModel dtm = (DefaultTableModel) tblCellTypes.getModel();
-
-        for (Map.Entry<String, Integer> entrySet : data.entrySet()) {
-            String key = entrySet.getKey();
-            Integer value = entrySet.getValue();
-            Object[] ob = {key, value};
-            dtm.addRow(ob);
         }
     }//GEN-LAST:event_btnCellDataActionPerformed
 

@@ -67,7 +67,7 @@ public class HomeMain extends javax.swing.JFrame {
         StretchImage.setImageStretch(lblBanner,
                 new ImageIcon(getClass().getResource(
                         "/uom/research/thalassemia/images/banner-blood.jpg")));
-                StretchImage.setImageStretch(lblThal2,
+        StretchImage.setImageStretch(lblThal2,
                 new ImageIcon(getClass().getResource(
                         "/uom/research/thalassemia/images/thal2.jpg")));
         setClock();
@@ -142,6 +142,9 @@ public class HomeMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        SoftBorderPane = new javax.swing.JPanel();
+        DocBarPane = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         lblBanner = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -152,9 +155,6 @@ public class HomeMain extends javax.swing.JFrame {
         jPanel23 = new javax.swing.JPanel();
         jLabel76 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        SoftBorderPane = new javax.swing.JPanel();
-        DocBarPane = new javax.swing.JPanel();
         lblThal2 = new javax.swing.JLabel();
         jLabel77 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -381,10 +381,17 @@ public class HomeMain extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel3.setLayout(new java.awt.BorderLayout());
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
 
-        lblBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/banner-blood.jpg"))); // NOI18N
-        lblBanner.setPreferredSize(new java.awt.Dimension(1000, 100));
+        SoftBorderPane.setPreferredSize(new java.awt.Dimension(900, 70));
+        SoftBorderPane.setLayout(new javax.swing.BoxLayout(SoftBorderPane, javax.swing.BoxLayout.LINE_AXIS));
+        SoftBorderPane.add(DocBarPane);
+
+        jPanel4.add(SoftBorderPane);
+
+        jPanel1.add(jPanel4, java.awt.BorderLayout.PAGE_END);
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
         jPanel3.add(lblBanner, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_START);
@@ -416,20 +423,7 @@ public class HomeMain extends javax.swing.JFrame {
         jLabel27.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
         jLabel27.setText("<html> <p align=\"justify\"> Thalassemia is a blood disorder passed down through families (inherited) in which the body makes an abnormal form of hemoglobin, the protein in red blood cells that carries oxygen.The disorder results in excessive destruction of red blood cells, which leads to anemia.Anemia is a disorder in which your body doesn’t have enough normal, healthy red blood cells (RBC). </p> </html>");
         jPanel5.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 770, 80));
-
-        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
-
-        SoftBorderPane.setPreferredSize(new java.awt.Dimension(900, 70));
-        SoftBorderPane.setLayout(new javax.swing.BoxLayout(SoftBorderPane, javax.swing.BoxLayout.LINE_AXIS));
-        jPanel4.add(SoftBorderPane);
-        jPanel4.add(DocBarPane);
-
-        jPanel5.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-170, 490, 1114, -1));
-
-        lblThal2.setIcon(new javax.swing.ImageIcon("/home/hansa/NetBeansProjects/ThalassemiaBloodCheckup/src/uom/research/thalassemia/images/thal2Anu.gif")); // NOI18N
         jPanel5.add(lblThal2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 280, 180));
-
-        jLabel77.setIcon(new javax.swing.ImageIcon("/home/hansa/NetBeansProjects/ThalassemiaBloodCheckup/src/uom/research/thalassemia/images/thal1Anu.gif")); // NOI18N
         jPanel5.add(jLabel77, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 190, -1, -1));
 
         pnlWelcome.add(jPanel5, java.awt.BorderLayout.CENTER);

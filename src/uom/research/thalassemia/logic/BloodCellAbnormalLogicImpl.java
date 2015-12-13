@@ -80,8 +80,8 @@ public final class BloodCellAbnormalLogicImpl {
                 //dv false
                 fillClasses("class 5");
             }
-        } else {
-            //sgf false
+        } else //sgf false
+        {
             if ((6.5 < diameter) & (diameter < 8.5)) {
                 //diameter true
                 if (cpArea > 0) {
@@ -89,8 +89,8 @@ public final class BloodCellAbnormalLogicImpl {
                     if (tf == true) {
                         //tf true
                         fillClasses("class 6");
-                    } else {
-                        //tf false
+                    } else //tf false
+                    {
                         if (ap > 0.2) {
                             //ap true
                             fillClasses("class 9");
@@ -103,8 +103,8 @@ public final class BloodCellAbnormalLogicImpl {
                     //cp area false
                     fillClasses("class 2");
                 }
-            } else {
-                //diameter false
+            } else //diameter false
+            {
                 if (dv > 8.5) {
                     //dv true
                     if (cpArea > 0) {
@@ -120,8 +120,8 @@ public final class BloodCellAbnormalLogicImpl {
                         //cpArea false
                         fillClasses("class 3");
                     }
-                } else {
-                    //dv false
+                } else //dv false
+                {
                     if (cpArea > 0) {
                         //cpArea true
                         if (ap > 0.2) {
@@ -138,6 +138,16 @@ public final class BloodCellAbnormalLogicImpl {
             }
         }
         return classes;
+    }
+
+    /**
+     * True blood count for image.
+     *
+     * @return int cells
+     */
+    public int getTrueCount() {
+        //trueCount = (0.6626 * imageCount) + 33.1227
+        return 0;
     }
 
 }

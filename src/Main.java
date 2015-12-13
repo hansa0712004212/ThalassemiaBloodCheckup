@@ -1,3 +1,4 @@
+
 /**
  * Beginning, Main class of the project. Application starts from here.
  */
@@ -33,10 +34,11 @@ public final class Main {
             });
             thread.start();
             new Login(null, true).setVisible(true);
-        } catch (UnsupportedLookAndFeelException | ParseException ex) {
+            //DatabaseConnect.checkDBExists();
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-   }
+    }
 
     /**
      * private constructor.
