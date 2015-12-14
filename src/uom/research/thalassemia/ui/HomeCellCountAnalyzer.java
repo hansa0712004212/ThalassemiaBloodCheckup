@@ -29,12 +29,15 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import uom.research.thalassemia.dao.TestDAO;
 import uom.research.thalassemia.dao.TestDAOImpl;
 import uom.research.thalassemia.dao.TestSuiteDAO;
 import uom.research.thalassemia.dao.TestSuiteDAOImpl;
 import uom.research.thalassemia.db.DatabaseAccess;
+import uom.research.thalassemia.logic.ActualValueTransformer;
 import uom.research.thalassemia.logic.BloodCellAbnormalLogicImpl;
+import uom.research.thalassemia.logic.BloodCellData;
 import uom.research.thalassemia.logic.BloodCellDataProcessor;
 import uom.research.thalassemia.logic.BloodCellsManipulation;
 import uom.research.thalassemia.logic.BloodCellsManipulationImpl;
@@ -243,15 +246,51 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                 progress.dispose();
                 btnCellData.setEnabled(true);
                 btnSaveTest.setEnabled(true);
-                ///////////////////////////////////////
+
                 BloodCellDataProcessor bloodCellDataProcessor
                         = new BloodCellDataProcessor(bcm.getCircles(),
                                 bcm.getEllipses(), bcm.getPallors());
 
+                ActualValueTransformer avt = new ActualValueTransformer();
+                lblRBC.setText(String.valueOf(
+                        avt.getActualRBCCount(bcm.getCircleCount())));
+                lblMCV.setText(String.valueOf(avt.getMCVCount(
+                        bloodCellDataProcessor.getTotalBloodCellArea())));
+                lblRDW.setText(String.valueOf(
+                        avt.getRDWCount(bloodCellDataProcessor
+                                .getTotalBloodCellArea())));
+                
+            ////////////////////
+                BloodCellData bcd = new BloodCellData(bcm.getCircles(),
+                                bcm.getEllipses(), bcm.getPallors());
+                Map<String, Integer> classes = bcd.getClasses();
+                FillData.doEmptyTable(tblCellTypes);
+                DefaultTableModel dtm
+                        = (DefaultTableModel) tblCellTypes.getModel();
+                System.out.println(classes.size());
+                for (Map.Entry<String, Integer> entrySet : classes.entrySet()) {
+                    String key = entrySet.getKey();
+                    Integer value = entrySet.getValue();
+                    Object[] ob = {key, value};
+                    dtm.addRow(ob);
+                }
+
+                ///////////////////////////////////////
                 //Mat circles = bcm.getCircles();
                 //for
-                
-                BloodCellAbnormalLogicImpl abc
+                //
+                /*Mat bcCircles = bcm.getCircles();
+                for (int i = 0; i < bcCircles.cols(); i++) {
+                    double vCircle[] = circles.get(0, x);
+                    if (vCircle == null) {
+                        break;
+                    }
+                    Point pt = new Point(Math.round(vCircle[0]),
+                            Math.round(vCircle[1]));
+                    int radius = (int) Math.round(vCircle[2]);
+                }*/
+                //
+                /*BloodCellAbnormalLogicImpl abc
                         = new BloodCellAbnormalLogicImpl(
                                 bloodCellDataProcessor.getTotalEllipseArea(),
                                 bloodCellDataProcessor.getTotalBloodCellArea(),
@@ -267,7 +306,7 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                     Integer value = entrySet.getValue();
                     Object[] ob = {key, value};
                     dtm.addRow(ob);
-                }
+                }*/
                 ///////////////////////////////////////
                 Thread.currentThread().interrupt();
             } catch (Exception ex) {

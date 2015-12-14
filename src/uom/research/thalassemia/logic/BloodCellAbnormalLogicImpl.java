@@ -140,14 +140,4 @@ public final class BloodCellAbnormalLogicImpl {
         return classes;
     }
 
-    /**
-     * True blood count for image.
-     *
-     * @return int cells
-     */
-    public int getTrueCount() {
-        //trueCount = (0.6626 * imageCount) + 33.1227
-        return 0;
-    }
-
 }

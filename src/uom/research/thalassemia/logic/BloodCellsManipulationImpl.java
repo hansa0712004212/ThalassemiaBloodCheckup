@@ -281,14 +281,46 @@ public final class BloodCellsManipulationImpl
 
             //Imgproc.cvtColor(canny, canny, Imgproc.COLOR_BGR2GRAY);
             circles = new Mat();
-            Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
-                    8, //Inverse ratio
-                    220, //Minimum distance between the centers of the detected circles. default 100
-                    100, //Higher threshold for canny edge detector. default100
-                    200, //Threshold at the center detection stage. default 200
-                    90, //min radius. default 50
-                    130 //max radius. default 90
-            );
+
+            int imageArea = original.width() * original.height();
+
+            if (imageArea > 5100000) {
+                Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        220, //Minimum distance between the centers of the detected circles. default 100
+                        100, //Higher threshold for canny edge detector. default100
+                        200, //Threshold at the center detection stage. default 200
+                        90, //min radius. default 50
+                        130 //max radius. default 90
+                );
+            } else if (imageArea > 1309500) {
+                Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        110, //Minimum distance between the centers of the detected circles. default 100
+                        100, //Higher threshold for canny edge detector. default100
+                        150, //Threshold at the center detection stage. default 200
+                        50, //min radius. default 50
+                        67 //max radius. default 90
+                );
+            } else if (imageArea > 540000) {
+                Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        110, //Minimum distance between the centers of the detected circles. default 100
+                        100, //Higher threshold for canny edge detector. default100
+                        200, //Threshold at the center detection stage. default 200
+                        30, //min radius. default 50
+                        65 //max radius. default 90
+                );
+            } else if (imageArea > 400000) {
+                Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        50, //Minimum distance between the centers of the detected circles. default 100
+                        60, //Higher threshold for canny edge detector. default100
+                        100, //Threshold at the center detection stage. default 200
+                        25, //min radius. default 50
+                        40 //max radius. default 90
+                );
+            }
 
             if (circles.cols() > 0) {
                 for (int x = 0; x < circles.cols(); x++) {
@@ -307,14 +339,45 @@ public final class BloodCellsManipulationImpl
 
             // set Pallor circles
             circlesPallor = new Mat();
-            Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
-                    8, //Inverse ratio
-                    220, //Minimum distance between the centers of the detected circles
-                    100, //Higher threshold for canny edge detector
-                    150, //Threshold at the center detection stage
-                    0, //min radius
-                    70 //max radius
-            );
+            if (imageArea > 5100000) {
+                Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        220, //Minimum distance between the centers of the detected circles
+                        100, //Higher threshold for canny edge detector
+                        150, //Threshold at the center detection stage
+                        0, //min radius
+                        70 //max radius
+                );
+            } else if (imageArea > 1309500) {
+                Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        110, //Minimum distance between the centers of the detected circles
+                        50, //Higher threshold for canny edge detector
+                        100, //Threshold at the center detection stage
+                        0, //min radius
+                        45 //max radius
+                );
+            } else if (imageArea > 540000) {
+                Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        100, //Minimum distance between the centers of the detected circles
+                        50, //Higher threshold for canny edge detector
+                        100, //Threshold at the center detection stage
+                        0, //min radius
+                        35 //max radius
+                );
+
+            } else if (imageArea > 400000) {
+                Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        50, //Minimum distance between the centers of the detected circles
+                        10, //Higher threshold for canny edge detector
+                        30, //Threshold at the center detection stage
+                        0, //min radius
+                        25 //max radius
+                );
+
+            }
             if (circlesPallor.cols() > 0) {
                 for (int x = 0; x < circlesPallor.cols(); x++) {
                     double vCircle[] = circlesPallor.get(0, x);
