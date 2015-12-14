@@ -22,4 +22,13 @@ public interface PatientDAO {
      */
     String insertPatient(final Patient patient) throws Exception;
 
+    /**
+     * load patient onto application.
+     *
+     * @param text patient rid
+     * @return Patient object
+     * @throws Exception exception
+     */
+    Patient selectPatient(final String text) throws Exception;
+
 }

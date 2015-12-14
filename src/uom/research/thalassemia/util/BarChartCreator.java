@@ -23,19 +23,48 @@ import org.jfree.data.category.CategoryDataset;
  */
 public final class BarChartCreator {
 
-    private String title = "";
+    /**
+     * Chart Main, Header Title.
+     */
+    private String mainTitle = "";
+
+    /**
+     * Chart Sub Title.
+     */
+    private String subTitle = "";
+
+    /**
+     * Chart X Axis Title.
+     */
+    private String xTitle = "";
+
+    /**
+     * Chart Y Axis Title.
+     */
+    private String yTitle = "";
+
+    /**
+     * Chart Category Dataset.
+     */
     private CategoryDataset categoryDataset = null;
 
     /**
      * Creates a panel for the demo (used by SuperDemo.java).
      *
      * @param pCategoryDataset dataset
-     * @param pTitle title
+     * @param pTitle main title
+     * @param psubTitle sub title
+     * @param pxTitle x Axis Title
+     * @param pyTitle y axis title
      * @return A panel.
      */
     public JPanel createPanel(final CategoryDataset pCategoryDataset,
-            final String pTitle) {
-        title = pTitle;
+            final String pTitle, final String psubTitle, final String pxTitle,
+            final String pyTitle) {
+        mainTitle = pTitle;
+        subTitle = psubTitle;
+        xTitle = pxTitle;
+        yTitle = pyTitle;
         categoryDataset = pCategoryDataset;
         JFreeChart chart = createChart(categoryDataset);
         ChartPanel chartPanel = new ChartPanel(chart);
@@ -51,12 +80,10 @@ public final class BarChartCreator {
      *
      * @return The chart.
      */
-    private static JFreeChart createChart(final CategoryDataset dataset) {
+    private JFreeChart createChart(final CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
-                "Performance: JFreeSVG vs Batik", null /* x-axis label*/,
-                "Milliseconds" /* y-axis label */, dataset);
-        chart.addSubtitle(new TextTitle("Time to generate 1000 charts in SVG "
-                + "format (lower bars = better performance)"));
+                mainTitle, xTitle, yTitle, dataset);
+        chart.addSubtitle(new TextTitle(subTitle));
         chart.setBackgroundPaint(Color.white);
         CategoryPlot plot = (CategoryPlot) chart.getPlot();
 

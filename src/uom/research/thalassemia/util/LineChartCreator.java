@@ -18,16 +18,27 @@ import org.jfree.data.category.DefaultCategoryDataset;
  */
 public final class LineChartCreator {
 
-    public JPanel createPanel(DefaultCategoryDataset dataSet, String chartTitle) {
+    /**
+     * Create a Line Chart.
+     *
+     * @param dataSet data set
+     * @param chartTitle chart title
+     * @param subTitle sub title
+     * @param xTitle x axis title
+     * @param yTitle y axis title
+     * @return
+     */
+    public JPanel createPanel(final DefaultCategoryDataset dataSet,
+            final String chartTitle, final String subTitle, final String xTitle,
+            final String yTitle) {
         JFreeChart lineChart = ChartFactory.createLineChart(
                 chartTitle,
-                "Years", "Number of Schools",
+                xTitle, yTitle,
                 dataSet,
                 PlotOrientation.VERTICAL,
                 true, true, false);
 
         ChartPanel chartPanel = new ChartPanel(lineChart);
-        //chartPanel.setPreferredSize(new java.awt.Dimension(560, 367));
         return chartPanel;
     }
 

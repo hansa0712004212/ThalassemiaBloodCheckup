@@ -46,6 +46,21 @@ public final class Test {
     private boolean isInfected;
 
     /**
+     * actual RBC.
+     */
+    private double actualRBC;
+
+    /**
+     * mcv Actual.
+     */
+    private double mcvActual;
+
+    /**
+     * rdw Actual.
+     */
+    private double rdwActual;
+
+    /**
      * Default Constructor.
      */
     public Test() {
@@ -185,4 +200,47 @@ public final class Test {
     public void setIsInfected(final boolean pisInfected) {
         this.isInfected = pisInfected;
     }
+
+    /**
+     * @return the actualRBC
+     */
+    public double getActualRBC() {
+        return actualRBC;
+    }
+
+    /**
+     * @param pactualRBC the actualRBC to set
+     */
+    public void setActualRBC(final double pactualRBC) {
+        this.actualRBC = pactualRBC;
+    }
+
+    /**
+     * @return the mcvActual
+     */
+    public double getMcvActual() {
+        return mcvActual;
+    }
+
+    /**
+     * @param pmcvActual the mcvActual to set
+     */
+    public void setMcvActual(final double pmcvActual) {
+        this.mcvActual = pmcvActual;
+    }
+
+    /**
+     * @return the rdwActual
+     */
+    public double getRdwActual() {
+        return rdwActual;
+    }
+
+    /**
+     * @param prdwActual the rdwActual to set
+     */
+    public void setRdwActual(final double prdwActual) {
+        this.rdwActual = prdwActual;
+    }
+
 }

@@ -5,6 +5,8 @@
  */
 package uom.research.thalassemia.dao;
 
+import java.util.List;
+import uom.research.thalassemia.object.Patient;
 import uom.research.thalassemia.object.TestSuite;
 
 /**
@@ -21,5 +23,15 @@ public interface TestSuiteDAO {
      * @throws java.lang.Exception Exception
      */
     String saveTestSuite(final TestSuite testSuite) throws Exception;
+
+    /**
+     * load Test Suite Of Patients.
+     *
+     * @param patient patient
+     * @return testSuiteID
+     * @throws java.lang.Exception Exception
+     */
+    List<TestSuite> loadAllTestSuitesOfPatient(final Patient patient)
+            throws Exception;
 
 }

@@ -5,17 +5,103 @@
  */
 package uom.research.thalassemia.ui;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import org.jfree.data.category.DefaultCategoryDataset;
+import uom.research.thalassemia.dao.PatientDAO;
+import uom.research.thalassemia.dao.PatientDAOImpl;
+import uom.research.thalassemia.dao.TestDAO;
+import uom.research.thalassemia.dao.TestDAOImpl;
+import uom.research.thalassemia.dao.TestSuiteDAO;
+import uom.research.thalassemia.dao.TestSuiteDAOImpl;
+import uom.research.thalassemia.object.Circle;
+import uom.research.thalassemia.object.Patient;
+import uom.research.thalassemia.object.Test;
+import uom.research.thalassemia.object.TestSuite;
+import uom.research.thalassemia.object.User;
+import uom.research.thalassemia.util.BarChartCreator;
+import uom.research.thalassemia.util.Constant;
+import uom.research.thalassemia.util.FillData;
+import uom.research.thalassemia.util.LineChartCreator;
+import uom.research.thalassemia.util.Message;
+import uom.research.thalassemia.util.StretchImage;
+import uom.research.thalassemia.util.Validator;
+
 /**
  *
  * @author hansa
  */
-public class Doctor extends javax.swing.JFrame {
+public final class Doctor extends javax.swing.JFrame {
 
     /**
-     * Creates new form Doctor
+     * combo box as jtextField.
      */
-    public Doctor() {
+    private JTextField textField;
+
+    /**
+     * test suites.
+     */
+    private List<TestSuite> testSuites;
+
+    /**
+     * Creates new form Doctor.
+     *
+     * @param user doctor
+     */
+    public Doctor(final User user) {
         initComponents();
+        Doctor.this.setLocationRelativeTo(null);
+        Doctor.this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        Doctor.this.setTitle("  Thalassemia - Doctor Console  ");
+        Doctor.this.setLocationRelativeTo(null);
+        FillData.setIconForJFrame(Doctor.this);
+        setPatientSearchListener();
+    }
+
+    /**
+     * Patient search listener.
+     */
+    void setPatientSearchListener() {
+        textField = (JTextField) cmbSearch.getEditor().getEditorComponent();
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(final KeyEvent evt) {
+                try {
+                    String s = textField.getText();
+                    String key = s.toLowerCase();
+                    FillData.fillCombo(cmbSearch,
+                            "select @rid.append(' ').append(firstName)"
+                            + ".append(' ').append(middleName)"
+                            + ".append(' ').append(lastName) as name "
+                            + "from Patient where isActive=true AND "
+                            + "(firstName.toLowerCase() like '" + key
+                            + "%' or middleName.toLowerCase() like '" + key
+                            + "%' or lastName.toLowerCase() like '" + key
+                            + "%' or nic.toLowerCase() like '" + key
+                            + "%' or mobile like '" + key + "%')", "name");
+                    int rw = cmbSearch.getMaximumRowCount();
+                    if (rw > 5) {
+                        cmbSearch.setMaximumRowCount(5);
+                    } else {
+                        cmbSearch.setMaximumRowCount(rw);
+                    }
+                    if (s.isEmpty() || evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                        cmbSearch.hidePopup();
+                    } else {
+                        cmbSearch.showPopup();
+                    }
+                    cmbSearch.setSelectedItem(s);
+
+                } catch (Exception e) {
+                }
+            }
+        });
     }
 
     /**
@@ -27,63 +113,437 @@ public class Doctor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel19 = new javax.swing.JPanel();
+        cmbSearch = new javax.swing.JComboBox<>();
+        btnSelect = new javax.swing.JButton();
+        jPanel11 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
+        lblPatientName = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        btnSubmitComments = new javax.swing.JButton();
+        lblPatientGender = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        lblPatientCity = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        lblPatientAge = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        lblPatientPhone = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        lblContactName = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        lblContactPhone = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblTestSuites = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel13 = new javax.swing.JPanel();
+        lblTestImage = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        pnlBarChart = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblTests = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        lstComments = new javax.swing.JList<>();
+        jPanel17 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtComment = new javax.swing.JTextArea();
+        jPanel18 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        pnlLineChart = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        mnuLogOut = new javax.swing.JMenuItem();
+        mnuExit = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Patient name  :");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText("Patient name");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, -1, -1));
+        jPanel2.setLayout(new java.awt.GridLayout(2, 3));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel5.setLabelFor(cmbSearch);
+        jLabel5.setText("Search for Patient");
+        jPanel5.add(jLabel5);
+
+        jPanel19.setLayout(new javax.swing.BoxLayout(jPanel19, javax.swing.BoxLayout.LINE_AXIS));
+
+        cmbSearch.setEditable(true);
+        jPanel19.add(cmbSearch);
+
+        btnSelect.setText("Select");
+        btnSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectActionPerformed(evt);
+            }
+        });
+        jPanel19.add(btnSelect);
+
+        jPanel5.add(jPanel19);
+
+        jPanel11.setLayout(new java.awt.GridLayout(7, 2));
+
+        jLabel1.setText("Patient Name");
+        jPanel11.add(jLabel1);
+        jPanel11.add(lblPatientName);
+
+        jLabel4.setText("Patient Gender");
+        jPanel11.add(jLabel4);
+        jPanel11.add(lblPatientGender);
+
+        jLabel13.setText("Patient City");
+        jPanel11.add(jLabel13);
+        jPanel11.add(lblPatientCity);
+
+        jLabel15.setText("Patient Age");
+        jPanel11.add(jLabel15);
+        jPanel11.add(lblPatientAge);
+
+        jLabel17.setText("Patient Phone");
+        jPanel11.add(jLabel17);
+        jPanel11.add(lblPatientPhone);
+
+        jLabel19.setText("Contact P. Name");
+        jPanel11.add(jLabel19);
+        jPanel11.add(lblContactName);
+
+        jLabel21.setText("Contact P. Phone");
+        jPanel11.add(jLabel21);
+        jPanel11.add(lblContactPhone);
+
+        jPanel5.add(jPanel11);
+
+        tblTestSuites.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Date", "Report", "Add Comment"
+                "Rid", "Test Suite Date", "Performed  By", "Tests Count"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, true
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tblTestSuites.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblTestSuites.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTestSuitesMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblTestSuites);
+        tblTestSuites.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tblTestSuites.getColumnModel().getColumnCount() > 0) {
+            tblTestSuites.getColumnModel().getColumn(0).setPreferredWidth(15);
+        }
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 340, 160));
+        jPanel5.add(jScrollPane2);
+
+        jPanel2.add(jPanel5);
+
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jLabel6.setText("Test Image");
+        jPanel6.add(jLabel6);
+
+        jPanel13.setLayout(new java.awt.BorderLayout());
+        jPanel13.add(lblTestImage, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(jPanel13);
+
+        jPanel2.add(jPanel6);
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        jPanel14.setLayout(new java.awt.BorderLayout());
+
+        pnlBarChart.setLayout(new java.awt.BorderLayout());
+        jPanel14.add(pnlBarChart, java.awt.BorderLayout.CENTER);
+
+        jPanel7.add(jPanel14, java.awt.BorderLayout.CENTER);
+
+        jLabel9.setText("Chart");
+        jPanel7.add(jLabel9, java.awt.BorderLayout.PAGE_START);
+
+        jPanel2.add(jPanel7);
+
+        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel8.add(jPanel12);
+
+        tblTests.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Rid", "isInfected", "Actual RBC", "Actual MCV", "Actual RDW", "Test Date"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Boolean.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblTests.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblTests.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTestsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblTests);
+        tblTests.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        jPanel8.add(jScrollPane1);
+
+        jPanel2.add(jPanel8);
+
+        jPanel9.setLayout(new java.awt.GridLayout(2, 1));
+
+        jPanel16.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane3.setViewportView(lstComments);
+
+        jPanel16.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jPanel9.add(jPanel16);
+
+        jPanel17.setLayout(new javax.swing.BoxLayout(jPanel17, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jLabel11.setText("Your Comment");
+        jPanel17.add(jLabel11);
+
+        txtComment.setColumns(20);
+        txtComment.setRows(5);
+        jScrollPane4.setViewportView(txtComment);
+
+        jPanel17.add(jScrollPane4);
+
+        jPanel18.setLayout(new java.awt.GridLayout(1, 2));
+
+        jButton1.setText("Reset");
+        jPanel18.add(jButton1);
+
+        jButton2.setText("Submit");
+        jPanel18.add(jButton2);
+
+        jPanel17.add(jPanel18);
+
+        jPanel9.add(jPanel17);
+
+        jPanel2.add(jPanel9);
+
+        jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jLabel10.setText("Test Circles Variance");
+        jPanel10.add(jLabel10);
+
+        pnlLineChart.setLayout(new java.awt.BorderLayout());
+        jPanel10.add(pnlLineChart);
+
+        jPanel2.add(jPanel10);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jLabel3.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("View Patient Reports");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, -1, -1));
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, 100, 70));
+        jPanel3.add(jLabel3);
 
-        btnSubmitComments.setText("Submit Comments");
-        btnSubmitComments.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+
+        jPanel4.setBackground(new java.awt.Color(0, 255, 215));
+        jPanel1.add(jPanel4, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        jMenu1.setText("  File          ");
+
+        mnuLogOut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        mnuLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/login.png"))); // NOI18N
+        mnuLogOut.setText("  Log Out ...");
+        mnuLogOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSubmitCommentsActionPerformed(evt);
+                mnuLogOutActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSubmitComments, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 340, -1, -1));
+        jMenu1.add(mnuLogOut);
+
+        mnuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        mnuExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/exit.png"))); // NOI18N
+        mnuExit.setText("  Exit ...");
+        mnuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuExit);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("  Edit          ");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSubmitCommentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitCommentsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSubmitCommentsActionPerformed
+    private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
+        try {
+            PatientDAO patietDAO = new PatientDAOImpl();
+            Patient patient = patietDAO.selectPatient(
+                    cmbSearch.getSelectedItem().toString());
+            lblPatientName.setText(patient.getFirstName().concat(" ")
+                    .concat(patient.getMiddleName()));
+            lblPatientPhone.setText(String.valueOf(patient.getMobile()));
+            lblPatientGender.setText(patient.getSex());
+            lblPatientAge.setText(String.valueOf(Validator
+                    .calculateAge(patient.getBirthDate())));
+            lblPatientCity.setText(patient.getCity());
+            lblContactName.setText(patient.getContactPerson().getName());
+            lblContactPhone.setText(String.valueOf(patient.getContactPerson()
+                    .getMobile()));
+
+            TestSuiteDAO testSuiteDAO = new TestSuiteDAOImpl();
+            testSuites = testSuiteDAO.loadAllTestSuitesOfPatient(patient);
+
+            DefaultTableModel testSuiteTableModel
+                    = (DefaultTableModel) tblTestSuites.getModel();
+            FillData.doEmptyTable(tblTestSuites);
+            for (TestSuite testSuite : testSuites) {
+                Object[] ob = {testSuite.getRid(),
+                    Validator.localDateToFormattedDate(
+                    testSuite.getTestSuiteDate()),
+                    testSuite.getPerformedBy().getFirstName(),
+                    testSuite.getTest().size()};
+                testSuiteTableModel.addRow(ob);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_btnSelectActionPerformed
+
+    private void tblTestSuitesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTestSuitesMouseClicked
+        int selectedRow = tblTestSuites.getSelectedRow();
+        DefaultTableModel testTableModel
+                = (DefaultTableModel) tblTests.getModel();
+        FillData.doEmptyTable(tblTests);
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        if (selectedRow > -1) {
+            List<Test> tests = testSuites.get(selectedRow).getTest();
+            int index = 0;
+            for (Test test : tests) {
+                index++;
+                Object[] ob = {test.getRid(), test.isIsInfected(),
+                    test.getActualRBC(), test.getMcvActual(), test.getRdwActual(),
+                    Validator.localDateToFormattedDate(test.getTestDate())};
+                testTableModel.addRow(ob);
+                dataset.addValue(test.getActualRBC(), "RBC", "Test " + index);
+                dataset.addValue(test.getMcvActual(), "MCV", "Test " + index);
+                dataset.addValue(test.getRdwActual(), "RDW", "Test " + index);
+            }
+        }
+        pnlBarChart.removeAll();
+        pnlBarChart.add(new BarChartCreator().createPanel(dataset,
+                "Test Suite, Test Summary Data", "", "Test", "Count"));
+        pnlBarChart.updateUI();
+    }//GEN-LAST:event_tblTestSuitesMouseClicked
+
+    private void tblTestsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTestsMouseClicked
+        int selectedTestSuiteRow = tblTestSuites.getSelectedRow();
+        int selectedTestRow = tblTests.getSelectedRow();
+        Test test = testSuites.get(selectedTestSuiteRow).getTest()
+                .get(selectedTestRow);
+        StretchImage.setImageStretch(lblTestImage,
+                test.getImagePath().getAbsolutePath());
+
+        TestDAO testDAO = new TestDAOImpl();
+        List<Circle> circles;
+        try {
+            circles = testDAO.loadCircles(
+                    tblTests.getValueAt(selectedTestRow, 0).toString());
+
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+            int index = 0;
+            for (Circle circle : circles) {
+                index++;
+                //if (index == 25) {
+                //  break;
+                //}
+                dataset.addValue(circle.getRadius(),
+                        "Radius", String.valueOf(index));
+                dataset.addValue(circle.getPerimeter(),
+                        "Perimeter", String.valueOf(index));
+                //dataset.addValue(circle.getArea(),
+                //      "Area", String.valueOf(index));
+            }
+            pnlLineChart.removeAll();
+            pnlLineChart.add(new LineChartCreator().createPanel(dataset,
+                    "Circular Blood Cell Data",
+                    "Selected Test, Detected Cells Volume Variance",
+                    "Circle", "Value"));
+            pnlLineChart.updateUI();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }//GEN-LAST:event_tblTestsMouseClicked
+
+    private void mnuLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLogOutActionPerformed
+        if (Message.showQuestionYesNo(
+                " Do You Really Need To Log Out ? ")
+                == Message.YES_OPTION) {
+            Doctor.this.dispose();
+            new Login(null, true).setVisible(true);
+        }
+    }//GEN-LAST:event_mnuLogOutActionPerformed
+
+    private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExitActionPerformed
+        if (Message.showQuestionYesNo(
+                " Do You Really Need To Exit ? ")
+                == Message.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_mnuExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -121,12 +581,63 @@ public class Doctor extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSubmitComments;
+    private javax.swing.JButton btnSelect;
+    private javax.swing.JComboBox<String> cmbSearch;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblContactName;
+    private javax.swing.JLabel lblContactPhone;
+    private javax.swing.JLabel lblPatientAge;
+    private javax.swing.JLabel lblPatientCity;
+    private javax.swing.JLabel lblPatientGender;
+    private javax.swing.JLabel lblPatientName;
+    private javax.swing.JLabel lblPatientPhone;
+    private javax.swing.JLabel lblTestImage;
+    private javax.swing.JList<String> lstComments;
+    private javax.swing.JMenuItem mnuExit;
+    private javax.swing.JMenuItem mnuLogOut;
+    private javax.swing.JPanel pnlBarChart;
+    private javax.swing.JPanel pnlLineChart;
+    private javax.swing.JTable tblTestSuites;
+    private javax.swing.JTable tblTests;
+    private javax.swing.JTextArea txtComment;
     // End of variables declaration//GEN-END:variables
 }

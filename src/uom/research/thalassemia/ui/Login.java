@@ -77,28 +77,17 @@ public final class Login extends javax.swing.JDialog {
         jLabel1.setText("     User Name");
         getContentPane().add(jLabel1);
 
-        txtUserName.setText("hansa");
+        txtUserName.setText("anupama");
         getContentPane().add(txtUserName);
 
         jLabel2.setText("     Password");
         getContentPane().add(jLabel2);
 
         txtPassword.setText("4212");
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
-            }
-        });
         getContentPane().add(txtPassword);
 
         jLabel3.setText("     Action Type");
         getContentPane().add(jLabel3);
-
-        cmbTest.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbTestActionPerformed(evt);
-            }
-        });
         getContentPane().add(cmbTest);
 
         btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/exit.png"))); // NOI18N
@@ -130,14 +119,28 @@ public final class Login extends javax.swing.JDialog {
             User user = login.authenticate(txtUserName.getText(),
                     new String(txtPassword.getPassword()));
             if (user != null) {
-                this.dispose();
                 switch (cmbTest.getSelectedItem().toString()) {
                     case "Home":
-                        new HomeMain(user).setVisible(true);
-                        break;
+                        this.dispose();
+                        if (user.getUserRole().equals("Doctor")) {
+                            new Doctor(user).setVisible(true);
+                            break;
+                        } else {
+                            new HomeMain(user).setVisible(true);
+                            break;
+                        }
                     case "Blood Cell Image Analysis":
-                        new PatientUI(null, true, user).setVisible(true);
-                        break;
+                        if (user.getUserRole().equals("Lab Tester")
+                                || user.getUserRole().equals("Doctor")) {
+                            this.dispose();
+                            new PatientUI(null, true, user).setVisible(true);
+                            break;
+                        } else {
+                            Message.showErrorMessage("You are authorized but "
+                                    + "you do not have enough permission to "
+                                    + "proceed with selection.");
+                            break;
+                        }
                     default:
                         Message.showErrorMessage("No Action Defined To Take");
                 }
@@ -152,14 +155,6 @@ public final class Login extends javax.swing.JDialog {
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnExitActionPerformed
-
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPasswordActionPerformed
-
-    private void cmbTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTestActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbTestActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;

@@ -150,8 +150,8 @@ public class BloodCellData {
     }
 
     private void process(final Mat currentSelection) {
-        getMinMaxDiameter(currentSelection);
         sgf = 0;
+        getMinMaxDiameter(currentSelection);
         if (minDiameter != 0) {
             //calculate shape geometric factor
             sgf = maxDiameter / minDiameter;
@@ -159,6 +159,7 @@ public class BloodCellData {
         double[] circles;
 
         for (int a = 0; a < currentSelection.cols(); a++) {
+
             Map<Point, Double> points = getPallorBloodCellsPointList();
             areaPreparation = 0;
             circles = currentSelection.get(0, a);
@@ -179,8 +180,6 @@ public class BloodCellData {
             if (points.containsKey(point)) {
                 areaPreparation = calculateArea(points.get(point)) / area;
             }
-            System.out.println("a is "+a);
-            //BloodCellAbnormalLogicImpl bcali = new BloodCellAbnormalLogicImpl(sgf, deviationValue, diameter, area, areaPreparation, true);
             getAbnormalCellTypes();
         }
     }
@@ -274,13 +273,13 @@ public class BloodCellData {
     /**
      * Calculate Area Proportion of Circle.
      *
-     * @param area double area value
+     * @param parea double area value
      * @param cpArea double centralPallorArea value
      * @return areaProporation as double
      */
-    private double calculateAreaProporation(final double area,
+    private double calculateAreaProporation(final double parea,
             final double cpArea) {
-        return cpArea / area;
+        return cpArea / parea;
     }
 
     /**
@@ -299,9 +298,9 @@ public class BloodCellData {
                         allcontours.toArray());
                 boundingEllipse = Imgproc.fitEllipse(newMat2);
                 //ellipse centre x cordination
-                double x = boundingEllipse.center.x;
+                double xx = boundingEllipse.center.x;
                 //ellipse centre y cordination
-                double y = boundingEllipse.center.y;
+                double yy = boundingEllipse.center.y;
                 //ellipse width
                 double width = boundingEllipse.size.width;
                 //ellipse height
@@ -338,9 +337,9 @@ public class BloodCellData {
     /**
      * identify abnormal cell types.
      *
-     * @return cell type
      */
     private void getAbnormalCellTypes() {
+        //System.out.println("sgf " + sgf + " | deviationVal " + deviationValue + " | diameter " + diameter + " | area " + area + " | AP " + areaPreparation);
         if (sgf > 1.2) {
             //sgf true
             if (deviationValue > 0.2) {
@@ -348,60 +347,50 @@ public class BloodCellData {
                 fillClasses("Class 12");
             } else {
                 //dv false
-                fillClasses("class 5");
+                fillClasses("Class 5");
             }
         } else {
-            if ((6.5 < diameter) & (diameter < 8.5)) {
-                //diameter true
+            System.out.println();
+            if ((6.5 < diameter) && (8.5 > diameter)) {
                 if (area > 0) {
-                    //cpArea true
-                    if (tf == true) {
-                        //tf true
-                        fillClasses("class 6");
-                    } else //tf false
-                    {
-                        if (areaPreparation > 0.2) {
-                            //ap true
-                            fillClasses("class 9");
-                        } else {
-                            //ap false
-                            fillClasses("class 1");
-                        }
+                    if (tf) {
+                        fillClasses("Class 6");
+                    } else if (areaPreparation > 0.2) {
+                        fillClasses("Class 9");
+                    } else {
+                        fillClasses("Class 1");
                     }
                 } else {
-                    //cp area false
-                    fillClasses("class 2");
+                    fillClasses("Class 2");
                 }
-            } else //diameter false
-            {
+            } else {
+                System.out.println();
                 if (deviationValue > 8.5) {
-                    //dv true
                     if (area > 0) {
                         //cpArea true
                         if (areaPreparation > 0.2) {
                             //ap true
-                            fillClasses("class 8");
+                            fillClasses("Class 8");
                         } else {
                             //ap false
-                            fillClasses("class 9");
+                            fillClasses("Class 9");
                         }
                     } else {
-                        //cpArea false
-                        fillClasses("class 3");
+                        fillClasses("Class 3");
                     }
-                } else //dv false
-                {
+                } else {
+                    System.out.println();
                     if (area > 0) {
                         //cpArea true
                         if (areaPreparation > 0.2) {
-                            fillClasses("class 7");
+                            fillClasses("Class 7");
                         } else {
                             //cpArea false
-                            fillClasses("class 10");
+                            fillClasses("Class 10");
                         }
                     } else {
                         //cpArea false
-                        fillClasses("class 4");
+                        fillClasses("Class 4");
                     }
                 }
             }
@@ -415,8 +404,8 @@ public class BloodCellData {
      */
     private void fillClasses(final String key) {
         if (classes.containsKey(key)) {
-            int x = classes.get(key);
-            classes.replace(key, x, x++);
+            int value = classes.get(key);
+            classes.put(key, ++value);
         } else {
             classes.put(key, 1);
         }

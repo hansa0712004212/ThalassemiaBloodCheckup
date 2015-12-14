@@ -80,7 +80,9 @@ public final class ObjectDockLoader {
         }, new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                if (Message.showQuestionYesNo(" Do You Really Need To Log Out ? ") == Message.YES_OPTION) {
+                if (Message.showQuestionYesNo(
+                        " Do You Really Need To Log Out ? ")
+                        == Message.YES_OPTION) {
                     jFrame.dispose();
                     new Login(null, true).setVisible(true);
                 }

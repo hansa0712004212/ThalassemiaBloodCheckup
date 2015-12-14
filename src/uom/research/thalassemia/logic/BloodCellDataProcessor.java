@@ -5,6 +5,7 @@
  */
 package uom.research.thalassemia.logic;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
 import org.opencv.imgproc.Imgproc;
 import uom.research.thalassemia.util.FillData;
+import uom.research.thalassemia.util.Validator;
 
 /**
  *
@@ -68,7 +70,7 @@ public final class BloodCellDataProcessor {
     /**
      * keeps total blood cell area.
      */
-    private double totalBloodCellArea = 0.0;
+    private double totalBloodCellArea = 1.0;
 
     /**
      * keeps total pallor area.
@@ -79,6 +81,21 @@ public final class BloodCellDataProcessor {
      * ellipse total Ellipse cell area.
      */
     private double totalEllipseArea = 0.0;
+
+    /**
+     * keeps all red blood cell data in array.
+     */
+    private List<Object[]> circularBloodCellsArray;
+
+    /**
+     * keeps all pallor cell data in array.
+     */
+    private List<Object[]> pallorBloodCellsArray;
+
+    /**
+     * keeps all ellipse cell data in array.
+     */
+    private List<Object[]> ellipseBloodCellsArray;
 
     /**
      * Creates new form CircleData.
@@ -96,31 +113,46 @@ public final class BloodCellDataProcessor {
     }
 
     /**
-     * fill table.
+     * Creates new form CircleData.
      *
-     * @param jTable1 jTable1
-     * @param currentSelection currentSelection
+     * @param circleSet circularBloodCells
+     * @param ellipseSet contours
+     * @param pallorSet pallorBloodCells
      */
-    public void fillTable(final JTable jTable1, final Mat currentSelection) {
-        FillData.doEmptyTable(jTable1);
+    public BloodCellDataProcessor(final Mat circleSet,
+            final List<MatOfPoint> ellipseSet, final Mat pallorSet) {
+        this.circularBloodCells = circleSet;
+        this.contours = ellipseSet;
+        this.pallorBloodCells = pallorSet;
+        this.ellipticalBloodCells = null;
+    }
+
+    /**
+     * process circular blood cell data including both pallor and red blood
+     * cells.
+     *
+     * @param currentSelection Mat of selected
+     */
+    public void circularBloodCellsProcesser(final Mat currentSelection) {
 
         if (currentSelection != null) {
+            if (currentSelection == circularBloodCells) {
+                circularBloodCellsArray = new ArrayList<>();
+            } else if (currentSelection == pallorBloodCells) {
+                pallorBloodCellsArray = new ArrayList<>();
+            }
             getMinMaxDiameter(currentSelection);
             double sgf = 0;
             if (minDiameter != 0) {
-
                 //calculate shape geometric factor
                 sgf = maxDiameter / minDiameter;
             }
             Map<Point, Double> points = getPallorBloodCellsPointList();
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             double[] circles;
-            int index = 0;
             double x, y, r, area, perimeter, diameter, deviationValue,
                     areaPreparation;
             for (int a = 0; a < currentSelection.cols(); a++) {
                 areaPreparation = 0;
-                index = a + 1;
                 circles = currentSelection.get(0, a);
                 x = circles[0];
                 y = circles[1];
@@ -128,14 +160,6 @@ public final class BloodCellDataProcessor {
 
                 //get area value
                 area = calculateArea(r);
-
-                if (currentSelection == circularBloodCells) {
-                    totalBloodCellArea += area;
-                } else if (currentSelection == pallorBloodCells) {
-                    totalPallarArea += area;
-                } else {
-                    totalEllipseArea += area;
-                }
                 //get perimeter value
                 perimeter = calculatePerimeter(r);
                 //get diameter value
@@ -147,10 +171,106 @@ public final class BloodCellDataProcessor {
                 if (points.containsKey(point)) {
                     areaPreparation = calculateArea(points.get(point)) / area;
                 }
-                Object[] ob = {index, x, y, r, area, perimeter, diameter,
-                    deviationValue, areaPreparation};
-                dtm.addRow(ob);
+                Object[] ob = {(a + 1), x, y, r,
+                    Validator.formatDouble(perimeter),
+                    Validator.formatDouble(area),
+                    Validator.formatDouble(diameter),
+                    Validator.formatDouble(deviationValue),
+                    Validator.formatDouble(areaPreparation)};
+
+                if (currentSelection == circularBloodCells) {
+                    totalBloodCellArea += area;
+                    circularBloodCellsArray.add(ob);
+                } else if (currentSelection == pallorBloodCells) {
+                    totalPallarArea += area;
+                    pallorBloodCellsArray.add(ob);
+                } else {
+                    totalEllipseArea += area;
+                }
             }
+        }
+    }
+
+    /**
+     * process circular blood cell data including both pallor and red blood
+     * cells.
+     *
+     */
+    public void ellipseBloodCellsProcesser() {
+        ellipseBloodCellsArray = new ArrayList<>();
+        int index = 0;
+        MatOfPoint allcontours = new MatOfPoint();
+        for (MatOfPoint mat : contours) {
+            mat.copyTo(allcontours);
+            RotatedRect boundingEllipse;
+            if (allcontours.toArray().length > FOUR) {
+                MatOfPoint2f newMat2 = new MatOfPoint2f(
+                        allcontours.toArray());
+                boundingEllipse = Imgproc.fitEllipse(newMat2);
+                //ellipse centre x cordination
+                double xx, yy, rr, width, height, area, perimeter, diameter,
+                        deviationValue, areaPreparation, sgf;
+
+                xx = boundingEllipse.center.x;
+                //ellipse centre y cordination
+                yy = boundingEllipse.center.y;
+                //ellipse width
+                width = boundingEllipse.size.width;
+                //ellipse height
+                height = boundingEllipse.size.height;
+                // assume radius is width. width is the hightest length.
+                rr = width;
+                sgf = width / height;
+                //get area value
+                area = calculateArea(width, height);
+                //get perimeter value
+                perimeter = calculatePerimeter(width, height);
+                //get diameter value
+                diameter = calculateDiameter(area, perimeter);
+                // calculate deviational value
+                if (rr > 0) {
+                    deviationValue = sgf / area;
+
+                    Map<Point, Double> points = getPallorBloodCellsPointList();
+                    areaPreparation = 0;
+
+                    Point point = new Point(xx, yy);
+                    if (points.containsKey(point)) {
+                        areaPreparation = calculateArea(points.get(point))
+                                / area;
+                    }
+
+                    Object[] ob = {(++index), xx, yy, rr,
+                        Validator.formatDouble(perimeter),
+                        Validator.formatDouble(area),
+                        Validator.formatDouble(diameter),
+                        Validator.formatDouble(deviationValue),
+                        Validator.formatDouble(areaPreparation)};
+
+                    totalEllipseArea += area;
+                    ellipseBloodCellsArray.add(ob);
+                }
+            }
+        }
+    }
+
+    /**
+     * fill table.
+     *
+     * @param jTable1 jTable1
+     * @param currentSelection currentSelection
+     */
+    public void fillTable(final JTable jTable1, final Mat currentSelection) {
+        FillData.doEmptyTable(jTable1);
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        if (currentSelection == circularBloodCells) {
+            circularBloodCellsArray.stream().forEach((circularBloodCell) -> {
+                dtm.addRow(circularBloodCell);
+            });
+        } else if (currentSelection == pallorBloodCells) {
+            pallorBloodCellsArray.stream().forEach((circularBloodCell) -> {
+                dtm.addRow(circularBloodCell);
+            });
         }
     }
 
@@ -163,45 +283,10 @@ public final class BloodCellDataProcessor {
     public void fillTable(final JTable jTable1,
             final List<MatOfPoint> pcontours) {
         FillData.doEmptyTable(jTable1);
-
-        if (pcontours != null) {
-            getMinMaxDiameter(pcontours);
-            double sgf = 0;
-            if (minDiameter != 0) {
-
-                //calculate shape geometric factor
-                sgf = maxDiameter / minDiameter;
-            }
-            Map<Point, Double> points = getPallorBloodCellsPointList();
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-            double[] circles;
-            int index = 0;
-            double x, y, r, area, perimeter, diameter, deviationValue,
-                    areaPreparation, height, width;
-
-            MatOfPoint allcontours = new MatOfPoint();
-            for (MatOfPoint mat : pcontours) {
-                mat.copyTo(allcontours);
-                RotatedRect boundingEllipse;
-                if (allcontours.toArray().length > 4) {
-                    MatOfPoint2f newMat2 = new MatOfPoint2f(
-                            allcontours.toArray());
-                    boundingEllipse = Imgproc.fitEllipse(newMat2);
-                    x = boundingEllipse.center.x;
-                    y = boundingEllipse.center.y;
-                    width = boundingEllipse.size.width;
-                    height = boundingEllipse.size.height;
-                    r = width;
-                    area = calculateArea(width, height);
-                    perimeter = calculatePerimeter(width, height);
-                    totalEllipseArea += area;
-                    Object[] ob = {index, x, y, r, area, perimeter, 0,
-                        0, 0};
-                    dtm.addRow(ob);
-                }
-
-            }
-        }
+        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+        ellipseBloodCellsArray.stream().forEach((ellipseBloodCell) -> {
+            dtm.addRow(ellipseBloodCell);
+        });
     }
 
     /**
@@ -243,7 +328,8 @@ public final class BloodCellDataProcessor {
      * @return perimeter as double
      */
     private double calculatePerimeter(final double width, final double height) {
-        return 0; //Math.
+        return FI * ((3 * (width + height)) - Math.sqrt(((3 * width)
+                + height) + (width + (3 * height))));
     }
 
     /**

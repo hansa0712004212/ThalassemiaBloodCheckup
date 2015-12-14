@@ -52,6 +52,7 @@ import uom.research.thalassemia.util.FillData;
 import uom.research.thalassemia.util.ImageFileChooser;
 import uom.research.thalassemia.util.Message;
 import uom.research.thalassemia.util.StretchImage;
+import uom.research.thalassemia.util.Validator;
 
 /**
  *
@@ -136,7 +137,7 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
         setResizable(true);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setTitle("Thalassemia Affected Blood Sample Analyzer v1.0");
+        setTitle("  Thalassemia Affected Blood Sample Analyzer v1.0  ");
         setLocationRelativeTo(null);
         btnProcess.setEnabled(false);
         btnSegmentImage.setEnabled(false);
@@ -242,7 +243,8 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                         String.valueOf(bcm.getMinimumRadius()));
                 Long end = new Date().getTime();
                 lblTimeElapsed.setText(
-                        String.valueOf(new Date(end - start).getTime()));
+                        String.valueOf(new Date(end - start).getTime())
+                        .concat(" ms"));
                 progress.dispose();
                 btnCellData.setEnabled(true);
                 btnSaveTest.setEnabled(true);
@@ -252,17 +254,18 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                                 bcm.getEllipses(), bcm.getPallors());
 
                 ActualValueTransformer avt = new ActualValueTransformer();
-                lblRBC.setText(String.valueOf(
-                        avt.getActualRBCCount(bcm.getCircleCount())));
-                lblMCV.setText(String.valueOf(avt.getMCVCount(
-                        bloodCellDataProcessor.getTotalBloodCellArea())));
-                lblRDW.setText(String.valueOf(
+                lblRBC.setText(String.valueOf(Validator.formatDouble(
+                        avt.getActualRBCCount(bcm.getCircleCount()))));
+                lblMCV.setText(String.valueOf(Validator.formatDouble(
+                        avt.getMCVCount(bloodCellDataProcessor
+                                .getTotalBloodCellArea()))));
+                lblRDW.setText(String.valueOf(Validator.formatDouble(
                         avt.getRDWCount(bloodCellDataProcessor
-                                .getTotalBloodCellArea())));
-                
-            ////////////////////
+                                .getTotalBloodCellArea()))));
+
+                ////////////////////
                 BloodCellData bcd = new BloodCellData(bcm.getCircles(),
-                                bcm.getEllipses(), bcm.getPallors());
+                        bcm.getEllipses(), bcm.getPallors());
                 Map<String, Integer> classes = bcd.getClasses();
                 FillData.doEmptyTable(tblCellTypes);
                 DefaultTableModel dtm
@@ -640,18 +643,26 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
 
         jLabel2.setText("  Cells Count  ");
         jPanel10.add(jLabel2);
+
+        lblCountCells.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel10.add(lblCountCells);
 
         jLabel3.setText("  Maximum Radius");
         jPanel10.add(jLabel3);
+
+        lblMaximumRadius.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel10.add(lblMaximumRadius);
 
         jLabel4.setText("  Minimum Radius  ");
         jPanel10.add(jLabel4);
+
+        lblMinimumRadius.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel10.add(lblMinimumRadius);
 
         jLabel5.setText("  Time Elapsed  ");
         jPanel10.add(jLabel5);
+
+        lblTimeElapsed.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel10.add(lblTimeElapsed);
 
         jButton1.setText("<html><center>Load Previous<br/>Test Suite</center></html>");
@@ -679,14 +690,20 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
 
         jLabel21.setText("  RBC Actual Count");
         jPanel18.add(jLabel21);
+
+        lblRBC.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel18.add(lblRBC);
 
         jLabel22.setText("  MCV Actual Count");
         jPanel18.add(jLabel22);
+
+        lblMCV.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel18.add(lblMCV);
 
         jLabel25.setText("  RDW Actual Count");
         jPanel18.add(jLabel25);
+
+        lblRDW.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel18.add(lblRDW);
         jPanel18.add(jLabel29);
 

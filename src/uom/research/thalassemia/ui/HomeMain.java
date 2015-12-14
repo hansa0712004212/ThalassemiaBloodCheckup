@@ -111,7 +111,7 @@ public class HomeMain extends javax.swing.JFrame {
         dataset.addValue(21022, "Batik", "Test");
         pnlBarChart.removeAll();
         pnlBarChart.add(new BarChartCreator().createPanel(dataset,
-                "Title"));
+                "Title", "SubTitle", "xTitle", "yTitle"));
     }
 
     /**
@@ -129,7 +129,7 @@ public class HomeMain extends javax.swing.JFrame {
         dataset.addValue(300, "schools", "2014");
         pnlLineChart.removeAll();
         pnlLineChart.add(new LineChartCreator().createPanel(dataset,
-                "Title"));
+                "Title", "subtitle", "x axis", "y axis"));
     }
 
     /**
@@ -373,6 +373,8 @@ public class HomeMain extends javax.swing.JFrame {
         jPanel49 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        mnuLogOut = new javax.swing.JMenuItem();
+        mnuExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -392,6 +394,8 @@ public class HomeMain extends javax.swing.JFrame {
         jPanel1.add(jPanel4, java.awt.BorderLayout.PAGE_END);
 
         jPanel3.setLayout(new java.awt.BorderLayout());
+
+        lblBanner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/banner-blood.jpg"))); // NOI18N
         jPanel3.add(lblBanner, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.PAGE_START);
@@ -436,7 +440,7 @@ public class HomeMain extends javax.swing.JFrame {
 
         pnlWelcome.add(jPanel6, java.awt.BorderLayout.PAGE_START);
 
-        jLabel29.setText("jLabel29");
+        jLabel29.setText("Welcome                 ");
         jPanel7.add(jLabel29);
 
         lblDateAndTime.setText(" Date And Time");
@@ -447,7 +451,7 @@ public class HomeMain extends javax.swing.JFrame {
 
         pnlWelcome.add(jPanel7, java.awt.BorderLayout.PAGE_END);
 
-        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Welcome </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlWelcome); // NOI18N
+        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Welcome </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/welcome.png")), pnlWelcome); // NOI18N
 
         pnlDoctor.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
         pnlDoctor.setLayout(new java.awt.GridLayout(1, 2));
@@ -937,7 +941,7 @@ public class HomeMain extends javax.swing.JFrame {
 
         pnlUser.add(jPanel33);
 
-        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Users </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlUser); // NOI18N
+        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Users </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/user.png")), pnlUser); // NOI18N
 
         pnlPatient.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
         pnlPatient.setLayout(new java.awt.GridLayout(1, 2));
@@ -1156,7 +1160,7 @@ public class HomeMain extends javax.swing.JFrame {
 
         pnlPatient.add(jPanel38);
 
-        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Patients </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlPatient); // NOI18N
+        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Patients </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/patient.png")), pnlPatient); // NOI18N
 
         pnlSummary.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
         pnlSummary.setLayout(new javax.swing.BoxLayout(pnlSummary, javax.swing.BoxLayout.LINE_AXIS));
@@ -1171,7 +1175,7 @@ public class HomeMain extends javax.swing.JFrame {
 
         pnlSummary.add(jPanel22);
 
-        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Summary </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/doctor.png")), pnlSummary); // NOI18N
+        jTabbedPane1.addTab("<html><div style='text-align: center;'><br/><br/><br/> Summary </div></html>", new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/summary.png")), pnlSummary); // NOI18N
 
         pnlTemp2.setFont(new java.awt.Font("Helvetica Neue", 0, 12)); // NOI18N
         pnlTemp2.setLayout(new java.awt.GridLayout(1, 2));
@@ -1190,6 +1194,27 @@ public class HomeMain extends javax.swing.JFrame {
         getContentPane().add(jPanel1);
 
         jMenu1.setText("File");
+
+        mnuLogOut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        mnuLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/login.png"))); // NOI18N
+        mnuLogOut.setText("  Log Out ...");
+        mnuLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuLogOutActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuLogOut);
+
+        mnuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        mnuExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/exit.png"))); // NOI18N
+        mnuExit.setText("  Exit ...");
+        mnuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuExitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuExit);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -1225,6 +1250,23 @@ public class HomeMain extends javax.swing.JFrame {
                 Message.showErrorMessage("Invalid");
         }
     }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void mnuLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLogOutActionPerformed
+        if (Message.showQuestionYesNo(
+                " Do You Really Need To Log Out ? ")
+                == Message.YES_OPTION) {
+            HomeMain.this.dispose();
+            new Login(null, true).setVisible(true);
+        }
+    }//GEN-LAST:event_mnuLogOutActionPerformed
+
+    private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExitActionPerformed
+        if (Message.showQuestionYesNo(
+                " Do You Really Need To Exit ? ")
+                == Message.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_mnuExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1430,6 +1472,8 @@ public class HomeMain extends javax.swing.JFrame {
     private javax.swing.JLabel lblPhoto;
     private javax.swing.JLabel lblThal2;
     private javax.swing.JLabel lblUserPhoto;
+    private javax.swing.JMenuItem mnuExit;
+    private javax.swing.JMenuItem mnuLogOut;
     private javax.swing.JPanel pnlBarChart;
     private javax.swing.JPanel pnlDoctor;
     private javax.swing.JPanel pnlLineChart;

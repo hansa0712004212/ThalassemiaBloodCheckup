@@ -36,7 +36,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtUserName">
       <Properties>
-        <Property name="text" type="java.lang.String" value="hansa"/>
+        <Property name="text" type="java.lang.String" value="anupama"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
@@ -48,9 +48,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="4212"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPasswordActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
@@ -58,9 +55,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="cmbTest">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbTestActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnExit">
       <Properties>

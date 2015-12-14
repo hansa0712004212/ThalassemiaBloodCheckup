@@ -8,6 +8,36 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuLogOut">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+L"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/uom/research/thalassemia/images/login.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="  Log Out ..."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuLogOutActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuExit">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Q"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/uom/research/thalassemia/images/exit.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="  Exit ..."/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuExitActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
@@ -81,6 +111,11 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="lblBanner">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/uom/research/thalassemia/images/banner-blood.jpg"/>
+                </Property>
+              </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                   <BorderConstraints direction="Center"/>
@@ -125,7 +160,7 @@
                       <JTabbedPaneConstraints tabName="&lt;html&gt;&lt;div style=&apos;text-align: center;&apos;&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt; Welcome &lt;/div&gt;&lt;/html&gt;">
                         <Property name="tabTitle" type="java.lang.String" value="&lt;html&gt;&lt;div style=&apos;text-align: center;&apos;&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt; Welcome &lt;/div&gt;&lt;/html&gt;"/>
                         <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/uom/research/thalassemia/images/doctor.png"/>
+                          <Image iconType="3" name="/uom/research/thalassemia/images/welcome.png"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>
@@ -241,7 +276,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="jLabel29">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="jLabel29"/>
+                            <Property name="text" type="java.lang.String" value="Welcome                 "/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="lblDateAndTime">
@@ -727,7 +762,7 @@
                       <JTabbedPaneConstraints tabName="&lt;html&gt;&lt;div style=&apos;text-align: center;&apos;&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt; Users &lt;/div&gt;&lt;/html&gt;">
                         <Property name="tabTitle" type="java.lang.String" value="&lt;html&gt;&lt;div style=&apos;text-align: center;&apos;&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt; Users &lt;/div&gt;&lt;/html&gt;"/>
                         <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/uom/research/thalassemia/images/doctor.png"/>
+                          <Image iconType="3" name="/uom/research/thalassemia/images/user.png"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>
@@ -1185,7 +1220,7 @@
                       <JTabbedPaneConstraints tabName="&lt;html&gt;&lt;div style=&apos;text-align: center;&apos;&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt; Patients &lt;/div&gt;&lt;/html&gt;">
                         <Property name="tabTitle" type="java.lang.String" value="&lt;html&gt;&lt;div style=&apos;text-align: center;&apos;&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt; Patients &lt;/div&gt;&lt;/html&gt;"/>
                         <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/uom/research/thalassemia/images/doctor.png"/>
+                          <Image iconType="3" name="/uom/research/thalassemia/images/patient.png"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>
@@ -1587,7 +1622,7 @@
                       <JTabbedPaneConstraints tabName="&lt;html&gt;&lt;div style=&apos;text-align: center;&apos;&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt; Summary &lt;/div&gt;&lt;/html&gt;">
                         <Property name="tabTitle" type="java.lang.String" value="&lt;html&gt;&lt;div style=&apos;text-align: center;&apos;&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt; Summary &lt;/div&gt;&lt;/html&gt;"/>
                         <Property name="tabIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/uom/research/thalassemia/images/doctor.png"/>
+                          <Image iconType="3" name="/uom/research/thalassemia/images/summary.png"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>

@@ -10,6 +10,7 @@ import java.util.List;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import uom.research.thalassemia.logic.BloodCellDataProcessor;
+import uom.research.thalassemia.util.Validator;
 
 /**
  *
@@ -100,8 +101,8 @@ public final class CircleData extends javax.swing.JDialog {
         this.ellipticalBloodCells = ellipseSet;
         this.pallorBloodCells = pallorSet;
         this.contours = null;
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        setLocationRelativeTo(null);
+        CircleData.this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        CircleData.this.setLocationRelativeTo(null);
         loadData();
     }
 
@@ -122,270 +123,45 @@ public final class CircleData extends javax.swing.JDialog {
         this.ellipticalBloodCells = null;
         this.contours = pcontours;
         this.pallorBloodCells = pallorSet;
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        setLocationRelativeTo(null);
+        CircleData.this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        CircleData.this.setLocationRelativeTo(null);
         loadData();
     }
 
+    /**
+     * load Data to UI.
+     */
     private void loadData() {
 
         bloodCellDataProcessor
                 = new BloodCellDataProcessor(circularBloodCells,
-                        pallorBloodCells, pallorBloodCells);
+                        contours, pallorBloodCells);
+        bloodCellDataProcessor.circularBloodCellsProcesser(circularBloodCells);
+        bloodCellDataProcessor.circularBloodCellsProcesser(pallorBloodCells);
+        bloodCellDataProcessor.ellipseBloodCellsProcesser();
         bloodCellDataProcessor.fillTable(jTable1, circularBloodCells);
+        updateLabels();
+    }
+
+    /**
+     * update only label values.
+     */
+    private void updateLabels() {
         lblSumBloodCells.setText(" Σ Blood Cells : "
                 + String.valueOf(circularBloodCells.cols()));
         lblSumPallar.setText(" Σ Pallar Circles : "
                 + String.valueOf(pallorBloodCells.cols()));
         lblBloodCellArea.setText(" Σ Blood Cell Area : "
-                + String.valueOf(bloodCellDataProcessor.getTotalBloodCellArea()));
+                + String.valueOf(Validator.formatDouble(
+                        bloodCellDataProcessor.getTotalBloodCellArea())));
         lblPallarCircleArea.setText(" Σ Pallar Circle Area : "
-                + String.valueOf(bloodCellDataProcessor.getTotalPallarArea()));
+                + String.valueOf(Validator.formatDouble(
+                        bloodCellDataProcessor.getTotalPallarArea())));
         lblEllipseArea.setText(" Σ Ellipse Circle Area : "
-                + String.valueOf(bloodCellDataProcessor.getTotalEllipseArea()));
+                + String.valueOf(Validator.formatDouble(
+                        bloodCellDataProcessor.getTotalEllipseArea())));
     }
 
-    /**
-     * fill table.
-     *
-     * @param currentSelection currentSelection
-     */
-    /*
-     private void fillTable(final Mat currentSelection) {
-     FillData.doEmptyTable(jTable1);
-
-     if (currentSelection != null) {
-     getMinMaxDiameter(currentSelection);
-     double sgf = 0;
-     if (minDiameter != 0) {
-
-     //calculate shape geometric factor
-     sgf = maxDiameter / minDiameter;
-     }
-     lblSGFValue.setText(lblSGFValue.getText()
-     .concat(String.valueOf(sgf)));
-     Map<Point, Double> points = getPallorBloodCellsPointList();
-     DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-     double[] circles;
-     int index = 0;
-     double x, y, r, area, perimeter, diameter, deviationValue,
-     areaPreparation;
-     for (int a = 0; a < currentSelection.cols(); a++) {
-     areaPreparation = 0;
-     index = a + 1;
-     circles = currentSelection.get(0, a);
-     x = circles[0];
-     y = circles[1];
-     r = Math.round(circles[2]);
-
-     //get area value
-     area = calculateArea(r);
-
-     if (currentSelection == circularBloodCells) {
-     totalBloodCellArea += area;
-     } else if (currentSelection == pallorBloodCells) {
-     totalPallarArea += area;
-     } else {
-     totalEllipseArea += area;
-     }
-     //get perimeter value
-     perimeter = calculatePerimeter(r);
-     //get diameter value
-     diameter = calculateDiameter(area, perimeter);
-     // calculate deviational value
-     deviationValue = sgf / area;
-
-     Point point = new Point(x, y);
-     if (points.containsKey(point)) {
-     areaPreparation = calculateArea(points.get(point)) / area;
-     }
-     Object[] ob = {index, x, y, r, area, perimeter, diameter,
-     deviationValue, areaPreparation};
-     dtm.addRow(ob);
-     }
-     lblSumBloodCells.setText(" Σ Blood Cells : "
-     + String.valueOf(circularBloodCells.cols()));
-     lblSumPallar.setText(" Σ Pallar Circles : "
-     + String.valueOf(pallorBloodCells.cols()));
-     lblBloodCellArea.setText(" Σ Blood Cell Area : "
-     + String.valueOf(totalBloodCellArea));
-     lblPallarCircleArea.setText(" Σ Pallar Circle Area : "
-     + String.valueOf(totalPallarArea));
-     lblEllipseArea.setText(" Σ Ellipse Circle Area : "
-     + String.valueOf(totalEllipseArea));
-     }
-     }
-
-     private void fillTable(final List<MatOfPoint> pcontours) {
-     FillData.doEmptyTable(jTable1);
-
-     if (pcontours != null) {
-     getMinMaxDiameter(pcontours);
-     double sgf = 0;
-     if (minDiameter != 0) {
-     //calculate shape geometric factor
-     sgf = maxDiameter / minDiameter;
-     }
-     lblSGFValue.setText(lblSGFValue.getText()
-     .concat(String.valueOf(sgf)));
-     Map<Point, Double> points = getPallorBloodCellsPointList();
-     DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-     double[] circles;
-     int index = 0;
-     double x, y, r, area, perimeter, diameter, deviationValue,
-     areaPreparation, height, width;
-
-     MatOfPoint allcontours = new MatOfPoint();
-     for (MatOfPoint mat : pcontours) {
-     mat.copyTo(allcontours);
-     RotatedRect boundingEllipse = null;
-     if (allcontours.toArray().length > 4) {
-     MatOfPoint2f newMat2 = new MatOfPoint2f(
-     allcontours.toArray());
-     boundingEllipse = Imgproc.fitEllipse(newMat2);
-     x = boundingEllipse.center.x;
-     y = boundingEllipse.center.y;
-     width = boundingEllipse.size.width;
-     height = boundingEllipse.size.height;
-     r = width;
-     area = calculateArea(width, height);
-     perimeter = calculatePerimeter(width, height);
-     totalEllipseArea += area;
-
-     Object[] ob = {index, x, y, r, area, perimeter, 0,
-     0, 0};
-     dtm.addRow(ob);
-
-     }
-
-     }
-     lblSumBloodCells.setText(" Σ Blood Cells : "
-     + String.valueOf(circularBloodCells.cols()));
-     lblSumPallar.setText(" Σ Pallar Circles : "
-     + String.valueOf(pallorBloodCells.cols()));
-     lblBloodCellArea.setText(" Σ Blood Cell Area : "
-     + String.valueOf(totalBloodCellArea));
-     lblPallarCircleArea.setText(" Σ Pallar Circle Area : "
-     + String.valueOf(totalPallarArea));
-     lblEllipseArea.setText(" Σ Ellipse Circle Area : "
-     + String.valueOf(totalEllipseArea));
-     }
-     }*/
-    /**
-     * Calculate Area of a Circle.
-     *
-     * @param radius double radius value
-     * @return area as double
-     *
-     * private double calculateArea(final double radius) { return FI * radius *
-     * radius; }
-     *
-     * /**
-     * Calculate Area of a Ellipse.
-     *
-     * @param width double width value
-     * @param height double height value
-     * @return area as double
-     *
-     * private double calculateArea(final double width, final double height) {
-     * return FI * (height / 2) * (width / 2); }
-     *
-     * /**
-     * Calculate Perimeter of a Circle.
-     *
-     * @param radius double perimeter value
-     * @return perimeter as double
-     *
-     * private double calculatePerimeter(final double radius) { return 2 * FI *
-     * radius; }
-     *
-     * /**
-     * Calculate Perimeter of a Ellipse.
-     *
-     * @param width double perimeter value
-     * @param height double perimeter value
-     * @return perimeter as double
-     *
-     * private double calculatePerimeter(final double width, final double
-     * height) { return 0;//Math. }
-     *
-     * /**
-     * Calculate Diameter of a Circle.
-     *
-     * @param area double area value
-     * @param perimeter double perimeter value
-     * @return diameter as double
-     *
-     * private double calculateDiameter(final double area, final double
-     * perimeter) { return (FOUR * area) / perimeter; }
-     *
-     * /**
-     * Calculate Diameter of a Circle.
-     *
-     * @param radius double diameter value
-     * @return diameter as double
-     *
-     * private double calculateDiameter(final double radius) { return FOUR * (FI
-     * * radius * radius) / (2 * FI * radius); }
-     *
-     * /**
-     * Calculate Area Proporation of Circle
-     *
-     * @param area double area value
-     * @param cpArea double centralPallorArea value
-     * @return areaProporation as double
-     *
-     * private double calculateAreaProporation(final double area, final double
-     * cpArea) { double ap; return ap = cpArea / area; }
-     *
-     * /**
-     * get min and max diameters.
-     *
-     * @param pcontours contours
-     *
-     * private void getMinMaxDiameter(final List<MatOfPoint> pcontours) {
-     * MatOfPoint allcontours = new MatOfPoint(); double diameter; List<Double>
-     * diameters = new ArrayList<>(); for (MatOfPoint mat : pcontours) {
-     * mat.copyTo(allcontours); RotatedRect boundingEllipse = null; if
-     * (allcontours.toArray().length > 4) { MatOfPoint2f newMat2 = new
-     * MatOfPoint2f( allcontours.toArray()); boundingEllipse =
-     * Imgproc.fitEllipse(newMat2); double x = boundingEllipse.center.x; double
-     * y = boundingEllipse.center.y; double width = boundingEllipse.size.width;
-     * double height = boundingEllipse.size.height; diameters.add(width);
-     *
-     * }
-     * }
-     * if (diameters.size() > 1) { diameters.sort(null); } minDiameter =
-     * diameters.get(0); maxDiameter = diameters.get(diameters.size() - 1); }
-     *
-     * /**
-     * get min and max diameters.
-     *
-     * @param currentSelection currentSelection of Mat
-     *
-     * private void getMinMaxDiameter(final Mat currentSelection) { double[]
-     * circles; List<Double> diameters = new ArrayList<>(); double r, diameter;
-     * for (int a = 0; a < currentSelection.cols(); a++) {
-     * circles = currentSelection.get(0, a);
-     * r = Math.round(circles[2]);
-     * diameter = calculateDiameter(r);
-     * diameters.add(diameter);
-     * }
-     * if (diameters.size() > 1) { diameters.sort(null); } minDiameter =
-     * diameters.get(0); maxDiameter = diameters.get(diameters.size() - 1); }
-     *
-     * /**
-     * get Pallor Blood cells point list.
-     *
-     * @return List<Point> List
-     *
-     * private Map<Point, Double> getPallorBloodCellsPointList() { double[]
-     * circles; Map<Point, Double> points = new HashMap<>(); double x, y, r; for
-     * (int a = 0; a < pallorBloodCells.cols(); a++) { circles =
-     * pallorBloodCells.get(0, a); x = circles[0]; y = circles[1]; r =
-     * Math.round(circles[2]); points.put(new Point(x, y), r); } return points;
-     * }
-     */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -578,8 +354,6 @@ public final class CircleData extends javax.swing.JDialog {
 
         jLabel7.setText("  diameter  =  4 . area / perimeter");
         jPanel5.add(jLabel7);
-
-        lblSGFValue.setText("  SGF Value = ");
         jPanel5.add(lblSGFValue);
 
         jLabel12.setText("  shape geometric factor (sgf) = large / small diameter");
@@ -601,14 +375,17 @@ public final class CircleData extends javax.swing.JDialog {
 
     private void radCircularBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radCircularBloodCellsActionPerformed
         bloodCellDataProcessor.fillTable(jTable1, circularBloodCells);
+        updateLabels();
     }//GEN-LAST:event_radCircularBloodCellsActionPerformed
 
     private void radPallorBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radPallorBloodCellsActionPerformed
         bloodCellDataProcessor.fillTable(jTable1, pallorBloodCells);
+        updateLabels();
     }//GEN-LAST:event_radPallorBloodCellsActionPerformed
 
     private void radEllipticalBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radEllipticalBloodCellsActionPerformed
-        bloodCellDataProcessor.fillTable(jTable1, ellipticalBloodCells);
+        bloodCellDataProcessor.fillTable(jTable1, contours);
+        updateLabels();
     }//GEN-LAST:event_radEllipticalBloodCellsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -339,9 +339,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblSGFValue">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="  SGF Value = "/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>
