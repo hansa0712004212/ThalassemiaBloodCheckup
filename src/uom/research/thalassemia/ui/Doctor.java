@@ -477,7 +477,7 @@ public final class Doctor extends javax.swing.JFrame {
                     test.getActualRBC(), test.getMcvActual(), test.getRdwActual(),
                     Validator.localDateToFormattedDate(test.getTestDate())};
                 testTableModel.addRow(ob);
-                dataset.addValue(test.getActualRBC(), "RBC", "Test " + index);
+                dataset.addValue(test.getActualRBC() / Math.pow(10, 6), "RBC", "Test " + index);
                 dataset.addValue(test.getMcvActual(), "MCV", "Test " + index);
                 dataset.addValue(test.getRdwActual(), "RDW", "Test " + index);
             }
