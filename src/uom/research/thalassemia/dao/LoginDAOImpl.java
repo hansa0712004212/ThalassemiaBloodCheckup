@@ -39,10 +39,10 @@ public final class LoginDAOImpl implements LoginDAO {
     public User authenticate(final String name, final String password)
             throws Exception {
         List<ODocument> result = DatabaseAccess.selectData(
-                "SELECT @rid.asString() as rid, username, userRole.role as role, "
-                + "firstName, lastName, email, mobile, assignedDate.asLong() "
-                + "FROM User WHERE username='" + name + "' AND password='"
-                + password + "'");
+                "SELECT @rid.asString() as rid, username, "
+                + "userRole.role as role, firstName, lastName, email, mobile, "
+                + "assignedDate.asLong() FROM User WHERE username='" + name
+                + "' AND password='" + password + "'");
         if (result.size() > 0) {
             ODocument document = result.get(0);
             String[] columnNames = document.fieldNames();
@@ -60,16 +60,5 @@ public final class LoginDAOImpl implements LoginDAO {
             return user;
         }
         return null;
-    }
-	
-	
-	
-	public String abc1(final TestSuite testSuite) throws Exception {
-        String rid = "";
-        return rid;
-    }
-	public String abc2(final TestSuite testSuite) throws Exception {
-        String rid = "";
-        return rid;
     }
 }

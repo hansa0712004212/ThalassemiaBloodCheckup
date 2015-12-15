@@ -7,7 +7,6 @@ package uom.research.thalassemia.dao;
 
 import com.orientechnologies.orient.core.record.impl.ODocument;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import uom.research.thalassemia.db.DatabaseAccess;
@@ -103,22 +102,24 @@ public final class PatientDAOImpl implements PatientDAO {
                             + "contactPerson.mobile as contactMobile "
                             + "FROM Patient WHERE @rid=" + rid);
             Patient patient = new Patient();
-            patient.setRid(list.get(0).field("rid"));
-            patient.setTitle(list.get(0).field("title"));
-            patient.setFirstName(list.get(0).field("firstName"));
-            patient.setMiddleName(list.get(0).field("middleName"));
-            patient.setLastName(list.get(0).field("lastName"));
-            patient.setSex(list.get(0).field("sex"));
-            patient.setCity(list.get(0).field("city"));
+            patient.setRid(list.get(0).field("rid").toString());
+            patient.setTitle(list.get(0).field("title").toString());
+            patient.setFirstName(list.get(0).field("firstName").toString());
+            patient.setMiddleName(list.get(0).field("middleName").toString());
+            patient.setLastName(list.get(0).field("lastName").toString());
+            patient.setSex(list.get(0).field("sex").toString());
+            patient.setCity(list.get(0).field("city").toString());
             patient.setBirthDate(Validator.stringDateToLocalDate(
-                    list.get(0).field("birthDate")));
-            patient.setAddress1(list.get(0).field("address1"));
-            patient.setAddress2(list.get(0).field("address2"));
-            patient.setMobile(list.get(0).field("mobile"));
-            patient.setImagePath(list.get(0).field("imagePath"));
+                    list.get(0).field("birthDate").toString()));
+            patient.setAddress1(list.get(0).field("address1").toString());
+            patient.setAddress2(list.get(0).field("address2").toString());
+            patient.setMobile(Integer.valueOf(
+                    list.get(0).field("mobile").toString()));
+            patient.setImagePath(list.get(0).field("imagePath").toString());
             ContactPerson contactPerson = new ContactPerson();
-            contactPerson.setName(list.get(0).field("contactName"));
-            contactPerson.setMobile(list.get(0).field("contactMobile"));
+            contactPerson.setName(list.get(0).field("contactName").toString());
+            contactPerson.setMobile(Integer.valueOf(
+                    list.get(0).field("contactMobile").toString()));
             patient.setContactPerson(contactPerson);
             return patient;
         } else {
