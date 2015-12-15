@@ -5,7 +5,8 @@
  */
 package uom.research.thalassemia.object;
 
-import java.time.LocalDate;
+import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -27,12 +28,12 @@ public final class Test {
     /**
      * Test Image Path.
      */
-    private String imagePath;
+    private File imagePath;
 
     /**
      * Test Date.
      */
-    private LocalDate testDate;
+    private LocalDateTime testDate;
 
     /**
      * Test Circles List.
@@ -43,6 +44,21 @@ public final class Test {
      * Test Thalassemia isInfected.
      */
     private boolean isInfected;
+
+    /**
+     * actual RBC.
+     */
+    private double actualRBC;
+
+    /**
+     * mcv Actual.
+     */
+    private double mcvActual;
+
+    /**
+     * rdw Actual.
+     */
+    private double rdwActual;
 
     /**
      * Default Constructor.
@@ -67,7 +83,7 @@ public final class Test {
      * @param pisInfected isInfected
      */
     public Test(final String prid, final TestType ptestType,
-            final String pimagePath, final LocalDate ptestDate,
+            final File pimagePath, final LocalDateTime ptestDate,
             final List<Circle> pcircles, final boolean pisInfected) {
         setRid(prid);
         setTestType(ptestType);
@@ -118,7 +134,7 @@ public final class Test {
      *
      * @return the imagePath
      */
-    public String getImagePath() {
+    public File getImagePath() {
         return imagePath;
     }
 
@@ -127,7 +143,7 @@ public final class Test {
      *
      * @param pimagePath the imagePath to set
      */
-    public void setImagePath(final String pimagePath) {
+    public void setImagePath(final File pimagePath) {
         this.imagePath = pimagePath;
     }
 
@@ -136,7 +152,7 @@ public final class Test {
      *
      * @return the testDate
      */
-    public LocalDate getTestDate() {
+    public LocalDateTime getTestDate() {
         return testDate;
     }
 
@@ -145,7 +161,7 @@ public final class Test {
      *
      * @param ptestDate the testDate to set
      */
-    public void setTestDate(final LocalDate ptestDate) {
+    public void setTestDate(final LocalDateTime ptestDate) {
         this.testDate = ptestDate;
     }
 
@@ -184,4 +200,47 @@ public final class Test {
     public void setIsInfected(final boolean pisInfected) {
         this.isInfected = pisInfected;
     }
+
+    /**
+     * @return the actualRBC
+     */
+    public double getActualRBC() {
+        return actualRBC;
+    }
+
+    /**
+     * @param pactualRBC the actualRBC to set
+     */
+    public void setActualRBC(final double pactualRBC) {
+        this.actualRBC = pactualRBC;
+    }
+
+    /**
+     * @return the mcvActual
+     */
+    public double getMcvActual() {
+        return mcvActual;
+    }
+
+    /**
+     * @param pmcvActual the mcvActual to set
+     */
+    public void setMcvActual(final double pmcvActual) {
+        this.mcvActual = pmcvActual;
+    }
+
+    /**
+     * @return the rdwActual
+     */
+    public double getRdwActual() {
+        return rdwActual;
+    }
+
+    /**
+     * @param prdwActual the rdwActual to set
+     */
+    public void setRdwActual(final double prdwActual) {
+        this.rdwActual = prdwActual;
+    }
+
 }

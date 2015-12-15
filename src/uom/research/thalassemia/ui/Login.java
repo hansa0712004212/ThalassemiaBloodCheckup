@@ -45,7 +45,8 @@ public final class Login extends javax.swing.JDialog {
      */
     private void loadTypes() {
         try {
-            FillData.fillCombo(cmbTest, "SELECT FROM TestType", "testType");
+            FillData.fillCombo(cmbTest, "SELECT FROM TestType ORDER BY "
+                    + " @rid DESC", "testType");
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -70,12 +71,13 @@ public final class Login extends javax.swing.JDialog {
         btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Login");
         getContentPane().setLayout(new java.awt.GridLayout(4, 2, 10, 15));
 
         jLabel1.setText("     User Name");
         getContentPane().add(jLabel1);
 
-        txtUserName.setText("hansa");
+        txtUserName.setText("anupama");
         getContentPane().add(txtUserName);
 
         jLabel2.setText("     Password");
@@ -84,7 +86,7 @@ public final class Login extends javax.swing.JDialog {
         txtPassword.setText("4212");
         getContentPane().add(txtPassword);
 
-        jLabel3.setText("     Test Type");
+        jLabel3.setText("     Action Type");
         getContentPane().add(jLabel3);
         getContentPane().add(cmbTest);
 
@@ -117,8 +119,31 @@ public final class Login extends javax.swing.JDialog {
             User user = login.authenticate(txtUserName.getText(),
                     new String(txtPassword.getPassword()));
             if (user != null) {
-                this.dispose();
-                new PatientUI(null, true, user).setVisible(true);
+                switch (cmbTest.getSelectedItem().toString()) {
+                    case "Home":
+                        this.dispose();
+                        if (user.getUserRole().equals("Doctor")) {
+                            new Doctor(user).setVisible(true);
+                            break;
+                        } else {
+                            new HomeMain(user).setVisible(true);
+                            break;
+                        }
+                    case "Blood Cell Image Analysis":
+                        if (user.getUserRole().equals("Lab Tester")
+                                || user.getUserRole().equals("Doctor")) {
+                            this.dispose();
+                            new PatientUI(null, true, user).setVisible(true);
+                            break;
+                        } else {
+                            Message.showErrorMessage("You are authorized but "
+                                    + "you do not have enough permission to "
+                                    + "proceed with selection.");
+                            break;
+                        }
+                    default:
+                        Message.showErrorMessage("No Action Defined To Take");
+                }
             } else {
                 Message.showInformationMessage("Invalid User.");
             }

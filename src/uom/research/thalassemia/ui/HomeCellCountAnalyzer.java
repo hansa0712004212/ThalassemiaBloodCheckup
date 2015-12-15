@@ -15,21 +15,28 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import uom.research.thalassemia.dao.TestDAO;
 import uom.research.thalassemia.dao.TestDAOImpl;
 import uom.research.thalassemia.dao.TestSuiteDAO;
 import uom.research.thalassemia.dao.TestSuiteDAOImpl;
+import uom.research.thalassemia.db.DatabaseAccess;
+import uom.research.thalassemia.logic.ActualValueTransformer;
+import uom.research.thalassemia.logic.BloodCellData;
+import uom.research.thalassemia.logic.BloodCellDataProcessor;
 import uom.research.thalassemia.logic.BloodCellsManipulation;
 import uom.research.thalassemia.logic.BloodCellsManipulationImpl;
 import uom.research.thalassemia.logic.ImageSegment;
@@ -37,16 +44,19 @@ import uom.research.thalassemia.object.Circle;
 import uom.research.thalassemia.object.Patient;
 import uom.research.thalassemia.object.Test;
 import uom.research.thalassemia.object.TestSuite;
+import uom.research.thalassemia.object.TestType;
 import uom.research.thalassemia.object.User;
+import uom.research.thalassemia.util.FillData;
 import uom.research.thalassemia.util.ImageFileChooser;
 import uom.research.thalassemia.util.Message;
 import uom.research.thalassemia.util.StretchImage;
+import uom.research.thalassemia.util.Validator;
 
 /**
  *
  * @author hansa
  */
-public final class Home2 extends javax.swing.JFrame {
+public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
 
     /**
      * Selected Image File .
@@ -120,13 +130,13 @@ public final class Home2 extends javax.swing.JFrame {
      * @param puser user
      * @param ppatient patient
      */
-    public Home2(final User puser, final Patient ppatient) {
+    public HomeCellCountAnalyzer(final User puser, final Patient ppatient) {
         initComponents();
+        setResizable(true);
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setTitle("Thalassemia Affected Blood Sample Analyzer v1.0");
+        setTitle("  Thalassemia Affected Blood Sample Analyzer v1.0  ");
         setLocationRelativeTo(null);
-        setResizable(false);
         btnProcess.setEnabled(false);
         btnSegmentImage.setEnabled(false);
         mnuProcess.setEnabled(false);
@@ -135,8 +145,9 @@ public final class Home2 extends javax.swing.JFrame {
         jButton1.setEnabled(false);
         user = puser;
         patient = ppatient;
-        jFrame = Home2.this;
+        jFrame = HomeCellCountAnalyzer.this;
         setToolBarData();
+        FillData.setIconForJFrame(HomeCellCountAnalyzer.this);
     }
 
     /**
@@ -170,6 +181,8 @@ public final class Home2 extends javax.swing.JFrame {
                         btnSegmentImage.setEnabled(true);
                         mnuProcess.setEnabled(true);
                         mnuSegment.setEnabled(true);
+                        btnSaveTest.setEnabled(false);
+                        btnCellData.setEnabled(false);
                     }
                 } catch (Exception e) {
                     System.out.println("btnOpenImage " + e.getMessage()
@@ -177,10 +190,8 @@ public final class Home2 extends javax.swing.JFrame {
                 }
                 progress.dispose();
             }).start();
-        } else {
-            if (prevFile != null) {
-                imageFile = prevFile;
-            }
+        } else if (prevFile != null) {
+            imageFile = prevFile;
         }
     }
 
@@ -230,9 +241,45 @@ public final class Home2 extends javax.swing.JFrame {
                         String.valueOf(bcm.getMinimumRadius()));
                 Long end = new Date().getTime();
                 lblTimeElapsed.setText(
-                        String.valueOf(new Date(end - start).getTime()));
+                        String.valueOf(new Date(end - start).getTime())
+                        .concat(" ms"));
                 progress.dispose();
                 btnCellData.setEnabled(true);
+                btnSaveTest.setEnabled(true);
+
+                BloodCellDataProcessor bloodCellDataProcessor
+                        = new BloodCellDataProcessor(bcm.getCircles(),
+                                bcm.getEllipses(), bcm.getPallors());
+
+                ActualValueTransformer avt = new ActualValueTransformer();
+                
+                System.out.println("rbc "+avt.getActualRBCCount(bcm.getCircleCount()));
+                System.out.println("rdw "+avt.getRDWCount(bcm.getCircleCount()));
+                System.out.println("mcv "+avt.getMCVCount(bcm.getCircleCount()));
+                
+                lblRBC.setText(String.valueOf(Validator.formatDouble(
+                        avt.getActualRBCCount(bcm.getCircleCount()))));
+                lblMCV.setText(String.valueOf(Validator.formatDouble(
+                        avt.getMCVCount(bloodCellDataProcessor
+                                .getTotalBloodCellArea()))));
+                lblRDW.setText(String.valueOf(Validator.formatDouble(
+                        avt.getRDWCount(bloodCellDataProcessor
+                                .getTotalBloodCellArea()))));
+
+                ////////////////////
+                BloodCellData bcd = new BloodCellData(bcm.getCircles(),
+                        bcm.getEllipses(), bcm.getPallors());
+                Map<String, Integer> classes = bcd.getClasses();
+                FillData.doEmptyTable(tblCellTypes);
+                DefaultTableModel dtm
+                        = (DefaultTableModel) tblCellTypes.getModel();
+                for (Map.Entry<String, Integer> entrySet : classes.entrySet()) {
+                    String key = entrySet.getKey();
+                    Integer value = entrySet.getValue();
+                    Object[] ob = {key, value};
+                    dtm.addRow(ob);
+                }
+                System.out.println("end");
                 Thread.currentThread().interrupt();
             } catch (Exception ex) {
                 progress.dispose();
@@ -278,7 +325,8 @@ public final class Home2 extends javax.swing.JFrame {
 
         if (testSuite == null) {
             try {
-                testSuite = new TestSuite(null, patient, null, user);
+                testSuite = new TestSuite(null, patient, null, user,
+                        LocalDateTime.now());
                 TestSuiteDAO testSuiteDAO = new TestSuiteDAOImpl();
                 testSuite.setRid(testSuiteDAO.saveTestSuite(testSuite));
             } catch (Exception ex) {
@@ -289,15 +337,24 @@ public final class Home2 extends javax.swing.JFrame {
         }
         try {
             Test test = new Test();
-            test.setImagePath("somewhere");
+            test.setImagePath(imageFile);
             test.setIsInfected(false);
-            test.setTestDate(LocalDate.now());
-            test.setTestType(null);
+            test.setTestDate(LocalDateTime.now());
+            test.setActualRBC(Double.valueOf(lblRBC.getText()));
+            test.setMcvActual(Double.valueOf(lblMCV.getText()));
+            test.setRdwActual(Double.valueOf(lblRDW.getText()));
+            test.setTestType(new TestType("#15:0",
+                    "Blood Cell Image Analysis"));
             convertCirclesMapToCirclesList();
             test.setCircles(circlesList);
 
             TestDAO testDAO = new TestDAOImpl();
-            testDAO.saveTest(testSuite, test);
+            String testRid = testDAO.saveTest(testSuite, test);
+
+            DatabaseAccess.updateData("UPDATE " + testSuite.getRid()
+                    + " ADD test = " + testRid);
+            Message.showSuccessMessage("Test Data Saved Successfully.");
+            btnSaveTest.setEnabled(false);
         } catch (Exception ex) {
             Message.showErrorMessage("Error on Saveing Test Data "
                     + ex.getMessage());
@@ -309,6 +366,7 @@ public final class Home2 extends javax.swing.JFrame {
      */
     private void convertCirclesMapToCirclesList() {
         Mat circles = bcm.getCircles();
+        circlesList = new ArrayList<>();
         double[] circle;
         double x, y, r, area, perimeter;
         for (int a = 0; a < circles.cols(); a++) {
@@ -373,6 +431,18 @@ public final class Home2 extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         btnSaveTest = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        lblRBC = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        lblMCV = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        lblRDW = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCellTypes = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -400,6 +470,7 @@ public final class Home2 extends javax.swing.JFrame {
         mnuFile = new javax.swing.JMenu();
         mnuOpen = new javax.swing.JMenuItem();
         mnuReset = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mnuExit = new javax.swing.JMenuItem();
         mnuEdit = new javax.swing.JMenu();
         mnuSegment = new javax.swing.JMenuItem();
@@ -410,7 +481,6 @@ public final class Home2 extends javax.swing.JFrame {
         mnuAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 720));
 
         mainPanel.setLayout(new java.awt.GridLayout(2, 4, 5, 5));
 
@@ -545,24 +615,33 @@ public final class Home2 extends javax.swing.JFrame {
 
         jLabel2.setText("  Cells Count  ");
         jPanel10.add(jLabel2);
+
+        lblCountCells.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel10.add(lblCountCells);
 
         jLabel3.setText("  Maximum Radius");
         jPanel10.add(jLabel3);
+
+        lblMaximumRadius.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel10.add(lblMaximumRadius);
 
         jLabel4.setText("  Minimum Radius  ");
         jPanel10.add(jLabel4);
+
+        lblMinimumRadius.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel10.add(lblMinimumRadius);
 
         jLabel5.setText("  Time Elapsed  ");
         jPanel10.add(jLabel5);
+
+        lblTimeElapsed.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
         jPanel10.add(lblTimeElapsed);
 
         jButton1.setText("<html><center>Load Previous<br/>Test Suite</center></html>");
         jPanel10.add(jButton1);
 
         btnSaveTest.setText("Save Test");
+        btnSaveTest.setEnabled(false);
         btnSaveTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveTestActionPerformed(evt);
@@ -575,17 +654,62 @@ public final class Home2 extends javax.swing.JFrame {
         mainPanel.add(jPanel5);
 
         jPanel6.setBackground(java.awt.SystemColor.activeCaptionBorder);
+        jPanel6.setLayout(new java.awt.GridLayout(2, 1, 5, 0));
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 331, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 445, Short.MAX_VALUE)
-        );
+        jPanel18.setLayout(new java.awt.GridLayout(5, 2, 5, 5));
+        jPanel18.add(jLabel26);
+        jPanel18.add(jLabel20);
+
+        jLabel21.setText("  RBC Actual Count");
+        jPanel18.add(jLabel21);
+
+        lblRBC.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
+        jPanel18.add(lblRBC);
+
+        jLabel22.setText("  MCV Actual Count");
+        jPanel18.add(jLabel22);
+
+        lblMCV.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
+        jPanel18.add(lblMCV);
+
+        jLabel25.setText("  RDW Actual Count");
+        jPanel18.add(jLabel25);
+
+        lblRDW.setFont(new java.awt.Font("Ubuntu", 1, 12)); // NOI18N
+        jPanel18.add(lblRDW);
+        jPanel18.add(jLabel29);
+
+        jPanel6.add(jPanel18);
+
+        tblCellTypes.setAutoCreateRowSorter(true);
+        tblCellTypes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cell Type", "Cell Count"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblCellTypes.setColumnSelectionAllowed(true);
+        jScrollPane1.setViewportView(tblCellTypes);
+        tblCellTypes.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        jPanel6.add(jScrollPane1);
 
         mainPanel.add(jPanel6);
 
@@ -693,6 +817,16 @@ public final class Home2 extends javax.swing.JFrame {
         });
         mnuFile.add(mnuReset);
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/login.png"))); // NOI18N
+        jMenuItem1.setText("  Log Out  ");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        mnuFile.add(jMenuItem1);
+
         mnuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         mnuExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/uom/research/thalassemia/images/exit.png"))); // NOI18N
         mnuExit.setText("  Exit     ");
@@ -772,7 +906,7 @@ public final class Home2 extends javax.swing.JFrame {
         if (Desktop.isDesktopSupported()) {
             try {
                 Desktop.getDesktop().open(new File(
-                        Home.class.getResource("/index.html").getFile()));
+                        HomeCellCountAnalyzer.class.getResource("/index.html").getFile()));
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
@@ -793,7 +927,7 @@ public final class Home2 extends javax.swing.JFrame {
 
     private void mnuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAboutActionPerformed
         // opens About window.
-        new About(Home2.this, true).setVisible(true);
+        new About(HomeCellCountAnalyzer.this, true).setVisible(true);
     }//GEN-LAST:event_mnuAboutActionPerformed
 
     private void mnuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuExitActionPerformed
@@ -848,8 +982,9 @@ public final class Home2 extends javax.swing.JFrame {
     }//GEN-LAST:event_btnProcessActionPerformed
 
     private void btnCellDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCellDataActionPerformed
+        btnSaveTest.setEnabled(true);
         if (bcm != null) {
-            new CircleData(Home2.this, true, bcm.getCircles(), null, bcm.getPallors()).setVisible(true);
+            new CircleData(HomeCellCountAnalyzer.this, true, bcm.getCircles(), bcm.getContours(), bcm.getPallors()).setVisible(true);
         }
     }//GEN-LAST:event_btnCellDataActionPerformed
 
@@ -873,6 +1008,13 @@ public final class Home2 extends javax.swing.JFrame {
         saveTest();
     }//GEN-LAST:event_btnSaveTestActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if (Message.showQuestionYesNo(" Do You Really Need To Log Out ? ") == Message.YES_OPTION) {
+            this.dispose();
+            new Login(null, true).setVisible(true);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCellData;
     private javax.swing.JButton btnOpenImage;
@@ -893,6 +1035,12 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -900,6 +1048,7 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -909,6 +1058,7 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -917,6 +1067,7 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
@@ -931,9 +1082,12 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JLabel lblDisplayImageProcessed;
     private javax.swing.JLabel lblDisplayImageSmooth;
     private javax.swing.JLabel lblImagePath;
+    private javax.swing.JLabel lblMCV;
     private javax.swing.JLabel lblMaximumRadius;
     private javax.swing.JLabel lblMinimumRadius;
     private javax.swing.JLabel lblPatient;
+    private javax.swing.JLabel lblRBC;
+    private javax.swing.JLabel lblRDW;
     private javax.swing.JLabel lblResolution;
     private javax.swing.JLabel lblTimeElapsed;
     private javax.swing.JLabel lblUser;
@@ -950,5 +1104,6 @@ public final class Home2 extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnuProcess;
     private javax.swing.JMenuItem mnuReset;
     private javax.swing.JMenuItem mnuSegment;
+    private javax.swing.JTable tblCellTypes;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,15 +6,11 @@
 package uom.research.thalassemia.ui;
 
 import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.swing.table.DefaultTableModel;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import uom.research.thalassemia.util.FillData;
-import uom.research.thalassemia.util.Message;
+import org.opencv.core.MatOfPoint;
+import uom.research.thalassemia.logic.BloodCellDataProcessor;
+import uom.research.thalassemia.util.Validator;
 
 /**
  *
@@ -25,7 +21,7 @@ public final class CircleData extends javax.swing.JDialog {
     /**
      * Frame width.
      */
-    private static final int FRAME_WIDTH = 800;
+    private static final int FRAME_WIDTH = 950;
 
     /**
      * Frame height.
@@ -53,6 +49,11 @@ public final class CircleData extends javax.swing.JDialog {
     private final Mat ellipticalBloodCells;
 
     /**
+     * rotatedRect Blood Cells set.
+     */
+    private final List<MatOfPoint> contours;
+
+    /**
      * pallor Blood Cells set.
      */
     private final Mat pallorBloodCells;
@@ -66,6 +67,23 @@ public final class CircleData extends javax.swing.JDialog {
      * max diameter.
      */
     private double maxDiameter;
+
+    /**
+     * keeps total blood cell area.
+     */
+    private double totalBloodCellArea = 0.0;
+
+    /**
+     * keeps total pallor area.
+     */
+    private double totalPallarArea = 0.0;
+
+    /**
+     * ellipse total Ellipse cell area.
+     */
+    private double totalEllipseArea = 0.0;
+
+    private BloodCellDataProcessor bloodCellDataProcessor = null;
 
     /**
      * Creates new form CircleData.
@@ -82,139 +100,66 @@ public final class CircleData extends javax.swing.JDialog {
         this.circularBloodCells = circleSet;
         this.ellipticalBloodCells = ellipseSet;
         this.pallorBloodCells = pallorSet;
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        setLocationRelativeTo(null);
-        fillTable(circularBloodCells);
+        this.contours = null;
+        CircleData.this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        CircleData.this.setLocationRelativeTo(null);
+        loadData();
     }
 
     /**
-     * fill table.
+     * Creates new form CircleData.
      *
-     * @param currentSelection currentSelection
+     * @param parent parent frame
+     * @param modal is modal or not
+     * @param circleSet circularBloodCells
+     * @param pcontours contours
+     * @param pallorSet pallorBloodCells
      */
-    private void fillTable(final Mat currentSelection) {
-        FillData.doEmptyTable(jTable1);
-        if (currentSelection != null) {
-            getMinMaxDiameter(currentSelection);
-            double sgf = 0;
-            if (minDiameter != 0) {
-                sgf = maxDiameter / minDiameter;
-            }
-            lblSGFValue.setText(lblSGFValue.getText()
-                    .concat(String.valueOf(sgf)));
-            Map<Point, Double> points = getPallorBloodCellsPointList();
-            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-            double[] circles;
-            int index = 0;
-            double x, y, r, area, perimeter, diameter, deviationValue,
-                    areaPreparation;
-            for (int a = 0; a < currentSelection.cols(); a++) {
-                areaPreparation = 0;
-                index = a + 1;
-                circles = currentSelection.get(0, a);
-                x = circles[0];
-                y = circles[1];
-                r = Math.round(circles[2]);
-                area = calculateArea(r);
-                perimeter = calculatePerimeter(r);
-                diameter = calculateDiameter(area, perimeter);
-                deviationValue = sgf / area;
-                Point point = new Point(x, y);
-                if (points.containsKey(point)) {
-                    areaPreparation = calculateArea(points.get(point)) / area;
-                }
-                Object[] ob = {index, x, y, r, area, perimeter, diameter,
-                    deviationValue, areaPreparation};
-                dtm.addRow(ob);
-            }
-            lblSumBloodCells.setText(lblSumBloodCells.getText()
-                    .concat(String.valueOf(circularBloodCells.cols())));
-            lblSumPallar.setText(lblSumPallar.getText()
-                    .concat(String.valueOf(pallorBloodCells.cols())));
-        }
+    public CircleData(final Frame parent, final boolean modal,
+            final Mat circleSet, final List<MatOfPoint> pcontours,
+            final Mat pallorSet) {
+        initComponents();
+        this.circularBloodCells = circleSet;
+        this.ellipticalBloodCells = null;
+        this.contours = pcontours;
+        this.pallorBloodCells = pallorSet;
+        CircleData.this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        CircleData.this.setLocationRelativeTo(null);
+        loadData();
     }
 
     /**
-     * Calculate Area of a Circle.
-     *
-     * @param radius double radius value
-     * @return area as double
+     * load Data to UI.
      */
-    private double calculateArea(final double radius) {
-        return FI * radius * radius;
+    private void loadData() {
+
+        bloodCellDataProcessor
+                = new BloodCellDataProcessor(circularBloodCells,
+                        contours, pallorBloodCells);
+        bloodCellDataProcessor.circularBloodCellsProcesser(circularBloodCells);
+        bloodCellDataProcessor.circularBloodCellsProcesser(pallorBloodCells);
+        bloodCellDataProcessor.ellipseBloodCellsProcesser();
+        bloodCellDataProcessor.fillTable(jTable1, circularBloodCells);
+        updateLabels();
     }
 
     /**
-     * Calculate Perimeter of a Circle.
-     *
-     * @param radius double perimeter value
-     * @return perimeter as double
+     * update only label values.
      */
-    private double calculatePerimeter(final double radius) {
-        return 2 * FI * radius;
-    }
-
-    /**
-     * Calculate Diameter of a Circle.
-     *
-     * @param area double area value
-     * @param perimeter double perimeter value
-     * @return diameter as double
-     */
-    private double calculateDiameter(final double area,
-            final double perimeter) {
-        return (FOUR * area) / perimeter;
-    }
-
-    /**
-     * Calculate Diameter of a Circle.
-     *
-     * @param radius double diameter value
-     * @return diameter as double
-     */
-    private double calculateDiameter(final double radius) {
-        return FOUR * (FI * radius * radius) / (2 * FI * radius);
-    }
-
-    /**
-     * get min and max diameters.
-     *
-     * @param currentSelection currentSelection of Mat
-     */
-    private void getMinMaxDiameter(final Mat currentSelection) {
-        double[] circles;
-        List<Double> diameters = new ArrayList<>();
-        double r, diameter;
-        for (int a = 0; a < currentSelection.cols(); a++) {
-            circles = currentSelection.get(0, a);
-            r = Math.round(circles[2]);
-            diameter = calculateDiameter(r);
-            diameters.add(diameter);
-        }
-        if (diameters.size() > 1) {
-            diameters.sort(null);
-        }
-        minDiameter = diameters.get(0);
-        maxDiameter = diameters.get(diameters.size() - 1);
-    }
-
-    /**
-     * get Pallor Blood cells point list.
-     *
-     * @return List<Point> List
-     */
-    private Map<Point, Double> getPallorBloodCellsPointList() {
-        double[] circles;
-        Map<Point, Double> points = new HashMap<>();
-        double x, y, r;
-        for (int a = 0; a < pallorBloodCells.cols(); a++) {
-            circles = pallorBloodCells.get(0, a);
-            x = circles[0];
-            y = circles[1];
-            r = Math.round(circles[2]);
-            points.put(new Point(x, y), r);
-        }
-        return points;
+    private void updateLabels() {
+        lblSumBloodCells.setText(" Σ Blood Cells : "
+                + String.valueOf(circularBloodCells.cols()));
+        lblSumPallar.setText(" Σ Pallar Circles : "
+                + String.valueOf(pallorBloodCells.cols()));
+        lblBloodCellArea.setText(" Σ Blood Cell Area : "
+                + String.valueOf(Validator.formatDouble(
+                        bloodCellDataProcessor.getTotalBloodCellArea())));
+        lblPallarCircleArea.setText(" Σ Pallar Circle Area : "
+                + String.valueOf(Validator.formatDouble(
+                        bloodCellDataProcessor.getTotalPallarArea())));
+        lblEllipseArea.setText(" Σ Ellipse Circle Area : "
+                + String.valueOf(Validator.formatDouble(
+                        bloodCellDataProcessor.getTotalEllipseArea())));
     }
 
     /**
@@ -242,6 +187,17 @@ public final class CircleData extends javax.swing.JDialog {
         lblSumBloodCells = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         lblSumPallar = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        lblBloodCellArea = new javax.swing.JLabel();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        lblPallarCircleArea = new javax.swing.JLabel();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
+        lblEllipseArea = new javax.swing.JLabel();
+        jSeparator7 = new javax.swing.JToolBar.Separator();
+        lblMaxDiameter = new javax.swing.JLabel();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
+        lblMinDiameter = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JToolBar.Separator();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -314,14 +270,14 @@ public final class CircleData extends javax.swing.JDialog {
 
             },
             new String [] {
-                "#", "x Point", "y Point", "r Radius", "Perimeter", "Area", "Diameter", "Deviation Value", "AP (beta)"
+                "#", "x Point", "y Point", "r Radius", "Perimeter", "Area", "Diameter", "SGF", "Deviation Value", "AP (beta)"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -346,12 +302,33 @@ public final class CircleData extends javax.swing.JDialog {
 
         jToolBar2.setRollover(true);
 
-        lblSumBloodCells.setText("  Total No Of Blood Cells Detected : ");
+        lblSumBloodCells.setText(" Σ Blood Cells : ");
         jToolBar2.add(lblSumBloodCells);
         jToolBar2.add(jSeparator1);
 
-        lblSumPallar.setText("  Total No of Detected Pallar Circles : ");
+        lblSumPallar.setText(" Σ Pallar Circles : ");
         jToolBar2.add(lblSumPallar);
+        jToolBar2.add(jSeparator2);
+
+        lblBloodCellArea.setText(" Σ Blood Cell Area : ");
+        jToolBar2.add(lblBloodCellArea);
+        jToolBar2.add(jSeparator3);
+
+        lblPallarCircleArea.setText(" Σ Pallar Circle Area : ");
+        jToolBar2.add(lblPallarCircleArea);
+        jToolBar2.add(jSeparator4);
+
+        lblEllipseArea.setText(" Σ Ellipse Circle Area : ");
+        jToolBar2.add(lblEllipseArea);
+        jToolBar2.add(jSeparator7);
+
+        lblMaxDiameter.setText(" Max Diameter : ");
+        jToolBar2.add(lblMaxDiameter);
+        jToolBar2.add(jSeparator6);
+
+        lblMinDiameter.setText(" Min Diameter : ");
+        jToolBar2.add(lblMinDiameter);
+        jToolBar2.add(jSeparator5);
 
         jPanel4.add(jToolBar2, java.awt.BorderLayout.CENTER);
 
@@ -377,8 +354,6 @@ public final class CircleData extends javax.swing.JDialog {
 
         jLabel7.setText("  diameter  =  4 . area / perimeter");
         jPanel5.add(jLabel7);
-
-        lblSGFValue.setText("  SGF Value = ");
         jPanel5.add(lblSGFValue);
 
         jLabel12.setText("  shape geometric factor (sgf) = large / small diameter");
@@ -399,15 +374,18 @@ public final class CircleData extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void radCircularBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radCircularBloodCellsActionPerformed
-       fillTable(circularBloodCells);
+        bloodCellDataProcessor.fillTable(jTable1, circularBloodCells);
+        updateLabels();
     }//GEN-LAST:event_radCircularBloodCellsActionPerformed
 
     private void radPallorBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radPallorBloodCellsActionPerformed
-        fillTable(pallorBloodCells);
+        bloodCellDataProcessor.fillTable(jTable1, pallorBloodCells);
+        updateLabels();
     }//GEN-LAST:event_radPallorBloodCellsActionPerformed
 
     private void radEllipticalBloodCellsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radEllipticalBloodCellsActionPerformed
-        fillTable(ellipticalBloodCells);
+        bloodCellDataProcessor.fillTable(jTable1, contours);
+        updateLabels();
     }//GEN-LAST:event_radEllipticalBloodCellsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -430,8 +408,19 @@ public final class CircleData extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
+    private javax.swing.JToolBar.Separator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
+    private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JLabel lblBloodCellArea;
+    private javax.swing.JLabel lblEllipseArea;
+    private javax.swing.JLabel lblMaxDiameter;
+    private javax.swing.JLabel lblMinDiameter;
+    private javax.swing.JLabel lblPallarCircleArea;
     private javax.swing.JLabel lblSGFValue;
     private javax.swing.JLabel lblSumBloodCells;
     private javax.swing.JLabel lblSumPallar;

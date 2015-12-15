@@ -5,17 +5,23 @@
  */
 package uom.research.thalassemia.dao;
 
+import com.orientechnologies.orient.core.record.impl.ODocument;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import uom.research.thalassemia.db.DatabaseAccess;
+import uom.research.thalassemia.object.ContactPerson;
 import uom.research.thalassemia.object.Patient;
+import uom.research.thalassemia.util.Message;
+import uom.research.thalassemia.util.Validator;
 
 /**
  * Patient DAO Implementation.
  *
  * @author hansa
  */
-public final class PatientDAOImpl {
+public final class PatientDAOImpl implements PatientDAO {
 
     /**
      * Simple date formatter.
@@ -37,13 +43,13 @@ public final class PatientDAOImpl {
             = "}";
 
     /**
-     * v
      * insert patient into database.
      *
      * @param patient patient object
      * @return inserted patient rid
      * @throws Exception exception
      */
+    @Override
     public String insertPatient(final Patient patient)
             throws Exception {
         String contactPerson = CONTACT_PERSON_DOCUMENT_PREFIX
@@ -74,6 +80,51 @@ public final class PatientDAOImpl {
                 .replaceAll("-", "") + "'";
 
         return DatabaseAccess.insertData(patientQuery);
+    }
+
+    /**
+     * load patient onto application.
+     *
+     * @param text patient rid
+     * @return Patient object
+     * @throws Exception exception
+     */
+    @Override
+    public Patient selectPatient(final String text) throws Exception {
+        String rid = text.substring(0, text.indexOf(" "));
+        if (rid.startsWith("#")) {
+            List<ODocument> list
+                    = DatabaseAccess.selectData(
+                            "SELECT @rid.asString() as rid, title, firstName,"
+                            + "middleName, lastName, sex, city, address1, "
+                            + "address2, mobile, imagePath, "
+                            + "birthDate.format('yyyy-MM-dd'),"
+                            + "contactPerson.name as contactName, "
+                            + "contactPerson.mobile as contactMobile "
+                            + "FROM Patient WHERE @rid=" + rid);
+            Patient patient = new Patient();
+            patient.setRid(list.get(0).field("rid"));
+            patient.setTitle(list.get(0).field("title"));
+            patient.setFirstName(list.get(0).field("firstName"));
+            patient.setMiddleName(list.get(0).field("middleName"));
+            patient.setLastName(list.get(0).field("lastName"));
+            patient.setSex(list.get(0).field("sex"));
+            patient.setCity(list.get(0).field("city"));
+            patient.setBirthDate(Validator.stringDateToLocalDate(
+                    list.get(0).field("birthDate")));
+            patient.setAddress1(list.get(0).field("address1"));
+            patient.setAddress2(list.get(0).field("address2"));
+            patient.setMobile(list.get(0).field("mobile"));
+            patient.setImagePath(list.get(0).field("imagePath"));
+            ContactPerson contactPerson = new ContactPerson();
+            contactPerson.setName(list.get(0).field("contactName"));
+            contactPerson.setMobile(list.get(0).field("contactMobile"));
+            patient.setContactPerson(contactPerson);
+            return patient;
+        } else {
+            Message.showInformationMessage("Please Select A Patient");
+        }
+        return null;
     }
 
 }

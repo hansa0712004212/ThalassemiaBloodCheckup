@@ -7,7 +7,9 @@ package uom.research.thalassemia.logic;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 
 /**
  *
@@ -126,5 +128,12 @@ public interface BloodCellsManipulation {
      * @return BufferedImage
      */
     BufferedImage getEllipsesImage();
+
+    /**
+     * keep ellipses details.
+     *
+     * @return the getContours
+     */
+    List<MatOfPoint> getContours();
 
 }

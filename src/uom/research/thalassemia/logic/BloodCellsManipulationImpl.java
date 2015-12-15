@@ -62,6 +62,11 @@ public final class BloodCellsManipulationImpl
     private int circleCount;
 
     /**
+     * keep contours details.
+     */
+    private List<MatOfPoint> contours = null;
+
+    /**
      * Constructor.
      *
      * @param file inputImageFile
@@ -245,7 +250,7 @@ public final class BloodCellsManipulationImpl
             ellipsesMat = original.clone();
 
             // Sets Gray Scale to gray Map
-            Imgproc.cvtColor(original, gray, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.cvtColor(original, gray, Imgproc.COLOR_BGR2HSV);
 
             grayImage = convertMapToImage(gray);
 
@@ -276,14 +281,46 @@ public final class BloodCellsManipulationImpl
 
             //Imgproc.cvtColor(canny, canny, Imgproc.COLOR_BGR2GRAY);
             circles = new Mat();
-            Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
-                    8, //Inverse ratio
-                    100, //Minimum distance between the centers of the detected circles. default 100
-                    100, //Higher threshold for canny edge detector. default100
-                    200, //Threshold at the center detection stage. default 200
-                    50, //min radius. default 50
-                    90 //max radius. default 90
-            );
+
+            int imageArea = original.width() * original.height();
+
+            if (imageArea > 5100000) {
+                Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        220, //Minimum distance between the centers of the detected circles. default 100
+                        100, //Higher threshold for canny edge detector. default100
+                        200, //Threshold at the center detection stage. default 200
+                        90, //min radius. default 50
+                        130 //max radius. default 90
+                );
+            } else if (imageArea > 1309500) {
+                Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        110, //Minimum distance between the centers of the detected circles. default 100
+                        100, //Higher threshold for canny edge detector. default100
+                        150, //Threshold at the center detection stage. default 200
+                        50, //min radius. default 50
+                        67 //max radius. default 90
+                );
+            } else if (imageArea > 540000) {
+                Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        110, //Minimum distance between the centers of the detected circles. default 100
+                        100, //Higher threshold for canny edge detector. default100
+                        200, //Threshold at the center detection stage. default 200
+                        30, //min radius. default 50
+                        65 //max radius. default 90
+                );
+            } else if (imageArea > 400000) {
+                Imgproc.HoughCircles(canny, circles, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        50, //Minimum distance between the centers of the detected circles. default 100
+                        60, //Higher threshold for canny edge detector. default100
+                        100, //Threshold at the center detection stage. default 200
+                        25, //min radius. default 50
+                        40 //max radius. default 90
+                );
+            }
 
             if (circles.cols() > 0) {
                 for (int x = 0; x < circles.cols(); x++) {
@@ -296,20 +333,51 @@ public final class BloodCellsManipulationImpl
                     int radius = (int) Math.round(vCircle[2]);
                     radiusList.add(radius);
                     // draw the found circle
-                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 255, 0), 2);
+                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 255, 0), 3);
                 }
             }
 
             // set Pallor circles
             circlesPallor = new Mat();
-            Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
-                    8, //Inverse ratio
-                    100, //Minimum distance between the centers of the detected circles
-                    50, //Higher threshold for canny edge detector
-                    100, //Threshold at the center detection stage
-                    0, //min radius
-                    40 //max radius
-            );
+            if (imageArea > 5100000) {
+                Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        220, //Minimum distance between the centers of the detected circles
+                        100, //Higher threshold for canny edge detector
+                        150, //Threshold at the center detection stage
+                        0, //min radius
+                        70 //max radius
+                );
+            } else if (imageArea > 1309500) {
+                Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        110, //Minimum distance between the centers of the detected circles
+                        50, //Higher threshold for canny edge detector
+                        100, //Threshold at the center detection stage
+                        0, //min radius
+                        45 //max radius
+                );
+            } else if (imageArea > 540000) {
+                Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        100, //Minimum distance between the centers of the detected circles
+                        50, //Higher threshold for canny edge detector
+                        100, //Threshold at the center detection stage
+                        0, //min radius
+                        35 //max radius
+                );
+
+            } else if (imageArea > 400000) {
+                Imgproc.HoughCircles(canny, circlesPallor, Imgproc.CV_HOUGH_GRADIENT,
+                        8, //Inverse ratio
+                        50, //Minimum distance between the centers of the detected circles
+                        10, //Higher threshold for canny edge detector
+                        30, //Threshold at the center detection stage
+                        0, //min radius
+                        25 //max radius
+                );
+
+            }
             if (circlesPallor.cols() > 0) {
                 for (int x = 0; x < circlesPallor.cols(); x++) {
                     double vCircle[] = circlesPallor.get(0, x);
@@ -320,26 +388,23 @@ public final class BloodCellsManipulationImpl
                     int radius = (int) Math.round(vCircle[2]);
                     //radiusList.add(radius);
                     // draw the found circle
-                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 0, 255), 2);
+                    Imgproc.circle(circularsMat, pt, radius, new Scalar(0, 0, 255), 0);
                 }
             }
 
             // set Ellipses
-            List<MatOfPoint> contours = new ArrayList<>();
+            contours = new ArrayList<>();
             Imgproc.findContours(canny, contours, new Mat(), Imgproc.RETR_LIST,
                     Imgproc.CHAIN_APPROX_SIMPLE);
             MatOfPoint allcontours = new MatOfPoint();
             for (MatOfPoint mat : contours) {
                 mat.copyTo(allcontours);
-                int ind = 0;
-                Rect boundingRect;
                 RotatedRect boundingEllipse = null;
                 if (allcontours.toArray().length > 4) {
-                    ind++;
                     MatOfPoint newMat1 = new MatOfPoint(allcontours.toArray());
                     MatOfPoint2f newMat2 = new MatOfPoint2f(
                             allcontours.toArray());
-                    boundingRect = Imgproc.boundingRect(newMat1);
+                    Rect boundingRect = Imgproc.boundingRect(newMat1);
                     boundingEllipse = Imgproc.fitEllipse(newMat2);
                 }
 
@@ -371,7 +436,7 @@ public final class BloodCellsManipulationImpl
      */
     @Override
     public Mat getEllipses() {
-        return null;
+        return ellipsesMat;
     }
 
     /**
@@ -382,5 +447,10 @@ public final class BloodCellsManipulationImpl
     @Override
     public Mat getPallors() {
         return circlesPallor;
+    }
+
+    @Override
+    public List<MatOfPoint> getContours() {
+        return contours;
     }
 }

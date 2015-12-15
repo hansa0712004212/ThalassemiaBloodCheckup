@@ -39,7 +39,7 @@ public final class LoginDAOImpl implements LoginDAO {
     public User authenticate(final String name, final String password)
             throws Exception {
         List<ODocument> result = DatabaseAccess.selectData(
-                "SELECT @rid as rid, username, userRole.role as role, "
+                "SELECT @rid.asString() as rid, username, userRole.role as role, "
                 + "firstName, lastName, email, mobile, assignedDate.asLong() "
                 + "FROM User WHERE username='" + name + "' AND password='"
                 + password + "'");
@@ -56,8 +56,7 @@ public final class LoginDAOImpl implements LoginDAO {
                     document.field(columnNames[5]).toString(),
                     Integer.valueOf(document.field(columnNames[6]).toString()),
                     LocalDate.parse(DATE_FORMAT.format(new Date(longDate))),
-                    null,
-                    null);
+                    null, null);
             return user;
         }
         return null;

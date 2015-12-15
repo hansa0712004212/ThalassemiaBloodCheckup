@@ -5,6 +5,8 @@
  */
 package uom.research.thalassemia.dao;
 
+import java.util.List;
+import uom.research.thalassemia.object.Circle;
 import uom.research.thalassemia.object.Test;
 import uom.research.thalassemia.object.TestSuite;
 
@@ -25,4 +27,12 @@ public interface TestDAO {
     String saveTest(final TestSuite testSuite, final Test test)
             throws Exception;
 
+    /**
+     * load Circles.
+     *
+     * @param rid test rid
+     * @return Circle List
+     * @throws Exception Exception
+     */
+    public List<Circle> loadCircles(final String rid) throws Exception;
 }

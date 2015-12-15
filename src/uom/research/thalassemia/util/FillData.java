@@ -5,10 +5,13 @@
 package uom.research.thalassemia.util;
 
 import com.orientechnologies.orient.core.record.impl.ODocument;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -130,5 +133,20 @@ public final class FillData {
             defaultTableModel.addRow(ob);
         }
         return rid;
+    }
+
+    /**
+     * Sets icon for JFrame.
+     *
+     * @param jFrame JFrame
+     */
+    public static void setIconForJFrame(final JFrame jFrame) {
+        try {
+            BufferedImage im = ImageIO.read(ClassLoader.getSystemResource(
+                    "uom/research/thalassemia/images/segment.png"));
+            jFrame.setIconImage(im);
+        } catch (Exception ex) {
+            System.out.println("jFrame icon setting got exception.");
+        }
     }
 }

@@ -1,3 +1,23 @@
+DELETE FROM Patient
+DELETE FROM ContactPerson  
+DELETE FROM TestSuite
+DELETE FROM Test
+DELETE FROM Circle
+DELETE FROM TestType
+DELETE FROM User   
+DELETE FROM UserPermission
+DELETE FROM UserRole
+
+DROP CLASS Patient
+DROP CLASS ContactPerson
+DROP CLASS TestSuite
+DROP CLASS Test
+DROP CLASS Circle
+DROP CLASS TestType
+DROP CLASS User
+DROP CLASS UserPermission
+DROP CLASS UserRole
+
 CREATE CLASS UserRole
 CREATE PROPERTY UserRole.role STRING
 
@@ -37,6 +57,7 @@ CREATE PROPERTY TestType.testType STRING
 
 INSERT INTO TestType SET testType='Blood Cell Image Analysis'
 INSERT INTO TestType SET testType='Image Colour Comparison'
+INSERT INTO TestType SET testType='Home'
 
 CREATE CLASS Circle
 CREATE PROPERTY Circle.xAxis INTEGER
@@ -48,9 +69,13 @@ CREATE PROPERTY Circle.area DOUBLE
 CREATE CLASS Test
 CREATE PROPERTY Test.testType LINK TestType
 CREATE PROPERTY Test.imagePath STRING
-CREATE PROPERTY Test.testDate DATE
+CREATE PROPERTY Test.testDate DATETIME
 CREATE PROPERTY Test.circles EMBEDDEDSET Circle
 CREATE PROPERTY Test.isInfected BOOLEAN
+
+CREATE PROPERTY Test.actualRBC DOUBLE
+CREATE PROPERTY Test.mcvActual DOUBLE
+CREATE PROPERTY Test.rdwActual DOUBLE
 
 CREATE CLASS Patient
 
@@ -58,6 +83,7 @@ CREATE CLASS TestSuite
 CREATE PROPERTY TestSuite.patient LINK Patient
 CREATE PROPERTY TestSuite.test LINKLIST Test
 CREATE PROPERTY TestSuite.performedBy LINK User
+CREATE PROPERTY TestSuite.testSuiteDate DATETIME
 
 CREATE CLASS ContactPerson
 CREATE PROPERTY ContactPerson.title STRING

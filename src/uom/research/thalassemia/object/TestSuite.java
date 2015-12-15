@@ -5,6 +5,7 @@
  */
 package uom.research.thalassemia.object;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,12 +35,18 @@ public final class TestSuite {
     private User performedBy;
 
     /**
+     * Test Suite Date.
+     */
+    private LocalDateTime testSuiteDate;
+
+    /**
      * Default Constructor.
      */
     public TestSuite() {
         setPatient(null);
         setTest(null);
         setPerformedBy(null);
+        setTestSuiteDate(LocalDateTime.now());
     }
 
     /**
@@ -49,12 +56,15 @@ public final class TestSuite {
      * @param ppatient patient
      * @param ptest test
      * @param pperformedBy user
+     * @param pTestSuiteDate test suite date
      */
     public TestSuite(final String prid, final Patient ppatient,
-            final List<Test> ptest, final User pperformedBy) {
+            final List<Test> ptest, final User pperformedBy,
+            final LocalDateTime pTestSuiteDate) {
         setPatient(ppatient);
         setTest(ptest);
         setPerformedBy(pperformedBy);
+        setTestSuiteDate(pTestSuiteDate);
     }
 
     /**
@@ -127,5 +137,19 @@ public final class TestSuite {
      */
     public void setPerformedBy(final User pperformedBy) {
         this.performedBy = pperformedBy;
+    }
+
+    /**
+     * @return the testSuiteDate
+     */
+    public LocalDateTime getTestSuiteDate() {
+        return testSuiteDate;
+    }
+
+    /**
+     * @param ptestSuiteDate the testSuiteDate to set
+     */
+    public void setTestSuiteDate(final LocalDateTime ptestSuiteDate) {
+        this.testSuiteDate = ptestSuiteDate;
     }
 }

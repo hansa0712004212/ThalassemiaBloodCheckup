@@ -6,7 +6,9 @@
 package uom.research.thalassemia.db;
 
 import com.orientechnologies.orient.client.remote.OServerAdmin;
+import com.orientechnologies.orient.core.command.OCommandRequest;
 import com.orientechnologies.orient.core.db.document.ODatabaseDocumentTx;
+import com.orientechnologies.orient.core.sql.OCommandSQL;
 import java.io.File;
 import java.util.Scanner;
 import java.util.Set;
@@ -49,7 +51,7 @@ public final class DatabaseConnect {
         instance = new ODatabaseDocumentTx("remote:localhost/" + DB_NAME)
                 .open(USER_NAME, USER_PASSWORD);
 
-        // checkDBExists();
+        //checkDBExists();
         return instance;
     }
 
@@ -64,9 +66,10 @@ public final class DatabaseConnect {
      *
      * @throws Exception exception
      */
-    private static void checkDBExists()
-            throws Exception {
+    public static void checkDBExists() throws Exception {
         OServerAdmin admin = new OServerAdmin("remote:localhost");
+        ODatabaseDocumentTx db = DatabaseConnect.getInstance();
+        OCommandRequest command;
         admin.connect(USER_NAME, USER_PASSWORD);
         Set<String> dbNames = admin.listDatabases().keySet();
         if (dbNames.contains("Thalassemia")) {
@@ -75,11 +78,12 @@ public final class DatabaseConnect {
             while (scanner.hasNextLine()) {
                 String query = scanner.nextLine();
                 if (query.length() != 0) {
-                    DatabaseAccess.executeCommand(query);
+                    command = db.command(new OCommandSQL(query));
+                    command.execute();
+                    db.getMetadata().getSchema().reload();
                     System.out.println("Executed --> " + query);
                 }
             }
         }
-
     }
 }

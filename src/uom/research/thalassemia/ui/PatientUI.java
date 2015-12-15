@@ -18,6 +18,7 @@ import uom.research.thalassemia.dao.PatientDAOImpl;
 import uom.research.thalassemia.object.ContactPerson;
 import uom.research.thalassemia.object.Patient;
 import uom.research.thalassemia.object.User;
+import uom.research.thalassemia.util.Constant;
 import uom.research.thalassemia.util.FillData;
 import uom.research.thalassemia.util.ImageFileChooser;
 import uom.research.thalassemia.util.Message;
@@ -44,12 +45,6 @@ public final class PatientUI extends javax.swing.JDialog {
      * default profile image file path.
      */
     private static final String DEFAULT_PHOTO = "me.jpg";
-
-    /**
-     * profile image save path.
-     */
-    private static final String PHOTO_DESTINATION
-            = System.getProperty("user.home") + File.separator + "imageDB/";
 
     /**
      * Map<String, Map<Integer, String>>.
@@ -92,7 +87,7 @@ public final class PatientUI extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         loadLast20Patients();
         dtBirthDate.setDate(new Date());
-        txtPhoto.setText(PHOTO_DESTINATION + DEFAULT_PHOTO);
+        txtPhoto.setText(Constant.PROFILES_DB_FOLDER + DEFAULT_PHOTO);
         setPatientSearchListener();
     }
 
@@ -240,14 +235,14 @@ public final class PatientUI extends javax.swing.JDialog {
                 String patientRid = patientDAO.insertPatient(patient);
                 patient.setRid(patientRid);
                 File src = new File(txtPhoto.getText());
-                File dest = new File(PHOTO_DESTINATION
+                File dest = new File(Constant.PROFILES_DB_FOLDER
                         + patientRid.substring(4));
                 FileUtils.copyFile(src, dest);
                 int action = Message.showSuccessYesNoMessage(" New Patient's "
                         + "Data Saved. <br/>Continue With New Patient ? ");
                 if (action == Message.YES_OPTION) {
                     dispose();
-                    new Home2(user, patient).setVisible(true);
+                    new HomeCellCountAnalyzer(user, patient).setVisible(true);
                 } else {
                     clearFields();
                 }
@@ -670,7 +665,7 @@ public final class PatientUI extends javax.swing.JDialog {
         ptxtMobile.setText(list.get(index).get(5));
         ptxtContactName.setText(list.get(index).get(7));
         StretchImage.setImageStretch(lblPhoto,
-                "/home/hansa/Pictures/" + list.get(index).get(6));
+                Constant.PROFILES_DB_FOLDER + list.get(index).get(6));
         //lblPhoto.setIcon(new ImageIcon("/home/hansa/Pictures/"
         //      + list.get(index).get(6)));
         ptxtContactMobile.setText(list.get(index).get(8));
@@ -690,7 +685,7 @@ public final class PatientUI extends javax.swing.JDialog {
                     new ContactPerson(
                             "Mr. ", list.get(index).get(7), null,
                             Integer.valueOf(list.get(index).get(8))));
-            new Home2(user, patient).setVisible(true);
+            new HomeCellCountAnalyzer(user, patient).setVisible(true);
             PatientUI.this.dispose();
         } else {
             Message.showQuestionMessage("Have You Selected a Patient ?");
