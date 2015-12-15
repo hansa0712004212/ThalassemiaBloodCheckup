@@ -1,3 +1,23 @@
+DELETE FROM Patient
+DELETE FROM ContactPerson  
+DELETE FROM TestSuite
+DELETE FROM Test
+DELETE FROM Circle
+DELETE FROM TestType
+DELETE FROM User   
+DELETE FROM UserPermission
+DELETE FROM UserRole
+
+DROP CLASS Patient
+DROP CLASS ContactPerson
+DROP CLASS TestSuite
+DROP CLASS Test
+DROP CLASS Circle
+DROP CLASS TestType
+DROP CLASS User
+DROP CLASS UserPermission
+DROP CLASS UserRole
+
 CREATE CLASS UserRole
 CREATE PROPERTY UserRole.role STRING
 

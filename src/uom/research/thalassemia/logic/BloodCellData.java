@@ -350,7 +350,7 @@ public class BloodCellData {
                 fillClasses("Class 5");
             }
         } else {
-            System.out.println();
+            System.out.print("");
             if ((6.5 < diameter) && (8.5 > diameter)) {
                 if (area > 0) {
                     if (tf) {
@@ -364,7 +364,7 @@ public class BloodCellData {
                     fillClasses("Class 2");
                 }
             } else {
-                System.out.println();
+                System.out.print("");
                 if (deviationValue > 8.5) {
                     if (area > 0) {
                         //cpArea true
@@ -379,7 +379,7 @@ public class BloodCellData {
                         fillClasses("Class 3");
                     }
                 } else {
-                    System.out.println();
+                    System.out.print("");
                     if (area > 0) {
                         //cpArea true
                         if (areaPreparation > 0.2) {

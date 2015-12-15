@@ -29,14 +29,12 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
 import uom.research.thalassemia.dao.TestDAO;
 import uom.research.thalassemia.dao.TestDAOImpl;
 import uom.research.thalassemia.dao.TestSuiteDAO;
 import uom.research.thalassemia.dao.TestSuiteDAOImpl;
 import uom.research.thalassemia.db.DatabaseAccess;
 import uom.research.thalassemia.logic.ActualValueTransformer;
-import uom.research.thalassemia.logic.BloodCellAbnormalLogicImpl;
 import uom.research.thalassemia.logic.BloodCellData;
 import uom.research.thalassemia.logic.BloodCellDataProcessor;
 import uom.research.thalassemia.logic.BloodCellsManipulation;
@@ -254,6 +252,11 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                                 bcm.getEllipses(), bcm.getPallors());
 
                 ActualValueTransformer avt = new ActualValueTransformer();
+                
+                System.out.println("rbc "+avt.getActualRBCCount(bcm.getCircleCount()));
+                System.out.println("rdw "+avt.getRDWCount(bcm.getCircleCount()));
+                System.out.println("mcv "+avt.getMCVCount(bcm.getCircleCount()));
+                
                 lblRBC.setText(String.valueOf(Validator.formatDouble(
                         avt.getActualRBCCount(bcm.getCircleCount()))));
                 lblMCV.setText(String.valueOf(Validator.formatDouble(
@@ -270,47 +273,13 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
                 FillData.doEmptyTable(tblCellTypes);
                 DefaultTableModel dtm
                         = (DefaultTableModel) tblCellTypes.getModel();
-                System.out.println(classes.size());
                 for (Map.Entry<String, Integer> entrySet : classes.entrySet()) {
                     String key = entrySet.getKey();
                     Integer value = entrySet.getValue();
                     Object[] ob = {key, value};
                     dtm.addRow(ob);
                 }
-
-                ///////////////////////////////////////
-                //Mat circles = bcm.getCircles();
-                //for
-                //
-                /*Mat bcCircles = bcm.getCircles();
-                for (int i = 0; i < bcCircles.cols(); i++) {
-                    double vCircle[] = circles.get(0, x);
-                    if (vCircle == null) {
-                        break;
-                    }
-                    Point pt = new Point(Math.round(vCircle[0]),
-                            Math.round(vCircle[1]));
-                    int radius = (int) Math.round(vCircle[2]);
-                }*/
-                //
-                /*BloodCellAbnormalLogicImpl abc
-                        = new BloodCellAbnormalLogicImpl(
-                                bloodCellDataProcessor.getTotalEllipseArea(),
-                                bloodCellDataProcessor.getTotalBloodCellArea(),
-                                bloodCellDataProcessor.getTotalPallarArea(), 6,
-                                7, true);
-                Map<String, Integer> data = abc.getAbnormalCellTypes();
-                FillData.doEmptyTable(tblCellTypes);
-                DefaultTableModel dtm
-                        = (DefaultTableModel) tblCellTypes.getModel();
-
-                for (Map.Entry<String, Integer> entrySet : data.entrySet()) {
-                    String key = entrySet.getKey();
-                    Integer value = entrySet.getValue();
-                    Object[] ob = {key, value};
-                    dtm.addRow(ob);
-                }*/
-                ///////////////////////////////////////
+                System.out.println("end");
                 Thread.currentThread().interrupt();
             } catch (Exception ex) {
                 progress.dispose();
