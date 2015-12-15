@@ -371,6 +371,9 @@ public final class HomeCellCountAnalyzer extends javax.swing.JFrame {
             test.setImagePath(imageFile);
             test.setIsInfected(false);
             test.setTestDate(LocalDateTime.now());
+            test.setActualRBC(Double.valueOf(lblRBC.getText()));
+            test.setMcvActual(Double.valueOf(lblMCV.getText()));
+            test.setRdwActual(Double.valueOf(lblRDW.getText()));
             test.setTestType(new TestType("#15:0",
                     "Blood Cell Image Analysis"));
             convertCirclesMapToCirclesList();

@@ -67,7 +67,10 @@ public final class TestDAOImpl implements TestDAO {
                 + "', "
                 + "testDate='" + Validator.localDateToFormattedDate(
                         test.getTestDate()) + "', "
-                + "isInfected=" + test.isIsInfected());
+                + "isInfected=" + test.isIsInfected() + ", "
+                + "actualRBC=" + test.getActualRBC() + ", "
+                + "mcvActual=" + test.getMcvActual() + ", "
+                + "rdwActual=" + test.getRdwActual());
 
         List<Circle> circles = test.getCircles();
         circles.stream().forEach((circle) -> {
